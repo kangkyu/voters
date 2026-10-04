@@ -1,4 +1,4 @@
-# Competition app: Ruby on Rails version 7.0
+# Voters app: Ruby on Rails version 7.0
 
 - Many users submit scores at the same time
 - Save all to the database
