@@ -5,10 +5,10 @@
       <div>
         <p class="text-md font-bold mb-2">Owner menu</p>
         <ul class="list-disc list-inside">
-          <li><%= link_to "list of audiences", owner_round_audiences_path(@round) %></li>
-          <li><%= link_to "list of contestants", owner_round_contestants_path(@round) %></li>
+          <li><%= link_to "list of attendees", owner_round_audiences_path(@round) %></li>
+          <li><%= link_to "list of agenda items", owner_round_contestants_path(@round) %></li>
         </ul>
-        <p class="text-md font-bold mt-10 mb-2">How to invite audience</p>
+        <p class="text-md font-bold mt-10 mb-2">How to invite attendees</p>
         <p class="text-sm font-normal mb-2">
           Please copy the address of this page and share:
           <%= @round.url %>
@@ -21,7 +21,7 @@
         <% if current_user.audience?(@round) %>
           <%= link_to 'Go vote', round_contestants_path(@round), method: :get, class: "bg-transparent hover:bg-indigo-500 text-indigo-700 font-semibold hover:text-white py-2 px-4 border border-indigo-500 hover:border-transparent rounded" %>
         <% else %>
-          <%= button_to "Join the audience", new_round_audience_path(@round), method: :get, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4" %>
+          <%= button_to "Join as an attendee", new_round_audience_path(@round), method: :get, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4" %>
         <% end %>
         </div>
       </div>

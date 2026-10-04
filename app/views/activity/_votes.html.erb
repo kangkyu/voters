@@ -1,11 +1,20 @@
 <%= turbo_frame_tag "#{dom_id(contestant)}_votes" do %>
-  <% if vote = contestant.my_vote %>
-    <%= button_to round_contestant_vote_path(contestant.round, contestant, vote), method: :delete do %>
-      <%= contestant.name %> <%= image_tag "full-heart.svg", size: "18x18", class: "inline" %>
-    <% end %>
-  <% else %>
-    <%= button_to round_contestant_votes_path(contestant.round, contestant) do %>
-      <%= contestant.name %> <%= image_tag "empty-heart.svg", size: "18x18", class: "inline" %>
-    <% end %>
-  <% end %>
+  <div class="flex items-center justify-between">
+    <span><%= contestant.name %></span>
+    <div class="flex space-x-2">
+      <% vote = contestant.my_vote %>
+      <% [
+           ["favor", "Favor", "border-green-600 bg-green-600 text-white", "border-green-600 text-green-700 hover:bg-green-50"],
+           ["against", "Against", "border-red-600 bg-red-600 text-white", "border-red-600 text-red-700 hover:bg-red-50"]
+         ].each do |choice, label, selected_class, unselected_class| %>
+        <% if vote&.choice == choice %>
+          <%= button_to label, round_contestant_vote_path(contestant.round, contestant, vote), method: :delete,
+                class: "px-3 py-1 rounded border font-semibold #{selected_class}" %>
+        <% else %>
+          <%= button_to label, round_contestant_votes_path(contestant.round, contestant), params: { choice: choice },
+                class: "px-3 py-1 rounded border font-semibold #{unselected_class}" %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
 <% end %>

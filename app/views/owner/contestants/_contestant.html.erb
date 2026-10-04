@@ -8,9 +8,7 @@
       <% if current_user.owner?(@round) %>
         <div>
           <% if current_page?(owner_round_results_path(@round)) %>
-            <%= turbo_frame_tag "#{dom_id(contestant)}_votes_count" do %>
-              <%= contestant.votes_count %><br>
-            <% end %>
+            <%= render "owner/contestants/votes_count", contestant: contestant %>
           <% else %>
             <%= button_to 'delete', owner_round_contestant_path(@round, contestant), method: :delete, form: { data: { turbo_confirm: "Are you sure with deleting #{contestant.name}?" }}, class: "px-2 py-1 rounded bg-blue-500 hover:bg-blue-700 text-white font-bold" %>
           <% end %>

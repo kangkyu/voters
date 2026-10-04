@@ -4,17 +4,17 @@ class Vote < ApplicationRecord
   belongs_to :user
   belongs_to :contestant, counter_cache: true
 
-  after_create_commit -> {
-    broadcast_update_later_to "activity",
-      target: "#{dom_id(self.contestant)}_votes_count",
-      html: self.contestant.votes_count,
-      locals: { vote: self }
-  }
+  enum choice: { favor: 0, against: 1 }
 
-  after_destroy_commit -> {
-    broadcast_update_later_to "activity",
-      target: "#{dom_id(self.contestant)}_votes_count",
-      html: self.contestant.votes_count,
-      locals: { vote: nil }
-  }
+  after_commit :broadcast_votes_count, on: [:create, :update]
+  after_destroy_commit :broadcast_votes_count, unless: :destroyed_by_association
+
+  private
+
+  def broadcast_votes_count
+    broadcast_replace_later_to "activity",
+      target: "#{dom_id(contestant)}_votes_count",
+      partial: "owner/contestants/votes_count",
+      locals: { contestant: contestant }
+  end
 end

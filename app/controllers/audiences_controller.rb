@@ -3,7 +3,7 @@ class AudiencesController < ApplicationController
 
   def new
     if @round.audiences.exists?(user_id: current_user.id)
-      redirect_to round_url(@round), notice: "User already joined as audience" and return
+      redirect_to round_url(@round), notice: "User already joined as attendee" and return
     end
     @audience = @round.audiences.build
   end

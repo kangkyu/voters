@@ -1,12 +1,14 @@
 class VotesController < ApplicationController
+  before_action :require_signin
   before_action :set_round
   before_action :find_contestant
 
+  # Sets or changes my vote (favor / against) for the contestant
   def create
-    existing_vote = @contestant.votes.where(user: current_user).first
-    return if existing_vote
+    return head :unprocessable_entity unless Vote.choices.key?(params[:choice])
 
-    vote = @contestant.votes.create!(user: current_user)
+    vote = @contestant.votes.find_or_initialize_by(user: current_user)
+    vote.update!(choice: params[:choice])
     @contestant.my_vote = vote
     render partial: "activity/votes", locals: { contestant: @contestant }
   end

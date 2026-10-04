@@ -23,7 +23,7 @@ module ApplicationHelper
   def user_s_audiences(audiences)
     length = audiences.length
     sentence = []
-    sentence << "You are an audience of"
+    sentence << "You are an attendee of"
     audiences.each_with_index do |audience, index|
       link_round = link_to("“#{audience.round.title}”", round_path(audience.round))
       comma = index < length - 2 ? ',' : ''
