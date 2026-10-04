@@ -1,20 +1,16 @@
 class UsersController < ApplicationController
   before_action :require_signin, only: [:index, :show]
   before_action :require_admin, only: [:index]
-  before_action :require_telephone, only: [:new, :create]
 
   def new
     @user = User.new
-    @user.phone_number = session[:telephone]
   end
 
   def create
     @user = User.new(user_params)
-    @user.phone_number = session[:telephone]
 
     if @user.save
       session[:user_id] = @user.id
-      session[:telephone] = nil
       redirect_to session[:intended_url] || root_url
     else
       flash.now[:alert] = "Sign up not successful: #{@user.errors.full_messages.to_sentence}"
@@ -39,12 +35,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:username, :phone_number, :password)
-  end
-
-  def require_telephone
-    unless session[:telephone]
-      redirect_to signin_url
-    end
+    params.require(:user).permit(:username, :password)
   end
 end

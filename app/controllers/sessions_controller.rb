@@ -19,7 +19,6 @@ class SessionsController < ApplicationController
 
   def destroy
     session[:user_id] = nil
-    session[:telephone] = nil
     redirect_to new_session_url
   end
 end

@@ -41,7 +41,7 @@
             <% if signed_in? %>
               <%= link_to "Hello \"#{current_user.username}\"", user_path(current_user.another_id), class: class_name_by_tab(user_path(current_user.another_id)) %>
             <% else %>
-              <%= link_to "Register", phone_numbers_verify_path, class: class_name_by_tab(new_user_path) %>
+              <%= link_to "Register", register_path, class: class_name_by_tab(register_path) %>
               <%= link_to "Sign In", new_session_path, class: class_name_by_tab(new_session_path) %>
             <% end %>
           </div>

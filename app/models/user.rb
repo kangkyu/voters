@@ -8,10 +8,6 @@ class User < ApplicationRecord
   validates :username, presence: true,
     uniqueness: { case_sensitive: false }
 
-  validates :phone_number, format: {
-    with: /\A\([0-9]{3}\)[-. ][0-9]{3}[-. ][0-9]{4}\z|\A\+[1-9]\d{1,14}\z/
-  }
-
   enum user_role: [:admin, :member]
 
   def assign_my_votes_to_contestants(contestants)
