@@ -9,10 +9,13 @@
           <li><%= link_to "list of agenda items", owner_round_contestants_path(@round) %></li>
         </ul>
         <p class="text-md font-bold mt-10 mb-2">How to invite attendees</p>
-        <p class="text-sm font-normal mb-2">
-          Please copy the address of this page and share:
-          <%= @round.url %>
-        </p>
+        <div data-controller="clipboard">
+          <p class="text-sm font-normal mb-2">
+            Please copy the address of this page and share:
+            <span data-clipboard-target="source"><%= @round.url %></span>
+          </p>
+          <button type="button" data-clipboard-target="button" data-action="clipboard#copy" class="px-3 py-1 rounded border border-blue-500 text-blue-700 hover:bg-blue-50 text-sm font-semibold">Copy link</button>
+        </div>
       </div>
     <% else %>
       <div>

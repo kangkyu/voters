@@ -62,4 +62,13 @@ class OwnerFlowTest < ActionDispatch::IntegrationTest
     assert_response :ok
     assert_select "h2.font-semibold", "“concert” meeting result"
   end
+
+  test "owner sees a copy link button on the meeting page" do
+    post session_path, params: { username: "jimmy", password: "1111" }
+    round = rounds(:contest)
+
+    get round_path(round)
+    assert_select "[data-controller=clipboard] [data-clipboard-target=source]", round.url
+    assert_select "button[data-action='clipboard#copy']", "Copy link"
+  end
 end
