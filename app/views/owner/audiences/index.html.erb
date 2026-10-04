@@ -5,17 +5,17 @@
 <table class="border-collapse table-auto w-full text-sm">
   <thead>
     <tr>
-      <th class="border-b p-4 font-medium">id</th>
-      <th class="border-b p-4 font-medium">name</th>
-      <th class="border-b p-4 font-medium">username</th>
+      <th class="border-b dark:border-gray-700 p-4 font-medium">id</th>
+      <th class="border-b dark:border-gray-700 p-4 font-medium">name</th>
+      <th class="border-b dark:border-gray-700 p-4 font-medium">username</th>
     </tr>
   </thead>
   <tbody class="bg-white dark:bg-slate-800 dark:text-white">
     <% @audiences.each do |audience| %>
       <tr>
-        <td class="border-b p-4 font-medium"><%= audience.id %></td>
-        <td class="border-b p-4 font-medium">“<%= audience.name %>”</td>
-        <td class="border-b p-4 font-medium"><%= audience.user.username %></td>
+        <td class="border-b dark:border-gray-700 p-4 font-medium"><%= audience.id %></td>
+        <td class="border-b dark:border-gray-700 p-4 font-medium">“<%= audience.name %>”</td>
+        <td class="border-b dark:border-gray-700 p-4 font-medium"><%= audience.user.username %></td>
       </tr>
     <% end %>
   </tbody>

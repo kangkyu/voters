@@ -1,4 +1,4 @@
 <%= turbo_frame_tag "#{dom_id(contestant)}_votes_count" do %>
-  <span class="text-sm text-green-700">Favor <%= contestant.favor_count %></span>
-  <span class="text-sm text-red-700 ml-2">Against <%= contestant.against_count %></span>
+  <span class="text-sm text-green-700 dark:text-green-400">Favor <%= contestant.favor_count %></span>
+  <span class="text-sm text-red-700 dark:text-red-400 ml-2">Against <%= contestant.against_count %></span>
 <% end %>

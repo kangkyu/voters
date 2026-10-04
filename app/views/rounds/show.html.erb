@@ -14,7 +14,7 @@
             Please copy the address of this page and share:
             <span data-clipboard-target="source"><%= @round.url %></span>
           </p>
-          <button type="button" data-clipboard-target="button" data-action="clipboard#copy" class="px-3 py-1 rounded border border-blue-500 text-blue-700 hover:bg-blue-50 text-sm font-semibold">Copy link</button>
+          <button type="button" data-clipboard-target="button" data-action="clipboard#copy" class="px-3 py-1 rounded border border-blue-500 text-blue-700 hover:bg-blue-50 dark:text-blue-300 dark:hover:bg-blue-900/40 text-sm font-semibold">Copy link</button>
         </div>
       </div>
     <% else %>
@@ -22,7 +22,7 @@
         <p class="text-md mb-2">User <span class="font-bold"><%= @round.owner.username %></span> started it</p>
         <div class="mt-8">
         <% if current_user.audience?(@round) %>
-          <%= link_to 'Go vote', round_contestants_path(@round), method: :get, class: "bg-transparent hover:bg-indigo-500 text-indigo-700 font-semibold hover:text-white py-2 px-4 border border-indigo-500 hover:border-transparent rounded" %>
+          <%= link_to 'Go vote', round_contestants_path(@round), method: :get, class: "bg-transparent hover:bg-indigo-500 text-indigo-700 dark:text-indigo-300 font-semibold hover:text-white py-2 px-4 border border-indigo-500 hover:border-transparent rounded" %>
         <% else %>
           <%= button_to "Join as an attendee", new_round_audience_path(@round), method: :get, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4" %>
         <% end %>

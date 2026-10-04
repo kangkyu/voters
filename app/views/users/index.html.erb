@@ -1,19 +1,19 @@
 <table class="border-collapse table-auto w-full text-sm">
   <thead>
     <tr>
-      <th class="border-b p-4 font-medium">user id</th>
-      <th class="border-b p-4 font-medium">username</th>
-      <th class="border-b p-4 font-medium">role</th>
-      <th class="border-b p-4 font-medium">phone number</th>
+      <th class="border-b dark:border-gray-700 p-4 font-medium">user id</th>
+      <th class="border-b dark:border-gray-700 p-4 font-medium">username</th>
+      <th class="border-b dark:border-gray-700 p-4 font-medium">role</th>
+      <th class="border-b dark:border-gray-700 p-4 font-medium">phone number</th>
     </tr>
   </thead>
   <tbody class="bg-white dark:bg-slate-800 dark:text-white">
     <% @users.each do |user| %>
       <tr>
-        <td class="border-b p-4 font-medium"><%= user.another_id %></td>
-        <td class="border-b p-4 font-medium"><%= user.username %></td>
-        <td class="border-b p-4 font-medium"><span class="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"><%= user.user_role %></span></td>
-        <td class="border-b p-4 font-medium"><%= user.phone_number %></td>
+        <td class="border-b dark:border-gray-700 p-4 font-medium"><%= user.another_id %></td>
+        <td class="border-b dark:border-gray-700 p-4 font-medium"><%= user.username %></td>
+        <td class="border-b dark:border-gray-700 p-4 font-medium"><span class="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 dark:bg-gray-700 dark:text-gray-200 mr-2 mb-2"><%= user.user_role %></span></td>
+        <td class="border-b dark:border-gray-700 p-4 font-medium"><%= user.phone_number %></td>
       </tr>
     <% end %>
   </tbody>
