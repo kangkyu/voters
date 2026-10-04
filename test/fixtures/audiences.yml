@@ -2,3 +2,8 @@ john_at_contest:
   name: Johnny
   user: john
   round: contest
+
+gapbun_at_contest:
+  name: Gap
+  user: gapbun
+  round: contest

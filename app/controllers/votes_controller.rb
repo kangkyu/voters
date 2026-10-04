@@ -1,20 +1,21 @@
 class VotesController < ApplicationController
   before_action :require_signin
   before_action :set_round
+  before_action :require_audience
   before_action :find_contestant
 
   # Sets or changes my vote (favor / against) for the contestant
   def create
     return head :unprocessable_entity unless Vote.choices.key?(params[:choice])
 
-    vote = @contestant.votes.find_or_initialize_by(user: current_user)
+    vote = @contestant.votes.find_or_initialize_by(audience: @audience, user: current_user)
     vote.update!(choice: params[:choice])
     @contestant.my_vote = vote
     render partial: "activity/votes", locals: { contestant: @contestant }
   end
 
   def destroy
-    existing_vote = @contestant.votes.where(user: current_user).first
+    existing_vote = @contestant.votes.find_by(audience: @audience)
     return unless existing_vote
 
     existing_vote.destroy!

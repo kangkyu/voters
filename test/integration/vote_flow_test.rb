@@ -20,6 +20,7 @@ class VoteFlowTest < ActionDispatch::IntegrationTest
     end
     vote = Vote.last
     assert vote.favor?
+    assert_equal audiences(:john_at_contest), vote.audience
 
     assert_no_difference "Vote.count" do
       post round_contestant_votes_path(@round, @contestant), params: { choice: "against" }
@@ -40,6 +41,19 @@ class VoteFlowTest < ActionDispatch::IntegrationTest
     assert_redirected_to signin_path
   end
 
+  test "member who has not joined the meeting cannot vote" do
+    delete session_path
+    post session_path, params: { username: "jimmy", password: "1111" }
+
+    get round_contestants_path(@round)
+    assert_redirected_to new_round_audience_path(@round)
+
+    assert_no_difference "Vote.count" do
+      post round_contestant_votes_path(@round, @contestant), params: { choice: "favor" }
+    end
+    assert_redirected_to new_round_audience_path(@round)
+  end
+
   test "rejects an unknown choice" do
     assert_no_difference "Vote.count" do
       post round_contestant_votes_path(@round, @contestant), params: { choice: "maybe" }
@@ -48,8 +62,8 @@ class VoteFlowTest < ActionDispatch::IntegrationTest
   end
 
   test "owner sees favor and against counts in results" do
-    @contestant.votes.create!(user: users(:john), choice: :favor)
-    @contestant.votes.create!(user: users(:gapbun), choice: :against)
+    @contestant.votes.create!(user: users(:john), audience: audiences(:john_at_contest), choice: :favor)
+    @contestant.votes.create!(user: users(:gapbun), audience: audiences(:gapbun_at_contest), choice: :against)
     delete session_path
     post session_path, params: { username: "jimmy", password: "1111" }
 

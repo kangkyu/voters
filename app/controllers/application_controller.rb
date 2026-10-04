@@ -33,4 +33,11 @@ class ApplicationController < ActionController::Base
     signed_in? && current_user.admin?
   end
   helper_method :admin_user?
+
+  def require_audience
+    @audience = @round.audiences.find_by(user: current_user)
+    unless @audience
+      redirect_to new_round_audience_url(@round), notice: "Please join the meeting first"
+    end
+  end
 end
