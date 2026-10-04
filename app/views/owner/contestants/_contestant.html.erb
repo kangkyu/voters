@@ -1,19 +1,18 @@
-<%= turbo_frame_tag contestant do %>
-  <li class="py-2 px-4 w-full border-b border-gray-200 dark:border-gray-600">
-    <div class=" flex justify-between">
-      <div>
-        <h2 class="text-sm text-gray-900 dark:text-white"><%= contestant.name %><h2>
-        <h3 class="text-sm text-gray-400"><%= contestant.location %></h3>
-      </div>
-      <% if current_user.owner?(@round) %>
-        <div>
-          <% if current_page?(owner_round_results_path(@round)) %>
-            <%= render "owner/contestants/votes_count", contestant: contestant %>
-          <% else %>
-            <%= button_to 'delete', owner_round_contestant_path(@round, contestant), method: :delete, form: { data: { turbo_confirm: "Are you sure with deleting #{contestant.name}?" }}, class: "px-2 py-1 rounded bg-blue-500 hover:bg-blue-700 text-white font-bold" %>
-          <% end %>
-        </div>
+<li id="<%= dom_id(contestant) %>" class="flex items-start gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3 shadow-sm [counter-increment:agenda] dark:border-gray-700 dark:bg-gray-800">
+  <span aria-hidden="true" class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gray-100 text-xs font-semibold text-gray-600 before:content-[counter(agenda)] dark:bg-gray-700 dark:text-gray-300"></span>
+  <div class="min-w-0 flex-1">
+    <h3 class="font-medium text-gray-900 dark:text-white"><%= contestant.name %></h3>
+    <% if contestant.location.present? %>
+      <p class="text-sm text-gray-500 dark:text-gray-400"><%= contestant.location %></p>
+    <% end %>
+  </div>
+  <% if current_user.owner?(@round) %>
+    <div class="shrink-0">
+      <% if current_page?(owner_round_results_path(@round)) %>
+        <%= render "owner/contestants/votes_count", contestant: contestant %>
+      <% else %>
+        <%= button_to "Delete", owner_round_contestant_path(@round, contestant), method: :delete, form: { data: { turbo_confirm: "Are you sure with deleting #{contestant.name}?" }}, class: "text-sm font-medium text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400" %>
       <% end %>
     </div>
-  </li>
-<% end %>
+  <% end %>
+</li>

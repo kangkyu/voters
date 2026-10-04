@@ -4,11 +4,11 @@ class Owner::ContestantsController < ApplicationController
   before_action :require_owner
 
   def index
-    @contestants = @round.contestants.all
+    @contestants = @round.contestants.order(:created_at)
   end
 
   def result
-    @contestants = @round.contestants.all
+    @contestants = @round.contestants.order(:created_at)
   end
 
   def create

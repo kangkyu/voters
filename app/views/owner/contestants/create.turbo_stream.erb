@@ -1,1 +1,2 @@
 <%= turbo_stream.append "admin_contestants", @contestant %>
+<%= turbo_stream.replace "new_contestant_form", partial: "form", locals: { round: @round, contestant: Contestant.new } %>

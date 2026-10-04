@@ -5,7 +5,7 @@ class Owner::AudiencesController < ApplicationController
 
   def index
     if @round.present?
-      @audiences = @round.audiences.all
+      @audiences = @round.audiences.includes(:user).order(:created_at)
     else
       redirect_to user_url(current_user.another_id), notice: "no meetings"
     end
