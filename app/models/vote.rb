@@ -5,7 +5,7 @@ class Vote < ApplicationRecord
   belongs_to :audience
   belongs_to :contestant, counter_cache: true
 
-  enum choice: { favor: 0, against: 1 }
+  enum :choice, { favor: 0, against: 1 }
 
   validates :contestant_id, uniqueness: { scope: :audience_id }
   validate :audience_in_contestant_round
