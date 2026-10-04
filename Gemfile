@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.4.10"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "8.1.3.1"
+gem "rails", "~> 8.1.3"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -75,6 +75,3 @@ end
 
 gem "tailwindcss-rails", "~> 3.3"
 gem "twilio-ruby", "~> 7.2"
-
-# Rails 8.1.3.1 passes a positional options hash to JSON.parse, which json 3.0 removed
-gem "json", "~> 2.21"
