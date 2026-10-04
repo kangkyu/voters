@@ -7,7 +7,7 @@ class Owner::AudiencesController < ApplicationController
     if @round.present?
       @audiences = @round.audiences.all
     else
-      redirect_to user_url(current_user.another_id), notice: "no rounds"
+      redirect_to user_url(current_user.another_id), notice: "no meetings"
     end
   end
 

@@ -19,7 +19,7 @@
             <div class="hidden sm:block sm:ml-6">
               <div class="flex space-x-4">
               <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-              <%= link_to "New Round", new_round_path, class: class_name_by_tab(new_round_path) %>
+              <%= link_to "New Meeting", new_round_path, class: class_name_by_tab(new_round_path) %>
 
               <% if @round.present? && signed_in? %>
                 <% if current_user.audience?(@round) %>

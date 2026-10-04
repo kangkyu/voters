@@ -16,7 +16,7 @@ module ApplicationHelper
       and_at_the_end = index == length - 2 ? ' and' : ''
       sentence.push [link_round, comma, and_at_the_end].join
     end
-    sentence << "round."
+    sentence << "meeting."
     sentence.join(' ').html_safe
   end
 
