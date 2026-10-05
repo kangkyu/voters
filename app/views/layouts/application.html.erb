@@ -13,28 +13,25 @@
   </head>
 
   <body class="h-full text-gray-900 dark:text-gray-100">
-    <nav class="bg-gray-800">
+    <nav class="bg-gray-800" data-controller="menu">
       <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div class="relative flex items-center justify-between h-16">
-          <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-            <div class="hidden sm:block sm:ml-6">
+          <div class="flex items-center sm:hidden">
+            <button type="button" data-action="menu#toggle" aria-controls="mobile-menu" aria-expanded="false"
+                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+              <span class="sr-only">Open main menu</span>
+              <svg data-menu-target="openIcon" class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+              <svg data-menu-target="closeIcon" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div class="hidden sm:flex flex-1 items-center sm:items-stretch sm:justify-start">
+            <div class="sm:ml-6">
               <div class="flex space-x-4">
-              <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-              <%= link_to "New Meeting", new_round_path, class: class_name_by_tab(new_round_path) %>
-
-              <% if @round.present? && signed_in? %>
-                <% if current_user.audience?(@round) %>
-                  <%= link_to "Vote", round_contestants_path(@round), class: class_name_by_tab(round_contestants_path(@round)) %>
-                <% end %>
-                <% if current_user.owner?(@round) %>
-                  <%= link_to "Result", owner_round_results_path(@round), class: class_name_by_tab(owner_round_results_path(@round)) %>
-                <% end %>
-              <% end %>
-
-              <% if admin_user? %>
-                <%= link_to "Users", users_path, class: class_name_by_tab(users_path) %>
-                <%= link_to "Chronicle", admin_dashboard_path, class: class_name_by_tab(admin_dashboard_path) %>
-              <% end %>
+                <%= render "layouts/nav_links", extra_class: "" %>
               </div>
             </div>
           </div>
@@ -46,6 +43,12 @@
               <%= link_to "Sign In", new_session_path, class: class_name_by_tab(new_session_path) %>
             <% end %>
           </div>
+        </div>
+      </div>
+
+      <div id="mobile-menu" data-menu-target="menu" class="hidden sm:hidden">
+        <div class="space-y-1 px-2 pt-2 pb-3">
+          <%= render "layouts/nav_links", extra_class: "block" %>
         </div>
       </div>
     </nav>
