@@ -8,6 +8,20 @@ class Contestant < ApplicationRecord
   DECISION_RULE_LABELS = { "majority" => "1/2", "two_thirds" => "2/3" }.freeze
 
   attr_accessor :my_vote
+  attr_writer :vote_tally
+
+  # Loads favor/against counts for many contestants in one query
+  def self.load_vote_tallies(contestants)
+    counts = Vote.where(contestant_id: contestants.map(&:id)).group(:contestant_id, :choice).count
+    contestants.each do |contestant|
+      contestant.vote_tally = Vote.choices.keys.index_with { |choice| counts[[contestant.id, choice]] || 0 }
+    end
+  end
+
+  # { "favor" => n, "against" => n }, counted once per instance
+  def vote_tally
+    @vote_tally ||= Vote.choices.keys.index_with(0).merge(votes.group(:choice).count)
+  end
 
   def decision_rule_label
     DECISION_RULE_LABELS[decision_rule]
@@ -31,21 +45,22 @@ class Contestant < ApplicationRecord
   end
 
   def favor_count
-    votes.favor.count
+    vote_tally["favor"]
   end
 
   def against_count
-    votes.against.count
+    vote_tally["against"]
   end
 
+  # Streams are per meeting, so attendees only see their own meeting's agenda
   after_create_commit -> {
-    broadcast_append_to "audience_contestants",
+    broadcast_append_to [round, :agenda],
       target: "audience_contestant",
       partial: "contestants/contestant",
       locals: { contestant: self }
   }
 
   after_destroy_commit -> {
-    broadcast_remove_to "audience_contestants"
+    broadcast_remove_to [round, :agenda]
   }
 end

@@ -6,31 +6,17 @@ module ApplicationHelper
     "text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
   end
 
+  # "You own “a”, “b” and “c” meeting." with each title linked; text is HTML-escaped
   def user_s_own_rounds(rounds)
-    length = rounds.length
-    sentence = []
-    sentence << "You own"
-    rounds.each_with_index do |round, index|
-      link_round = link_to("“#{round.title}”", round_path(round))
-      comma = index < length - 2 ? ',' : ''
-      and_at_the_end = index == length - 2 ? ' and' : ''
-      sentence.push [link_round, comma, and_at_the_end].join
-    end
-    sentence << "meeting."
-    sentence.join(' ').html_safe
+    links = rounds.map { |round| link_to("“#{round.title}”", round_path(round)) }
+    safe_join(["You own ", to_sentence(links, last_word_connector: " and "), " meeting."])
   end
 
+  # "You are an attendee of “a” as “x” and “b” as “y”." with each title linked
   def user_s_audiences(audiences)
-    length = audiences.length
-    sentence = []
-    sentence << "You are an attendee of"
-    audiences.each_with_index do |audience, index|
-      link_round = link_to("“#{audience.round.title}”", round_path(audience.round))
-      comma = index < length - 2 ? ',' : ''
-      and_at_the_end = index == length - 2 ? ' and' : '.'
-      as = " as “#{audience.name}”"
-      sentence.push [link_round, as, comma, and_at_the_end].join
+    items = audiences.map do |audience|
+      safe_join([link_to("“#{audience.round.title}”", round_path(audience.round)), " as “", audience.name, "”"])
     end
-    sentence.join(' ').html_safe
+    safe_join(["You are an attendee of ", to_sentence(items, last_word_connector: " and "), "."])
   end
 end

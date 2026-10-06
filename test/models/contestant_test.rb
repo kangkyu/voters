@@ -1,6 +1,8 @@
 require "test_helper"
 
 class ContestantTest < ActiveSupport::TestCase
+  include Turbo::Broadcastable::TestHelper
+
   setup do
     @round = rounds(:contest)
   end
@@ -37,5 +39,19 @@ class ContestantTest < ActiveSupport::TestCase
   test "rejects an unknown decision rule" do
     contestant = @round.contestants.build(name: "Motion", decision_rule: "unanimous")
     assert_not contestant.valid?
+  end
+
+  test "new agenda items are broadcast only to their own meeting" do
+    other = Round.create!(title: "other", owner: users(:gapbun))
+    other.contestants.create!(name: "Other item")
+    assert_turbo_stream_broadcasts [other, :agenda], count: 1
+    assert_no_turbo_stream_broadcasts [@round, :agenda]
+  end
+
+  test "loads vote tallies for many contestants at once" do
+    passed = contestant_with_votes("majority", favor: 2, against: 1)
+    empty = @round.contestants.create!(name: "Empty")
+    fresh = Contestant.load_vote_tallies(Contestant.where(id: [passed.id, empty.id]).order(:id).to_a)
+    assert_equal [{ "favor" => 2, "against" => 1 }, { "favor" => 0, "against" => 0 }], fresh.map(&:vote_tally)
   end
 end

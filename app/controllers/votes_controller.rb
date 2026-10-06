@@ -9,16 +9,21 @@ class VotesController < ApplicationController
     return head :unprocessable_entity unless Vote.choices.key?(params[:choice])
 
     vote = @contestant.votes.find_or_initialize_by(audience: @audience, user: current_user)
-    vote.update!(choice: params[:choice])
+    begin
+      vote.update!(choice: params[:choice])
+    rescue ActiveRecord::RecordNotUnique, ActiveRecord::RecordInvalid
+      # A concurrent request (double click, second tab) created the vote first
+      raise unless vote.new_record?
+      vote = @contestant.votes.find_by!(audience: @audience)
+      vote.update!(choice: params[:choice])
+    end
     @contestant.my_vote = vote
     render partial: "activity/votes", locals: { contestant: @contestant }
   end
 
   def destroy
-    existing_vote = @contestant.votes.find_by(audience: @audience)
-    return unless existing_vote
-
-    existing_vote.destroy!
+    # Already withdrawn (e.g. in another tab): still answer with the frame
+    @contestant.votes.find_by(audience: @audience)&.destroy!
     render partial: "activity/votes", locals: { contestant: @contestant }
   end
 
@@ -26,9 +31,5 @@ class VotesController < ApplicationController
 
   def find_contestant
     @contestant = @round.contestants.find(params[:contestant_id])
-  end
-
-  def set_round
-    @round = Round.find_by(another_id: params[:round_id])
   end
 end
