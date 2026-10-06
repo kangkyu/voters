@@ -29,11 +29,13 @@ class ContestantTest < ActiveSupport::TestCase
   test "majority needs more than half" do
     assert_equal :passed, contestant_with_votes("majority", favor: 2, against: 1).decision
     assert_equal :failed, contestant_with_votes("majority", favor: 1, against: 1).decision
+    assert_equal :failed, contestant_with_votes("majority", favor: 2, against: 2).decision
   end
 
-  test "two-thirds needs at least 2/3" do
-    assert_equal :passed, contestant_with_votes("two_thirds", favor: 2, against: 1).decision
-    assert_equal :failed, contestant_with_votes("two_thirds", favor: 3, against: 2).decision
+  test "two-thirds needs more than 2/3" do
+    assert_equal :passed, contestant_with_votes("two_thirds", favor: 3, against: 1).decision
+    assert_equal :failed, contestant_with_votes("two_thirds", favor: 2, against: 1).decision
+    assert_equal :failed, contestant_with_votes("two_thirds", favor: 4, against: 2).decision
   end
 
   test "rejects an unknown decision rule" do

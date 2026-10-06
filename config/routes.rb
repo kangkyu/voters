@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   namespace :owner do
     resources :rounds, only: [] do
       resources :audiences, only: [:index]
-      resources :contestants, only: [:new, :create, :destroy, :index]
+      resources :contestants, only: [:new, :create, :update, :destroy, :index]
       get "results" => "contestants#result"
     end
   end

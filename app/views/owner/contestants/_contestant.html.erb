@@ -17,9 +17,13 @@
       </div>
     <% end %>
   </div>
-  <% if current_user.owner?(@round) && !results_page %>
+  <% if current_user.owner?(@round) %>
     <div class="shrink-0">
-      <%= button_to "Delete", owner_round_contestant_path(@round, contestant), method: :delete, form: { data: { turbo_confirm: "Are you sure with deleting #{contestant.name}?" }}, class: "text-sm font-medium text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400" %>
+      <% if results_page %>
+        <%= render "owner/contestants/decision_made", contestant: contestant %>
+      <% else %>
+        <%= button_to "Delete", owner_round_contestant_path(@round, contestant), method: :delete, form: { data: { turbo_confirm: "Are you sure with deleting #{contestant.name}?" }}, class: "text-sm font-medium text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400" %>
+      <% end %>
     </div>
   <% end %>
 </li>

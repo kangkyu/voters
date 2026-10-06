@@ -10,6 +10,7 @@ class Vote < ApplicationRecord
   validates :contestant_id, uniqueness: { scope: :audience_id }
   validate :audience_in_contestant_round
   validate :user_matches_audience
+  validate :voting_open, on: [:create, :update]
 
   # One callback: registering the same method twice makes the last one win
   after_commit :broadcast_votes_count, unless: :destroyed_by_association
@@ -19,6 +20,12 @@ class Vote < ApplicationRecord
   def audience_in_contestant_round
     if audience && contestant && audience.round_id != contestant.round_id
       errors.add(:audience, "must be in the same round as the contestant")
+    end
+  end
+
+  def voting_open
+    if contestant&.decision_made?
+      errors.add(:contestant, "is closed: decision made")
     end
   end
 
