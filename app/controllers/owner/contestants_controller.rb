@@ -8,7 +8,7 @@ class Owner::ContestantsController < ApplicationController
   end
 
   def result
-    @contestants = @round.contestants.order(:created_at)
+    @contestants = Contestant.load_vote_tallies(@round.contestants.order(:created_at).to_a)
   end
 
   def create
@@ -40,9 +40,5 @@ class Owner::ContestantsController < ApplicationController
 
   def contestant_params
     params.require(:contestant).permit(:name, :location, :decision_rule)
-  end
-
-  def set_round
-    @round = Round.find_by(another_id: params[:round_id])
   end
 end

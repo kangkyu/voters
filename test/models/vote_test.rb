@@ -2,7 +2,7 @@ require "test_helper"
 
 class VoteTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
-  include ActionCable::TestHelper
+  include Turbo::Broadcastable::TestHelper
 
   setup do
     @contestant = contestants(:singer)
@@ -34,10 +34,24 @@ class VoteTest < ActiveSupport::TestCase
 
   test "the withdrawn vote broadcast still runs after the vote is gone" do
     vote = cast_vote
-    assert_broadcasts "activity", 1 do
-      perform_enqueued_jobs only: Turbo::Streams::ActionBroadcastJob do
-        vote.destroy!
-      end
+    perform_enqueued_jobs only: Turbo::Streams::ActionBroadcastJob do
+      vote.destroy!
     end
+    assert_turbo_stream_broadcasts [@contestant.round, :results], count: 1
+  end
+
+  test "tally updates go only to the vote's own meeting" do
+    other = Round.create!(title: "other", owner: users(:gapbun))
+    perform_enqueued_jobs only: Turbo::Streams::ActionBroadcastJob do
+      cast_vote
+    end
+    assert_turbo_stream_broadcasts [@contestant.round, :results], count: 1
+    assert_no_turbo_stream_broadcasts [other, :results]
+  end
+
+  test "rejects a vote whose user is not the attendee" do
+    vote = @contestant.votes.build(user: users(:gapbun), audience: audiences(:john_at_contest))
+    assert_not vote.valid?
+    assert_includes vote.errors[:user], "must be the attendee who votes"
   end
 end

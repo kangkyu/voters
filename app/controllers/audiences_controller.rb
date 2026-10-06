@@ -1,4 +1,5 @@
 class AudiencesController < ApplicationController
+  before_action :require_signin
   before_action :set_round
 
   def new
@@ -22,9 +23,5 @@ class AudiencesController < ApplicationController
 
   def audience_params
     params.require(:audience).permit(:name)
-  end
-
-  def set_round
-    @round = Round.find_by(another_id: params[:round_id])
   end
 end

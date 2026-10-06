@@ -1,17 +1,13 @@
-<%= turbo_stream_from "audience_contestants" %>
+<%= turbo_stream_from @round, :agenda %>
 
 <div class="max-w-md mx-auto mt-5">
   <h2 class="text-2xl font-semibold mb-4">“<%= link_to @round.title, round_path(@round) %>” meeting agenda items</h2>
 </div>
 
 <%= turbo_frame_tag "contestants" do %>
-  <% if @contestants.any? %>
-    <ul class="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white" id="audience_contestant">
-      <%= render collection: @contestants, partial: "contestant" %>
-    </ul>
-  <% else %>
-    <div class="w-full text-sm font-medium text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-      <h2>No agenda items</h2>
-    </div>
-  <% end %>
+  <%# The list is always rendered so items added live have a place to go; the placeholder shows only while it is empty %>
+  <ul class="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white" id="audience_contestant">
+    <li class="hidden only:block py-2 px-4">No agenda items</li>
+    <%= render collection: @contestants, partial: "contestant" %>
+  </ul>
 <% end %>

@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   resource :session, only: [:new, :create, :destroy]
   get "signin" => "sessions#new"
 
-  resources :rounds, only: [:show, :new, :create, :index] do
+  resources :rounds, only: [:show, :new, :create] do
     resources :audiences, only: [:new, :create]
     resources :contestants, only: [:index] do
       resources :votes

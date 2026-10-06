@@ -11,7 +11,7 @@ class User < ApplicationRecord
   enum :user_role, [:admin, :member]
 
   def owner?(round)
-    rounds.include?(round)
+    round.present? && round.owner_id == id
   end
 
   def audience?(round)

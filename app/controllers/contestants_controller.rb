@@ -9,10 +9,4 @@ class ContestantsController < ApplicationController
       @contestants = @audience.assign_my_votes_to_contestants(@contestants)
     end
   end
-
-  private
-
-  def set_round
-    @round = Round.find_by(another_id: params[:round_id])
-  end
 end

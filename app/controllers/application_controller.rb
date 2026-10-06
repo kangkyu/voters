@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user ||= User.find(session[:user_id]) if session[:user_id]
+    @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
   end
   helper_method :current_user
 
@@ -33,6 +33,11 @@ class ApplicationController < ActionController::Base
     signed_in? && current_user.admin?
   end
   helper_method :admin_user?
+
+  def set_round
+    @round = Round.find_by(another_id: params[:round_id])
+    redirect_to root_url, alert: "Meeting does not exist" unless @round
+  end
 
   def require_audience
     @audience = @round.audiences.find_by(user: current_user)
