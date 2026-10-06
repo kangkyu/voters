@@ -5,7 +5,7 @@ class Contestant < ApplicationRecord
   # A decision vote passes on "favor" votes out of votes cast; nil means tally only
   enum :decision_rule, { majority: 1, two_thirds: 2 }, validate: { allow_nil: true }
 
-  DECISION_RULE_LABELS = { "majority" => "1/2", "two_thirds" => "2/3" }.freeze
+  DECISION_RULE_LABELS = { "majority" => "more than 1/2", "two_thirds" => "more than 2/3" }.freeze
 
   attr_accessor :my_vote
   attr_writer :vote_tally
@@ -32,6 +32,7 @@ class Contestant < ApplicationRecord
     two_thirds? ? 200.0 / 3 : 50.0
   end
 
+  # Exactly 1/2 or exactly 2/3 in favor is not enough: it must be more.
   # :passed, :failed, or :pending (no votes yet); nil when not a decision vote
   def decision
     return unless decision_rule
@@ -40,7 +41,7 @@ class Contestant < ApplicationRecord
     total = favor + against_count
     return :pending if total.zero?
 
-    passed = two_thirds? ? favor * 3 >= total * 2 : favor * 2 > total
+    passed = two_thirds? ? favor * 3 > total * 2 : favor * 2 > total
     passed ? :passed : :failed
   end
 
