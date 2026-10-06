@@ -10,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_10_04_063019) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_05_000000) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
-  enable_extension "plpgsql"
 
   create_table "audiences", force: :cascade do |t|
     t.bigint "user_id"
@@ -30,6 +30,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_10_04_063019) do
     t.datetime "updated_at", null: false
     t.integer "votes_count", default: 0
     t.bigint "round_id"
+    t.integer "decision_rule"
     t.index ["round_id"], name: "index_contestants_on_round_id"
   end
 

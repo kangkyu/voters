@@ -28,4 +28,19 @@ class OwnerAgendaItemsTest < ActionDispatch::IntegrationTest
     end
     assert_select "turbo-stream[action=remove][target=#{ActionView::RecordIdentifier.dom_id(contestant)}]"
   end
+
+  test "owner adds a decision vote item" do
+    post owner_round_contestants_path(@round), params: { contestant: { name: "Bylaws", decision_rule: "two_thirds" } }, as: :turbo_stream
+    assert Contestant.last.two_thirds?
+    assert_select "turbo-stream[action=append][target=admin_contestants]", text: /2\/3 approve/
+  end
+
+  test "result page shows the decision of a decision vote" do
+    contestant = contestants(:singer)
+    contestant.update!(decision_rule: "majority")
+    contestant.votes.create!(user: users(:john), audience: audiences(:john_at_contest), choice: "favor")
+
+    get owner_round_results_path(@round)
+    assert_select "##{ActionView::RecordIdentifier.dom_id(contestant)} .decision-badge", /Passed/
+  end
 end

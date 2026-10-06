@@ -10,8 +10,8 @@ class Vote < ApplicationRecord
   validates :contestant_id, uniqueness: { scope: :audience_id }
   validate :audience_in_contestant_round
 
-  after_commit :broadcast_votes_count, on: [:create, :update]
-  after_destroy_commit :broadcast_votes_count, unless: :destroyed_by_association
+  # One callback: registering the same method twice makes the last one win
+  after_commit :broadcast_votes_count, unless: :destroyed_by_association
 
   private
 
@@ -22,7 +22,9 @@ class Vote < ApplicationRecord
   end
 
   def broadcast_votes_count
-    broadcast_replace_later_to "activity",
+    # Broadcast via the contestant: Turbo serializes the broadcasting record into
+    # the job, and a destroyed vote can't be loaded back when the job runs
+    contestant.broadcast_replace_later_to "activity",
       target: "#{dom_id(contestant)}_votes_count",
       partial: "owner/contestants/votes_count",
       locals: { contestant: contestant }

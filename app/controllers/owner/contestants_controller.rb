@@ -39,7 +39,7 @@ class Owner::ContestantsController < ApplicationController
   private
 
   def contestant_params
-    params.require(:contestant).permit(:name, :location)
+    params.require(:contestant).permit(:name, :location, :decision_rule)
   end
 
   def set_round

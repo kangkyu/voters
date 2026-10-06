@@ -9,6 +9,10 @@
       <%= f.label :location, class: "block text-sm font-medium text-gray-700 dark:text-gray-300" %>
       <%= f.text_field :location, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100" %>
     </div>
+    <div class="sm:col-span-2 lg:col-span-1">
+      <%= f.label :decision_rule, "Decision vote", class: "block text-sm font-medium text-gray-700 dark:text-gray-300" %>
+      <%= f.select :decision_rule, [["Majority (more than 1/2 approve)", "majority"], ["Two-thirds (2/3 approve)", "two_thirds"]], { include_blank: "None (tally only)" }, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100" %>
+    </div>
   </div>
   <%= f.submit "Add", class: "w-full rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800" %>
 <% end %>
