@@ -20,6 +20,13 @@ class Owner::ContestantsController < ApplicationController
     end
   end
 
+  # Toggles "decision made" from the checkbox in each agenda item
+  def update
+    @contestant = @round.contestants.find(params[:id])
+    @contestant.update!(decision_made: params.require(:contestant)[:decision_made])
+    render partial: "decision_made", locals: { contestant: @contestant }
+  end
+
   def destroy
     @contestant = @round.contestants.find(params[:id])
     @contestant.destroy

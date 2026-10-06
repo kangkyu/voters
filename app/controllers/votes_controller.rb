@@ -3,6 +3,7 @@ class VotesController < ApplicationController
   before_action :set_round
   before_action :require_audience
   before_action :find_contestant
+  before_action :require_voting_open
 
   # Sets or changes my vote (favor / against) for the contestant
   def create
@@ -31,5 +32,13 @@ class VotesController < ApplicationController
 
   def find_contestant
     @contestant = @round.contestants.find(params[:contestant_id])
+  end
+
+  # Once the owner marks the decision made, answer with the closed buttons instead
+  def require_voting_open
+    return unless @contestant.decision_made?
+
+    @contestant.my_vote = @contestant.votes.find_by(audience: @audience)
+    render partial: "activity/votes", locals: { contestant: @contestant }, status: :unprocessable_entity
   end
 end

@@ -60,6 +60,11 @@ class Contestant < ApplicationRecord
       locals: { contestant: self }
   }
 
+  # Voting pages show each attendee's own vote, so they refresh themselves rather than take shared HTML
+  after_update_commit -> {
+    broadcast_refresh_later_to [round, :agenda] if saved_change_to_decision_made?
+  }
+
   after_destroy_commit -> {
     broadcast_remove_to [round, :agenda]
   }

@@ -1,0 +1,8 @@
+<%= turbo_frame_tag contestant, :decision_made do %>
+  <%= form_with model: contestant, url: owner_round_contestant_path(contestant.round, contestant), method: :patch, data: { controller: "auto-submit" } do |f| %>
+    <label class="inline-flex cursor-pointer items-center gap-1.5 text-sm font-medium <%= contestant.decision_made? ? "text-gray-900 dark:text-white" : "text-gray-500 dark:text-gray-400" %>">
+      <%= f.check_box :decision_made, data: { action: "auto-submit#submit" }, class: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-900" %>
+      Decision made
+    </label>
+  <% end %>
+<% end %>
