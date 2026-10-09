@@ -1,23 +1,23 @@
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  resources :users, only: [:new, :show, :create, :index]
+  resources :users, only: [ :new, :show, :create, :index ]
   get "register" => "users#new"
 
-  resource :session, only: [:new, :create, :destroy]
+  resource :session, only: [ :new, :create, :destroy ]
   get "signin" => "sessions#new"
 
-  resources :rounds, only: [:show, :new, :create] do
-    resources :audiences, only: [:new, :create]
-    resources :contestants, only: [:index] do
+  resources :rounds, only: [ :show, :new, :create ] do
+    resources :audiences, only: [ :new, :create ]
+    resources :contestants, only: [ :index ] do
       resources :votes
     end
   end
 
   namespace :owner do
     resources :rounds, only: [] do
-      resources :audiences, only: [:index]
-      resources :contestants, only: [:new, :create, :update, :destroy, :index]
+      resources :audiences, only: [ :index ]
+      resources :contestants, only: [ :new, :create, :update, :destroy, :index ]
       get "results" => "contestants#result"
     end
   end
