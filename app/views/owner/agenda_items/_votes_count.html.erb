@@ -7,6 +7,7 @@
     <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
       <span class="text-sm text-green-700 dark:text-green-400">Favor <%= favor %></span>
       <span class="text-sm text-red-700 dark:text-red-400">Against <%= against %></span>
+      <span class="text-sm text-gray-500 dark:text-gray-400">Not voted <%= agenda_item.not_voted_count %></span>
       <% case agenda_item.decision %>
       <% when :passed %>
         <span class="decision-badge rounded-full bg-green-600 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">✓ Passed</span>

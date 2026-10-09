@@ -61,13 +61,14 @@ class VoteFlowTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
-  test "owner sees favor and against counts in results" do
+  test "owner sees favor, against and not voted counts in results" do
     @agenda_item.votes.create!(user: users(:john), audience: audiences(:john_at_contest), choice: :favor)
     @agenda_item.votes.create!(user: users(:gapbun), audience: audiences(:gapbun_at_contest), choice: :against)
+    @round.audiences.create!(user: users(:jimmy), name: "Jim")
     delete session_path
     post session_path, params: { username: "jimmy", password: "1111" }
 
     get owner_round_results_path(@round)
-    assert_select "turbo-frame##{ActionView::RecordIdentifier.dom_id(@agenda_item)}_votes_count", /Favor 1\s+Against 1/
+    assert_select "turbo-frame##{ActionView::RecordIdentifier.dom_id(@agenda_item)}_votes_count", /Favor 1\s+Against 1\s+Not voted 1/
   end
 end

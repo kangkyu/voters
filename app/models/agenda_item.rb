@@ -12,7 +12,7 @@ class AgendaItem < ApplicationRecord
   DECISION_RULE_LABELS = { "majority" => "1/2", "two_thirds" => "2/3" }.freeze
 
   attr_accessor :my_vote
-  attr_writer :vote_tally, :candidate_tally
+  attr_writer :vote_tally, :candidate_tally, :attendee_count
 
   # Candidate names typed in by the owner, one per line; turned into candidates on create
   attr_accessor :candidate_names
@@ -21,10 +21,12 @@ class AgendaItem < ApplicationRecord
   before_validation :build_candidates, on: :create, if: -> { election? && candidates.empty? }
   validate :election_has_candidates, if: :election?
 
-  # Loads favor/against and per-candidate counts for many agenda_items in one query
+  # Loads favor/against, per-candidate and attendee counts for many agenda_items in two queries
   def self.load_vote_tallies(agenda_items)
     counts = Vote.where(agenda_item_id: agenda_items.map(&:id)).group(:agenda_item_id, :choice, :candidate_id).count
+    attendees = Audience.where(round_id: agenda_items.map(&:round_id).uniq).group(:round_id).count
     agenda_items.each do |agenda_item|
+      agenda_item.attendee_count = attendees.fetch(agenda_item.round_id, 0)
       mine = counts.select { |(agenda_item_id, _, _), _| agenda_item_id == agenda_item.id }
       agenda_item.vote_tally = Vote.choices.keys.index_with do |choice|
         mine.sum { |(_, vote_choice, _), count| vote_choice == choice ? count : 0 }
@@ -67,6 +69,20 @@ class AgendaItem < ApplicationRecord
 
   def against_count
     vote_tally["against"]
+  end
+
+  def attendee_count
+    @attendee_count ||= round.audiences.count
+  end
+
+  def votes_cast
+    election? ? candidate_tally.values.sum : favor_count + against_count
+  end
+
+  # Attendees of the meeting who haven't voted on this item. Shown only:
+  # pass / fail and the winner count votes cast
+  def not_voted_count
+    [attendee_count - votes_cast, 0].max
   end
 
   # { candidate_id => n }, counted once per instance

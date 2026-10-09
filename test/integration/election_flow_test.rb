@@ -97,6 +97,7 @@ class ElectionFlowTest < ActionDispatch::IntegrationTest
     assert_select "#{frame} .decision-badge", /Bob wins/
     assert_select "#{frame} .candidate-count", text: /Ann\s+0/
     assert_select "#{frame} .candidate-count", text: /Bob\s+1/
+    assert_select "#{frame} .not-voted-count", text: /Not voted\s+1/
   end
 
   test "results show a tie" do
