@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_09_000000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_10_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -24,6 +24,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_09_000000) do
     t.bigint "round_id"
     t.integer "decision_rule"
     t.boolean "decision_made", default: false, null: false
+    t.integer "kind", default: 0, null: false
     t.index ["round_id"], name: "index_agenda_items_on_round_id"
   end
 
@@ -34,6 +35,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_09_000000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id", "round_id"], name: "index_audiences_on_user_id_and_round_id", unique: true
+  end
+
+  create_table "candidates", force: :cascade do |t|
+    t.bigint "agenda_item_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["agenda_item_id"], name: "index_candidates_on_agenda_item_id"
   end
 
   create_table "rounds", force: :cascade do |t|
@@ -62,11 +71,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_09_000000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "audience_id", null: false
-    t.integer "choice", default: 0, null: false
+    t.integer "choice"
+    t.bigint "candidate_id"
     t.index ["agenda_item_id"], name: "index_votes_on_agenda_item_id"
     t.index ["audience_id", "agenda_item_id"], name: "index_votes_on_audience_id_and_agenda_item_id", unique: true
+    t.index ["candidate_id"], name: "index_votes_on_candidate_id"
   end
 
+  add_foreign_key "candidates", "agenda_items"
   add_foreign_key "votes", "agenda_items"
   add_foreign_key "votes", "audiences"
+  add_foreign_key "votes", "candidates"
 end

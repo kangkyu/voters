@@ -36,3 +36,4 @@ en:
       agenda_item:
         name: "Title"
         location: "Subtitle"
+        candidate_names: "Candidates"

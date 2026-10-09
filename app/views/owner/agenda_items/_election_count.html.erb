@@ -1,0 +1,40 @@
+<% leaders = agenda_item.leading_candidates %>
+<% not_voted = agenda_item.not_voted_count %>
+<% total = agenda_item.votes_cast + not_voted %>
+<div class="flex flex-wrap items-center gap-2">
+  <% if leaders.empty? %>
+    <span class="decision-badge rounded-full bg-gray-200 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-gray-600 dark:bg-gray-700 dark:text-gray-300">No votes yet</span>
+  <% elsif leaders.one? %>
+    <span class="decision-badge rounded-full bg-purple-600 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">★ <%= leaders.first.name %> wins</span>
+  <% else %>
+    <span class="decision-badge rounded-full bg-amber-500 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">Tie · <%= leaders.map(&:name).to_sentence %></span>
+  <% end %>
+</div>
+<%# One row per candidate, then attendees who haven't voted: name, count, and a bar for their share of attendees %>
+<ul class="mt-2 flex flex-col gap-1.5">
+  <% agenda_item.candidates.each do |candidate| %>
+    <% count = agenda_item.candidate_vote_count(candidate) %>
+    <li class="candidate-count">
+      <div class="flex justify-between text-sm">
+        <span class="<%= leaders.include?(candidate) ? "font-semibold text-gray-900 dark:text-white" : "text-gray-600 dark:text-gray-300" %>"><%= candidate.name %></span>
+        <span class="tabular-nums text-gray-600 dark:text-gray-300"><%= count %></span>
+      </div>
+      <div class="mt-0.5 h-1.5 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
+        <% if total > 0 %>
+          <div class="h-full <%= leaders.include?(candidate) ? "bg-purple-600" : "bg-purple-300 dark:bg-purple-800" %>" style="width: <%= (count * 100.0 / total).round(2) %>%"></div>
+        <% end %>
+      </div>
+    </li>
+  <% end %>
+  <li class="not-voted-count">
+    <div class="flex justify-between text-sm text-gray-500 dark:text-gray-400">
+      <span>Not voted</span>
+      <span class="tabular-nums"><%= not_voted %></span>
+    </div>
+    <div class="mt-0.5 h-1.5 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
+      <% if total > 0 %>
+        <div class="h-full bg-gray-400 dark:bg-gray-500" style="width: <%= (not_voted * 100.0 / total).round(2) %>%"></div>
+      <% end %>
+    </div>
+  </li>
+</ul>

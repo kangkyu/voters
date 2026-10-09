@@ -4,11 +4,11 @@ class Owner::AgendaItemsController < ApplicationController
   before_action :require_owner
 
   def index
-    @agenda_items = @round.agenda_items.order(:created_at)
+    @agenda_items = @round.agenda_items.includes(:candidates).order(:created_at)
   end
 
   def result
-    @agenda_items = AgendaItem.load_vote_tallies(@round.agenda_items.order(:created_at).to_a)
+    @agenda_items = AgendaItem.load_vote_tallies(@round.agenda_items.includes(:candidates).order(:created_at).to_a)
   end
 
   def create
@@ -16,7 +16,8 @@ class Owner::AgendaItemsController < ApplicationController
     if @agenda_item.save
       # Use create.turbo_stream.erb
     else
-      render "new", status: :unprocessable_entity
+      render turbo_stream: turbo_stream.replace("new_agenda_item_form", partial: "form", locals: { round: @round, agenda_item: @agenda_item }),
+        status: :unprocessable_entity
     end
   end
 
@@ -46,6 +47,6 @@ class Owner::AgendaItemsController < ApplicationController
   private
 
   def agenda_item_params
-    params.require(:agenda_item).permit(:name, :location, :decision_rule)
+    params.require(:agenda_item).permit(:name, :location, :kind, :decision_rule, :candidate_names)
   end
 end

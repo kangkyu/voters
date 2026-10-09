@@ -4,12 +4,17 @@
   <div class="min-w-0 flex-1">
     <div class="flex flex-wrap items-center gap-2">
       <h3 class="font-medium text-gray-900 dark:text-white"><%= agenda_item.name %></h3>
-      <% if agenda_item.decision_rule %>
+      <% if agenda_item.election? %>
+        <span class="rounded-full bg-purple-50 px-2 py-0.5 text-xs font-medium text-purple-700 dark:bg-purple-900/40 dark:text-purple-300">Election · <%= pluralize(agenda_item.candidates.size, "candidate") %></span>
+      <% elsif agenda_item.decision_rule %>
         <span class="rounded-full bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">Decision · <%= agenda_item.decision_rule_label %> approve</span>
       <% end %>
     </div>
     <% if agenda_item.location.present? %>
       <p class="text-sm text-gray-500 dark:text-gray-400"><%= agenda_item.location %></p>
+    <% end %>
+    <% if agenda_item.election? && !results_page %>
+      <p class="candidates text-sm text-gray-500 dark:text-gray-400"><%= agenda_item.candidates.map(&:name).to_sentence %></p>
     <% end %>
     <% if results_page %>
       <div class="mt-2">
