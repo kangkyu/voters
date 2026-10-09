@@ -16,7 +16,7 @@ class Owner::ContestantsController < ApplicationController
     if @contestant.save
       # Use create.turbo_stream.erb
     else
-      render 'new', status: :unprocessable_entity
+      render "new", status: :unprocessable_entity
     end
   end
 

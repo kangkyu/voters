@@ -9,8 +9,8 @@ class OwnerFlowTest < ActionDispatch::IntegrationTest
   end
 
   test "cannot add round before login" do
-    assert_no_difference 'Round.count' do
-      post rounds_path, params: { round: { title: "concert" }}
+    assert_no_difference "Round.count" do
+      post rounds_path, params: { round: { title: "concert" } }
     end
   end
 
@@ -18,8 +18,8 @@ class OwnerFlowTest < ActionDispatch::IntegrationTest
     get signin_path
     post session_path, params: { username: "jimmy", password: "1111" }
 
-    assert_difference 'Round.count', 1 do
-      post rounds_path, params: { round: { title: "concert" }}
+    assert_difference "Round.count", 1 do
+      post rounds_path, params: { round: { title: "concert" } }
     end
     round = Round.last
 
@@ -31,8 +31,8 @@ class OwnerFlowTest < ActionDispatch::IntegrationTest
     get signin_path
     post session_path, params: { username: "jimmy", password: "1111" }
 
-    assert_difference 'Round.count', 1 do
-      post rounds_path, params: { round: { title: "concert" }}
+    assert_difference "Round.count", 1 do
+      post rounds_path, params: { round: { title: "concert" } }
     end
     round = Round.last
 
@@ -52,8 +52,8 @@ class OwnerFlowTest < ActionDispatch::IntegrationTest
     get signin_path
     post session_path, params: { username: "jimmy", password: "1111" }
 
-    assert_difference 'Round.count', 1 do
-      post rounds_path, params: { round: { title: "concert" }}
+    assert_difference "Round.count", 1 do
+      post rounds_path, params: { round: { title: "concert" } }
     end
     round = Round.last
 

@@ -15,7 +15,7 @@ class AudiencesController < ApplicationController
     if @audience.save
       redirect_to round_contestants_url(@round)
     else
-      render 'new', status: :unprocessable_entity
+      render "new", status: :unprocessable_entity
     end
   end
 

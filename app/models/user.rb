@@ -3,7 +3,7 @@ class User < ApplicationRecord
   has_many :votes, dependent: :destroy
 
   has_many :audiences, dependent: :destroy
-  has_many :rounds, foreign_key: 'owner_id'
+  has_many :rounds, foreign_key: "owner_id"
 
   validates :username, presence: true,
     uniqueness: { case_sensitive: false }
