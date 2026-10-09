@@ -4,7 +4,7 @@ class AgendaItemsController < ApplicationController
   before_action :require_audience
 
   def index
-    @agenda_items = @round.agenda_items.order(:created_at)
+    @agenda_items = @round.agenda_items.includes(:candidates).order(:created_at)
     if @agenda_items.any?
       @agenda_items = @audience.assign_my_votes_to_agenda_items(@agenda_items)
     end

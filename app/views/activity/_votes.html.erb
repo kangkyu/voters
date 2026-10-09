@@ -1,23 +1,32 @@
 <%= turbo_frame_tag "#{dom_id(agenda_item)}_votes" do %>
-  <div class="flex items-center justify-between">
+  <div class="flex items-center justify-between gap-2">
     <span><%= agenda_item.name %></span>
-    <div class="flex items-center space-x-2">
+    <div class="flex flex-wrap items-center justify-end gap-2">
       <% vote = agenda_item.my_vote %>
       <% if agenda_item.decision_made? %>
         <span class="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Decision made</span>
       <% end %>
-      <% [
-           ["favor", "Favor", "border-green-600 bg-green-600 text-white", "border-green-600 text-green-700 hover:bg-green-50 dark:text-green-400 dark:hover:bg-green-900/40"],
-           ["against", "Against", "border-red-600 bg-red-600 text-white", "border-red-600 text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/40"]
-         ].each do |choice, label, selected_class, unselected_class| %>
+      <%# Each option: label, whether it is my vote, params to cast it, and its selected / unselected look %>
+      <% options = if agenda_item.election?
+           agenda_item.candidates.map do |candidate|
+             [candidate.name, vote&.candidate_id == candidate.id, { candidate_id: candidate.id },
+              "border-purple-600 bg-purple-600 text-white", "border-purple-600 text-purple-700 hover:bg-purple-50 dark:text-purple-300 dark:hover:bg-purple-900/40"]
+           end
+         else
+           [
+             ["Favor", vote&.favor?, { choice: "favor" }, "border-green-600 bg-green-600 text-white", "border-green-600 text-green-700 hover:bg-green-50 dark:text-green-400 dark:hover:bg-green-900/40"],
+             ["Against", vote&.against?, { choice: "against" }, "border-red-600 bg-red-600 text-white", "border-red-600 text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/40"]
+           ]
+         end %>
+      <% options.each do |label, selected, vote_params, selected_class, unselected_class| %>
         <% if agenda_item.decision_made? %>
           <%# Closed: keep showing my vote, but nothing can be clicked %>
-          <button type="button" disabled class="px-3 py-1 rounded border font-semibold cursor-not-allowed opacity-50 <%= vote&.choice == choice ? selected_class : "border-gray-300 text-gray-400 dark:border-gray-600" %>"><%= label %></button>
-        <% elsif vote&.choice == choice %>
+          <button type="button" disabled class="px-3 py-1 rounded border font-semibold cursor-not-allowed opacity-50 <%= selected ? selected_class : "border-gray-300 text-gray-400 dark:border-gray-600" %>"><%= label %></button>
+        <% elsif selected %>
           <%= button_to label, round_agenda_item_vote_path(agenda_item.round, agenda_item, vote), method: :delete,
                 class: "px-3 py-1 rounded border font-semibold #{selected_class}" %>
         <% else %>
-          <%= button_to label, round_agenda_item_votes_path(agenda_item.round, agenda_item), params: { choice: choice },
+          <%= button_to label, round_agenda_item_votes_path(agenda_item.round, agenda_item), params: vote_params,
                 class: "px-3 py-1 rounded border font-semibold #{unselected_class}" %>
         <% end %>
       <% end %>

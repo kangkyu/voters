@@ -1,6 +1,10 @@
 class AgendaItem < ApplicationRecord
   belongs_to :round
   has_many :votes, dependent: :destroy
+  has_many :candidates, -> { order(:id) }, dependent: :destroy
+
+  # A motion is voted favor / against; an election picks one of its candidates
+  enum :kind, { motion: 0, election: 1 }, validate: true
 
   # A decision vote passes on "favor" votes out of votes cast; nil means tally only
   enum :decision_rule, { majority: 1, two_thirds: 2 }, validate: { allow_nil: true }
@@ -8,13 +12,26 @@ class AgendaItem < ApplicationRecord
   DECISION_RULE_LABELS = { "majority" => "1/2", "two_thirds" => "2/3" }.freeze
 
   attr_accessor :my_vote
-  attr_writer :vote_tally
+  attr_writer :vote_tally, :candidate_tally
 
-  # Loads favor/against counts for many agenda_items in one query
+  # Candidate names typed in by the owner, one per line; turned into candidates on create
+  attr_accessor :candidate_names
+
+  validates :decision_rule, absence: { message: "is for motions only" }, if: :election?
+  before_validation :build_candidates, on: :create, if: -> { election? && candidates.empty? }
+  validate :election_has_candidates, if: :election?
+
+  # Loads favor/against and per-candidate counts for many agenda_items in one query
   def self.load_vote_tallies(agenda_items)
-    counts = Vote.where(agenda_item_id: agenda_items.map(&:id)).group(:agenda_item_id, :choice).count
+    counts = Vote.where(agenda_item_id: agenda_items.map(&:id)).group(:agenda_item_id, :choice, :candidate_id).count
     agenda_items.each do |agenda_item|
-      agenda_item.vote_tally = Vote.choices.keys.index_with { |choice| counts[[agenda_item.id, choice]] || 0 }
+      mine = counts.select { |(agenda_item_id, _, _), _| agenda_item_id == agenda_item.id }
+      agenda_item.vote_tally = Vote.choices.keys.index_with do |choice|
+        mine.sum { |(_, vote_choice, _), count| vote_choice == choice ? count : 0 }
+      end
+      agenda_item.candidate_tally = mine.each_with_object({}) do |((_, _, candidate_id), count), tally|
+        tally[candidate_id] = count if candidate_id
+      end
     end
   end
 
@@ -52,6 +69,23 @@ class AgendaItem < ApplicationRecord
     vote_tally["against"]
   end
 
+  # { candidate_id => n }, counted once per instance
+  def candidate_tally
+    @candidate_tally ||= votes.where.not(candidate_id: nil).group(:candidate_id).count
+  end
+
+  def candidate_vote_count(candidate)
+    candidate_tally.fetch(candidate.id, 0)
+  end
+
+  # Candidates with the most votes: one winner, several on a tie, none before any vote
+  def leading_candidates
+    top = candidate_tally.values.max
+    return [] unless top&.positive?
+
+    candidates.select { |candidate| candidate_vote_count(candidate) == top }
+  end
+
   # Streams are per meeting, so attendees only see their own meeting's agenda
   after_create_commit -> {
     broadcast_append_to [round, :agenda],
@@ -68,4 +102,18 @@ class AgendaItem < ApplicationRecord
   after_destroy_commit -> {
     broadcast_remove_to [round, :agenda]
   }
+
+  private
+
+  def build_candidates
+    candidate_names.to_s.lines.map(&:strip).compact_blank.uniq.each do |name|
+      candidates.build(name: name)
+    end
+  end
+
+  def election_has_candidates
+    if candidates.size < 2
+      errors.add(:candidate_names, "need at least two names, one per line")
+    end
+  end
 end
