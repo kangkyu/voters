@@ -3,11 +3,11 @@
 
   <div class="grid gap-6 lg:grid-cols-3 lg:items-start">
     <section class="lg:col-span-2">
-      <%= render "list", contestants: @contestants %>
+      <%= render "list", agenda_items: @agenda_items %>
     </section>
 
     <aside class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm lg:sticky lg:top-6 dark:border-gray-700 dark:bg-gray-800">
-      <%= render "form", round: @round, contestant: Contestant.new %>
+      <%= render "form", round: @round, agenda_item: AgendaItem.new %>
     </aside>
   </div>
 </div>

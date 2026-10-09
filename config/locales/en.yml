@@ -33,6 +33,6 @@ en:
   hello: "Hello world"
   activerecord:
     attributes:
-      contestant:
+      agenda_item:
         name: "Title"
         location: "Subtitle"

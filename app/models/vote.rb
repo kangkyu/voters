@@ -3,12 +3,12 @@ class Vote < ApplicationRecord
 
   belongs_to :user
   belongs_to :audience
-  belongs_to :contestant, counter_cache: true
+  belongs_to :agenda_item, counter_cache: true
 
   enum :choice, { favor: 0, against: 1 }
 
-  validates :contestant_id, uniqueness: { scope: :audience_id }
-  validate :audience_in_contestant_round
+  validates :agenda_item_id, uniqueness: { scope: :audience_id }
+  validate :audience_in_agenda_item_round
   validate :user_matches_audience
   validate :voting_open, on: [:create, :update]
 
@@ -17,15 +17,15 @@ class Vote < ApplicationRecord
 
   private
 
-  def audience_in_contestant_round
-    if audience && contestant && audience.round_id != contestant.round_id
-      errors.add(:audience, "must be in the same round as the contestant")
+  def audience_in_agenda_item_round
+    if audience && agenda_item && audience.round_id != agenda_item.round_id
+      errors.add(:audience, "must be in the same round as the agenda_item")
     end
   end
 
   def voting_open
-    if contestant&.decision_made?
-      errors.add(:contestant, "is closed: decision made")
+    if agenda_item&.decision_made?
+      errors.add(:agenda_item, "is closed: decision made")
     end
   end
 
@@ -36,11 +36,11 @@ class Vote < ApplicationRecord
   end
 
   def broadcast_votes_count
-    # Broadcast via the contestant: Turbo serializes the broadcasting record into
+    # Broadcast via the agenda_item: Turbo serializes the broadcasting record into
     # the job, and a destroyed vote can't be loaded back when the job runs
-    contestant.broadcast_replace_later_to [contestant.round, :results],
-      target: "#{dom_id(contestant)}_votes_count",
-      partial: "owner/contestants/votes_count",
-      locals: { contestant: contestant }
+    agenda_item.broadcast_replace_later_to [agenda_item.round, :results],
+      target: "#{dom_id(agenda_item)}_votes_count",
+      partial: "owner/agenda_items/votes_count",
+      locals: { agenda_item: agenda_item }
   end
 end

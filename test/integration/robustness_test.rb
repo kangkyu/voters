@@ -5,7 +5,7 @@ class RobustnessTest < ActionDispatch::IntegrationTest
 
   setup do
     @round = rounds(:contest)
-    @contestant = contestants(:singer)
+    @agenda_item = agenda_items(:singer)
   end
 
   def sign_in(username)
@@ -19,32 +19,32 @@ class RobustnessTest < ActionDispatch::IntegrationTest
 
   test "unknown meeting id redirects instead of erroring" do
     sign_in "john"
-    [round_contestants_path(MISSING_ROUND), new_round_audience_path(MISSING_ROUND)].each do |path|
+    [round_agenda_items_path(MISSING_ROUND), new_round_audience_path(MISSING_ROUND)].each do |path|
       get path
       assert_redirected_to root_url
     end
-    post round_contestant_votes_path(MISSING_ROUND, @contestant), params: { choice: "favor" }
+    post round_agenda_item_votes_path(MISSING_ROUND, @agenda_item), params: { choice: "favor" }
     assert_redirected_to root_url
   end
 
   test "voting page keeps an empty list for live additions" do
     sign_in "john"
-    @contestant.destroy
-    get round_contestants_path(@round)
-    assert_select "ul#audience_contestant li", text: "No agenda items"
+    @agenda_item.destroy
+    get round_agenda_items_path(@round)
+    assert_select "ul#audience_agenda_item li", text: "No agenda items"
   end
 
   test "agenda items are list items, not frames wrapping list items" do
     sign_in "john"
-    get round_contestants_path(@round)
-    assert_select "ul#audience_contestant > li##{ActionView::RecordIdentifier.dom_id(@contestant)} turbo-frame"
+    get round_agenda_items_path(@round)
+    assert_select "ul#audience_agenda_item > li##{ActionView::RecordIdentifier.dom_id(@agenda_item)} turbo-frame"
   end
 
   test "withdrawing an already-withdrawn vote still returns the vote buttons" do
     sign_in "john"
-    delete round_contestant_vote_path(@round, @contestant, 0)
+    delete round_agenda_item_vote_path(@round, @agenda_item, 0)
     assert_response :success
-    assert_select "turbo-frame##{ActionView::RecordIdentifier.dom_id(@contestant)}_votes"
+    assert_select "turbo-frame##{ActionView::RecordIdentifier.dom_id(@agenda_item)}_votes"
   end
 
   test "attendee name is escaped on the user page" do

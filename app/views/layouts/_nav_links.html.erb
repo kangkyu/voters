@@ -3,7 +3,7 @@
 
 <% if @round.present? && signed_in? %>
   <% if current_user.audience?(@round) %>
-    <%= link_to "Vote", round_contestants_path(@round), class: "#{class_name_by_tab(round_contestants_path(@round))} #{extra_class}" %>
+    <%= link_to "Vote", round_agenda_items_path(@round), class: "#{class_name_by_tab(round_agenda_items_path(@round))} #{extra_class}" %>
   <% end %>
   <% if current_user.owner?(@round) %>
     <%= link_to "Result", owner_round_results_path(@round), class: "#{class_name_by_tab(owner_round_results_path(@round))} #{extra_class}" %>

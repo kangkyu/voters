@@ -1,10 +1,10 @@
-<%= turbo_frame_tag "#{dom_id(contestant)}_votes_count" do %>
-  <% favor = contestant.favor_count %>
-  <% against = contestant.against_count %>
+<%= turbo_frame_tag "#{dom_id(agenda_item)}_votes_count" do %>
+  <% favor = agenda_item.favor_count %>
+  <% against = agenda_item.against_count %>
   <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
     <span class="text-sm text-green-700 dark:text-green-400">Favor <%= favor %></span>
     <span class="text-sm text-red-700 dark:text-red-400">Against <%= against %></span>
-    <% case contestant.decision %>
+    <% case agenda_item.decision %>
     <% when :passed %>
       <span class="decision-badge rounded-full bg-green-600 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">✓ Passed</span>
     <% when :failed %>
@@ -13,16 +13,16 @@
       <span class="decision-badge rounded-full bg-gray-200 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-gray-600 dark:bg-gray-700 dark:text-gray-300">No votes yet</span>
     <% end %>
   </div>
-  <% if contestant.decision_rule %>
+  <% if agenda_item.decision_rule %>
     <% total = favor + against %>
     <%# Favor share of votes cast, with a marker at the pass threshold %>
-    <div class="relative mt-2 h-2.5 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700" title="Needs <%= contestant.decision_rule_label %> of votes cast in favor">
+    <div class="relative mt-2 h-2.5 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700" title="Needs <%= agenda_item.decision_rule_label %> of votes cast in favor">
       <% if total > 0 %>
         <div class="absolute inset-y-0 left-0 bg-green-500" style="width: <%= (favor * 100.0 / total).round(2) %>%"></div>
         <div class="absolute inset-y-0 right-0 bg-red-400" style="width: <%= (against * 100.0 / total).round(2) %>%"></div>
       <% end %>
-      <div class="absolute inset-y-0 w-0.5 bg-gray-900 dark:bg-white" style="left: <%= contestant.decision_threshold_percent.round(2) %>%"></div>
+      <div class="absolute inset-y-0 w-0.5 bg-gray-900 dark:bg-white" style="left: <%= agenda_item.decision_threshold_percent.round(2) %>%"></div>
     </div>
-    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Needs <%= contestant.decision_rule_label %> of votes cast in favor</p>
+    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Needs <%= agenda_item.decision_rule_label %> of votes cast in favor</p>
   <% end %>
 <% end %>

@@ -1,0 +1,29 @@
+<% results_page = current_user.owner?(@round) && current_page?(owner_round_results_path(@round)) %>
+<li id="<%= dom_id(agenda_item) %>" class="flex items-start gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3 shadow-sm [counter-increment:agenda] dark:border-gray-700 dark:bg-gray-800">
+  <span aria-hidden="true" class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gray-100 text-xs font-semibold text-gray-600 before:content-[counter(agenda)] dark:bg-gray-700 dark:text-gray-300"></span>
+  <div class="min-w-0 flex-1">
+    <div class="flex flex-wrap items-center gap-2">
+      <h3 class="font-medium text-gray-900 dark:text-white"><%= agenda_item.name %></h3>
+      <% if agenda_item.decision_rule %>
+        <span class="rounded-full bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">Decision · <%= agenda_item.decision_rule_label %> approve</span>
+      <% end %>
+    </div>
+    <% if agenda_item.location.present? %>
+      <p class="text-sm text-gray-500 dark:text-gray-400"><%= agenda_item.location %></p>
+    <% end %>
+    <% if results_page %>
+      <div class="mt-2">
+        <%= render "owner/agenda_items/votes_count", agenda_item: agenda_item %>
+      </div>
+    <% end %>
+  </div>
+  <% if current_user.owner?(@round) %>
+    <div class="shrink-0">
+      <% if results_page %>
+        <%= render "owner/agenda_items/decision_made", agenda_item: agenda_item %>
+      <% else %>
+        <%= button_to "Delete", owner_round_agenda_item_path(@round, agenda_item), method: :delete, form: { data: { turbo_confirm: "Are you sure with deleting #{agenda_item.name}?" }}, class: "text-sm font-medium text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400" %>
+      <% end %>
+    </div>
+  <% end %>
+</li>
