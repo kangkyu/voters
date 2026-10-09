@@ -37,9 +37,19 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+
     env:
       RAILS_ENV: test
-      DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
+      DATABASE_URL: "postgres://postgres:postgres@localhost:5432/rails_test"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -48,11 +58,6 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      # The runner image ships PostgreSQL, stopped; no service container needed
-      - name: Start PostgreSQL
-        run: |
-          sudo systemctl start postgresql.service
-          sudo -u postgres psql -c "CREATE ROLE rails WITH LOGIN SUPERUSER PASSWORD 'password';"
       - name: Set up database schema
         run: bin/rails db:create db:schema:load
       # Precompile assets for test
