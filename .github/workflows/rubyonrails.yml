@@ -37,23 +37,6 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        # Docker Hub's official image via the ECR Public mirror, which avoids
-        # Docker Hub's anonymous pull rate limit on shared runners
-        image: public.ecr.aws/docker/library/postgres:16-alpine
-        ports:
-          - "5432:5432"
-        env:
-          POSTGRES_DB: rails_test
-          POSTGRES_USER: rails
-          POSTGRES_PASSWORD: password
-        # Wait until postgres accepts connections before the steps run
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 10
     env:
       RAILS_ENV: test
       DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
@@ -65,9 +48,13 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      # Add or replace database setup steps here
+      # The runner image ships PostgreSQL, stopped; no service container needed
+      - name: Start PostgreSQL
+        run: |
+          sudo systemctl start postgresql.service
+          sudo -u postgres psql -c "CREATE ROLE rails WITH LOGIN SUPERUSER PASSWORD 'password';"
       - name: Set up database schema
-        run: bin/rails db:schema:load
+        run: bin/rails db:create db:schema:load
       # Precompile assets for test
       - name: Assets Precompile
         run: bundle exec rake assets:precompile
