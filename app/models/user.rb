@@ -8,7 +8,7 @@ class User < ApplicationRecord
   validates :username, presence: true,
     uniqueness: { case_sensitive: false }
 
-  enum :user_role, [ :admin, :member ]
+  enum :user_role, [:admin, :member]
 
   def owner?(round)
     round.present? && round.owner_id == id

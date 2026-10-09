@@ -48,7 +48,7 @@ class DecisionMadeTest < ActionDispatch::IntegrationTest
     perform_enqueued_jobs do
       @contestant.update!(decision_made: true)
     end
-    assert_turbo_stream_broadcasts [ @round, :agenda ], count: 1
+    assert_turbo_stream_broadcasts [@round, :agenda], count: 1
   end
 
   test "attendee cannot vote, change, or withdraw once the decision is made" do

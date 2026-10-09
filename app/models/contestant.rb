@@ -14,7 +14,7 @@ class Contestant < ApplicationRecord
   def self.load_vote_tallies(contestants)
     counts = Vote.where(contestant_id: contestants.map(&:id)).group(:contestant_id, :choice).count
     contestants.each do |contestant|
-      contestant.vote_tally = Vote.choices.keys.index_with { |choice| counts[[ contestant.id, choice ]] || 0 }
+      contestant.vote_tally = Vote.choices.keys.index_with { |choice| counts[[contestant.id, choice]] || 0 }
     end
   end
 
@@ -54,7 +54,7 @@ class Contestant < ApplicationRecord
 
   # Streams are per meeting, so attendees only see their own meeting's agenda
   after_create_commit -> {
-    broadcast_append_to [ round, :agenda ],
+    broadcast_append_to [round, :agenda],
       target: "audience_contestant",
       partial: "contestants/contestant",
       locals: { contestant: self }
@@ -62,10 +62,10 @@ class Contestant < ApplicationRecord
 
   # Voting pages show each attendee's own vote, so they refresh themselves rather than take shared HTML
   after_update_commit -> {
-    broadcast_refresh_later_to [ round, :agenda ] if saved_change_to_decision_made?
+    broadcast_refresh_later_to [round, :agenda] if saved_change_to_decision_made?
   }
 
   after_destroy_commit -> {
-    broadcast_remove_to [ round, :agenda ]
+    broadcast_remove_to [round, :agenda]
   }
 end

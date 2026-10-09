@@ -19,7 +19,7 @@ class RobustnessTest < ActionDispatch::IntegrationTest
 
   test "unknown meeting id redirects instead of erroring" do
     sign_in "john"
-    [ round_contestants_path(MISSING_ROUND), new_round_audience_path(MISSING_ROUND) ].each do |path|
+    [round_contestants_path(MISSING_ROUND), new_round_audience_path(MISSING_ROUND)].each do |path|
       get path
       assert_redirected_to root_url
     end

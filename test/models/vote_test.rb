@@ -37,7 +37,7 @@ class VoteTest < ActiveSupport::TestCase
     perform_enqueued_jobs only: Turbo::Streams::ActionBroadcastJob do
       vote.destroy!
     end
-    assert_turbo_stream_broadcasts [ @contestant.round, :results ], count: 1
+    assert_turbo_stream_broadcasts [@contestant.round, :results], count: 1
   end
 
   test "tally updates go only to the vote's own meeting" do
@@ -45,8 +45,8 @@ class VoteTest < ActiveSupport::TestCase
     perform_enqueued_jobs only: Turbo::Streams::ActionBroadcastJob do
       cast_vote
     end
-    assert_turbo_stream_broadcasts [ @contestant.round, :results ], count: 1
-    assert_no_turbo_stream_broadcasts [ other, :results ]
+    assert_turbo_stream_broadcasts [@contestant.round, :results], count: 1
+    assert_no_turbo_stream_broadcasts [other, :results]
   end
 
   test "rejects a vote whose user is not the attendee" do
