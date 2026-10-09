@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
   resources :rounds, only: [:show, :new, :create] do
     resources :audiences, only: [:new, :create]
-    resources :contestants, only: [:index] do
+    resources :agenda_items, only: [:index] do
       resources :votes
     end
   end
@@ -17,8 +17,8 @@ Rails.application.routes.draw do
   namespace :owner do
     resources :rounds, only: [] do
       resources :audiences, only: [:index]
-      resources :contestants, only: [:new, :create, :update, :destroy, :index]
-      get "results" => "contestants#result"
+      resources :agenda_items, only: [:new, :create, :update, :destroy, :index]
+      get "results" => "agenda_items#result"
     end
   end
 

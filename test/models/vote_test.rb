@@ -5,11 +5,11 @@ class VoteTest < ActiveSupport::TestCase
   include Turbo::Broadcastable::TestHelper
 
   setup do
-    @contestant = contestants(:singer)
+    @agenda_item = agenda_items(:singer)
   end
 
   def cast_vote
-    @contestant.votes.create!(user: users(:john), audience: audiences(:john_at_contest), choice: "favor")
+    @agenda_item.votes.create!(user: users(:john), audience: audiences(:john_at_contest), choice: "favor")
   end
 
   test "broadcasts the tally when a vote is cast" do
@@ -37,7 +37,7 @@ class VoteTest < ActiveSupport::TestCase
     perform_enqueued_jobs only: Turbo::Streams::ActionBroadcastJob do
       vote.destroy!
     end
-    assert_turbo_stream_broadcasts [@contestant.round, :results], count: 1
+    assert_turbo_stream_broadcasts [@agenda_item.round, :results], count: 1
   end
 
   test "tally updates go only to the vote's own meeting" do
@@ -45,12 +45,12 @@ class VoteTest < ActiveSupport::TestCase
     perform_enqueued_jobs only: Turbo::Streams::ActionBroadcastJob do
       cast_vote
     end
-    assert_turbo_stream_broadcasts [@contestant.round, :results], count: 1
+    assert_turbo_stream_broadcasts [@agenda_item.round, :results], count: 1
     assert_no_turbo_stream_broadcasts [other, :results]
   end
 
   test "rejects a vote whose user is not the attendee" do
-    vote = @contestant.votes.build(user: users(:gapbun), audience: audiences(:john_at_contest))
+    vote = @agenda_item.votes.build(user: users(:gapbun), audience: audiences(:john_at_contest))
     assert_not vote.valid?
     assert_includes vote.errors[:user], "must be the attendee who votes"
   end

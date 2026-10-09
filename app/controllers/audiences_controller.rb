@@ -13,7 +13,7 @@ class AudiencesController < ApplicationController
     @audience = @round.audiences.build(audience_params.merge(user_id: current_user.id))
 
     if @audience.save
-      redirect_to round_contestants_url(@round)
+      redirect_to round_agenda_items_url(@round)
     else
       render "new", status: :unprocessable_entity
     end

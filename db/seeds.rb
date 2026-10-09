@@ -5,7 +5,7 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
-contestants = Contestant.create([
+agenda_items = AgendaItem.create([
   { name: "Trapp Family Singers", location: "Salzburg" },
   { name: "TShirts", location: "La Cañada Flintridge" },
   { name: "Star Wars", location: "Galaxy" }

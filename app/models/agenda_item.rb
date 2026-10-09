@@ -1,4 +1,4 @@
-class Contestant < ApplicationRecord
+class AgendaItem < ApplicationRecord
   belongs_to :round
   has_many :votes, dependent: :destroy
 
@@ -10,11 +10,11 @@ class Contestant < ApplicationRecord
   attr_accessor :my_vote
   attr_writer :vote_tally
 
-  # Loads favor/against counts for many contestants in one query
-  def self.load_vote_tallies(contestants)
-    counts = Vote.where(contestant_id: contestants.map(&:id)).group(:contestant_id, :choice).count
-    contestants.each do |contestant|
-      contestant.vote_tally = Vote.choices.keys.index_with { |choice| counts[[contestant.id, choice]] || 0 }
+  # Loads favor/against counts for many agenda_items in one query
+  def self.load_vote_tallies(agenda_items)
+    counts = Vote.where(agenda_item_id: agenda_items.map(&:id)).group(:agenda_item_id, :choice).count
+    agenda_items.each do |agenda_item|
+      agenda_item.vote_tally = Vote.choices.keys.index_with { |choice| counts[[agenda_item.id, choice]] || 0 }
     end
   end
 
@@ -55,9 +55,9 @@ class Contestant < ApplicationRecord
   # Streams are per meeting, so attendees only see their own meeting's agenda
   after_create_commit -> {
     broadcast_append_to [round, :agenda],
-      target: "audience_contestant",
-      partial: "contestants/contestant",
-      locals: { contestant: self }
+      target: "audience_agenda_item",
+      partial: "agenda_items/agenda_item",
+      locals: { agenda_item: self }
   }
 
   # Voting pages show each attendee's own vote, so they refresh themselves rather than take shared HTML

@@ -1,0 +1,2 @@
+<%= turbo_stream.append "admin_agenda_items", @agenda_item %>
+<%= turbo_stream.replace "new_agenda_item_form", partial: "form", locals: { round: @round, agenda_item: AgendaItem.new } %>
