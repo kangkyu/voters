@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%= render "layouts/head" %>
+    <meta name="description" content="Run votes at any meeting. Open a meeting, invite attendees, and vote on motions and elections together in real time.">
+  </head>
+
+  <body class="bg-white text-gray-900 antialiased dark:bg-gray-950 dark:text-gray-100">
+    <%= render "layouts/header" %>
+    <%= render "layouts/flash" %>
+    <main>
+      <%= yield %>
+    </main>
+    <%= render "layouts/footer" %>
+  </body>
+</html>

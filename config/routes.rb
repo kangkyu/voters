@@ -27,5 +27,5 @@ Rails.application.routes.draw do
   end
 
   # Defines the root path route ("/")
-  root "rounds#new"
+  root "pages#home"
 end
