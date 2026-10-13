@@ -1,48 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Voters 🗳️❤️</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="color-scheme" content="light dark">
+    <%= render "layouts/head" %>
     <meta name="description" content="Run votes at any meeting. Open a meeting, invite attendees, and vote on motions and elections together in real time.">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
-
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
   </head>
 
-  <body class="bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 antialiased">
-    <header class="border-b border-gray-100 dark:border-gray-800">
-      <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <%= link_to "Voters 🗳️❤️", root_path, class: "text-lg font-semibold" %>
-        <div class="flex items-center gap-x-5 text-sm font-medium">
-          <% if signed_in? %>
-            <%= link_to "Hello \"#{current_user.username}\"", user_path(current_user.another_id), class: "hidden sm:inline text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white" %>
-          <% else %>
-            <%= link_to "Sign In", new_session_path, class: "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white" %>
-            <%= link_to "Register", register_path, class: "hidden sm:inline text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white" %>
-          <% end %>
-          <%= link_to "New Meeting", new_round_path, class: "rounded-md bg-rose-600 px-3.5 py-2 text-white shadow-sm hover:bg-rose-500" %>
-        </div>
-      </nav>
-    </header>
-
-    <% if flash.present? %>
-      <div class="mx-auto max-w-6xl px-6 pt-4">
-        <% flash.each do |key, message| %>
-          <p class="text-sm <%= key.to_s == "alert" ? "text-red-500 dark:text-red-400" : "text-gray-700 dark:text-gray-300" %>"><%= message %></p>
-        <% end %>
-      </div>
-    <% end %>
-
+  <body class="bg-white text-gray-900 antialiased dark:bg-gray-950 dark:text-gray-100">
+    <%= render "layouts/header" %>
+    <%= render "layouts/flash" %>
     <main>
       <%= yield %>
     </main>
-
-    <footer class="border-t border-gray-100 py-8 text-center text-sm text-gray-500 dark:border-gray-800">
-      © <%= Date.current.year %> Voters · A Lining Link app
-    </footer>
+    <%= render "layouts/footer" %>
   </body>
 </html>

@@ -1,13 +1,15 @@
 <%= turbo_stream_from @round, :agenda %>
 
-<div class="max-w-md mx-auto mt-5">
-  <h2 class="text-2xl font-semibold mb-4">“<%= link_to @round.title, round_path(@round) %>” meeting agenda items</h2>
-</div>
+<div class="mx-auto max-w-2xl">
+  <p class="eyebrow">Agenda</p>
+  <h1 class="page-title mt-2">“<%= link_to @round.title, round_path(@round), class: "hover:text-rose-600 dark:hover:text-rose-400" %>”</h1>
+  <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Cast your vote on each item. Tap your choice again to withdraw it.</p>
 
-<%= turbo_frame_tag "agenda_items" do %>
-  <%# The list is always rendered so items added live have a place to go; the placeholder shows only while it is empty %>
-  <ul class="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white" id="audience_agenda_item">
-    <li class="hidden only:block py-2 px-4">No agenda items</li>
-    <%= render collection: @agenda_items, partial: "agenda_item" %>
-  </ul>
-<% end %>
+  <%= turbo_frame_tag "agenda_items", class: "mt-8 block" do %>
+    <%# The list is always rendered so items added live have a place to go; the placeholder shows only while it is empty %>
+    <ul class="flex flex-col gap-4" id="audience_agenda_item">
+      <li class="empty-state hidden only:block">No agenda items</li>
+      <%= render collection: @agenda_items, partial: "agenda_item" %>
+    </ul>
+  <% end %>
+</div>

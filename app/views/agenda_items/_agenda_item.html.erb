@@ -1,4 +1,10 @@
-<li id="<%= dom_id(agenda_item) %>" class="py-2 px-4 w-full border-b border-gray-200 dark:border-gray-600">
-  <%= render "activity/votes", agenda_item: agenda_item %>
-  <h3 class="text-sm text-gray-400"><%= agenda_item.location %></h3>
+<li id="<%= dom_id(agenda_item) %>" class="card p-5">
+  <p class="eyebrow"><%= agenda_item.election? ? "Election" : "Motion" %></p>
+  <h2 class="mt-1 font-medium"><%= agenda_item.name %></h2>
+  <% if agenda_item.location.present? %>
+    <p class="text-sm text-gray-500 dark:text-gray-400"><%= agenda_item.location %></p>
+  <% end %>
+  <div class="mt-4">
+    <%= render "activity/votes", agenda_item: agenda_item %>
+  </div>
 </li>

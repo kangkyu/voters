@@ -1,33 +1,40 @@
-<div class="max-w-md mx-auto mt-5">
-  <h2 class="text-2xl font-semibold mb-4">Welcome to “<%= @round.title %>” meeting</h2>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <% if current_user.owner?(@round) %>
-      <div>
-        <p class="text-md font-bold mb-2">Owner menu</p>
-        <ul class="list-disc list-inside">
-          <li><%= link_to "list of attendees", owner_round_audiences_path(@round) %></li>
-          <li><%= link_to "list of agenda items", owner_round_agenda_items_path(@round) %></li>
+<div class="mx-auto max-w-3xl">
+  <p class="eyebrow">Meeting</p>
+  <h1 class="page-title mt-2">“<%= @round.title %>”</h1>
+
+  <% if current_user.owner?(@round) %>
+    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">You're the organizer of this meeting.</p>
+
+    <div class="mt-8 grid gap-6 md:grid-cols-2">
+      <section class="card p-6">
+        <h2 class="font-semibold">Run the meeting</h2>
+        <ul class="mt-4 divide-y divide-gray-100 text-sm dark:divide-gray-800">
+          <li><%= link_to "Agenda items", owner_round_agenda_items_path(@round), class: "flex justify-between py-3 hover:text-rose-600 dark:hover:text-rose-400" %></li>
+          <li><%= link_to "Attendees", owner_round_audiences_path(@round), class: "flex justify-between py-3 hover:text-rose-600 dark:hover:text-rose-400" %></li>
+          <li><%= link_to "Results", owner_round_results_path(@round), class: "flex justify-between py-3 hover:text-rose-600 dark:hover:text-rose-400" %></li>
         </ul>
-        <p class="text-md font-bold mt-10 mb-2">How to invite attendees</p>
-        <div data-controller="clipboard">
-          <p class="text-sm font-normal mb-2">
-            Please copy the address of this page and share:
-            <span data-clipboard-target="source"><%= @round.url %></span>
-          </p>
-          <button type="button" data-clipboard-target="button" data-action="clipboard#copy" class="px-3 py-1 rounded border border-blue-500 text-blue-700 hover:bg-blue-50 dark:text-blue-300 dark:hover:bg-blue-900/40 text-sm font-semibold">Copy link</button>
-        </div>
-      </div>
-    <% else %>
-      <div>
-        <p class="text-md mb-2">User <span class="font-bold"><%= @round.owner.username %></span> started it</p>
-        <div class="mt-8">
-        <% if current_user.audience?(@round) %>
-          <%= link_to 'Go vote', round_agenda_items_path(@round), method: :get, class: "bg-transparent hover:bg-indigo-500 text-indigo-700 dark:text-indigo-300 font-semibold hover:text-white py-2 px-4 border border-indigo-500 hover:border-transparent rounded" %>
-        <% else %>
-          <%= button_to "Join as an attendee", new_round_audience_path(@round), method: :get, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4" %>
-        <% end %>
-        </div>
-      </div>
-    <% end %>
-  </div>
+      </section>
+
+      <section class="card p-6" data-controller="clipboard">
+        <h2 class="font-semibold">Invite attendees</h2>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Share this page's address. Attendees sign in and join from there.</p>
+        <p class="mt-4 break-all rounded-md bg-gray-50 px-3 py-2 font-mono text-xs text-gray-700 dark:bg-gray-950 dark:text-gray-300" data-clipboard-target="source"><%= @round.url %></p>
+        <button type="button" data-clipboard-target="button" data-action="clipboard#copy" class="btn-secondary mt-4">Copy link</button>
+      </section>
+    </div>
+  <% else %>
+    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Started by <span class="font-medium text-gray-900 dark:text-gray-100"><%= @round.owner.username %></span></p>
+
+    <section class="card mt-8 p-6">
+      <% if current_user.audience?(@round) %>
+        <h2 class="font-semibold">You're attending</h2>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Vote on each agenda item as it comes up.</p>
+        <%= link_to "Go vote", round_agenda_items_path(@round), class: "btn-primary mt-5" %>
+      <% else %>
+        <h2 class="font-semibold">Join to vote</h2>
+        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Become an attendee to get your vote on each agenda item.</p>
+        <%= button_to "Join as an attendee", new_round_audience_path(@round), method: :get, class: "btn-primary", form_class: "mt-5" %>
+      <% end %>
+    </section>
+  <% end %>
 </div>

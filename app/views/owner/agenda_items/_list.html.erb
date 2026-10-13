@@ -1,6 +1,6 @@
 <%# Items are numbered with a CSS counter, so numbers stay right when items are added or removed live %>
-<ol id="admin_agenda_items" class="flex flex-col gap-2 [counter-reset:agenda]">
-  <li class="hidden only:block rounded-lg border border-dashed border-gray-300 px-4 py-8 text-center text-sm text-gray-500 dark:border-gray-600 dark:text-gray-400">
+<ol id="admin_agenda_items" class="flex flex-col gap-3 [counter-reset:agenda]">
+  <li class="empty-state hidden only:block">
     No agenda items yet.
   </li>
   <%= render agenda_items %>

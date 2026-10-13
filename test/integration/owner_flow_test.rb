@@ -60,7 +60,7 @@ class OwnerFlowTest < ActionDispatch::IntegrationTest
     get owner_round_results_path(round.another_id)
 
     assert_response :ok
-    assert_select "h2.font-semibold", "“concert” meeting result"
+    assert_select "h1", "“concert”"
   end
 
   test "owner sees a copy link button on the meeting page" do

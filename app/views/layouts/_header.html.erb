@@ -1,0 +1,31 @@
+<header class="border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950" data-controller="menu">
+  <nav class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-4">
+    <div class="flex items-center gap-8">
+      <%= link_to "Voters 🗳️❤️", root_path, class: "text-lg font-semibold" %>
+      <div class="hidden items-center gap-6 text-sm font-medium sm:flex">
+        <%= render "layouts/nav_links", extra_class: "" %>
+      </div>
+    </div>
+    <div class="flex items-center gap-x-5 text-sm font-medium">
+      <div class="hidden items-center gap-x-5 sm:flex">
+        <%= render "layouts/account_links", extra_class: "" %>
+      </div>
+      <%= link_to "New Meeting", new_round_path, class: "rounded-md bg-rose-600 px-3.5 py-2 text-white shadow-sm hover:bg-rose-500" %>
+      <button type="button" data-action="menu#toggle" aria-controls="mobile-menu" aria-expanded="false"
+              class="-mr-2 inline-flex items-center justify-center rounded-md p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 sm:hidden dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white">
+        <span class="sr-only">Open main menu</span>
+        <svg data-menu-target="openIcon" class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+        <svg data-menu-target="closeIcon" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <div id="mobile-menu" data-menu-target="menu" class="hidden border-t border-gray-100 px-6 py-3 text-sm font-medium sm:hidden dark:border-gray-800">
+    <%= render "layouts/nav_links", extra_class: "block py-2" %>
+    <%= render "layouts/account_links", extra_class: "block py-2" %>
+  </div>
+</header>

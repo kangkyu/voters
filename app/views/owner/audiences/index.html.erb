@@ -1,30 +1,33 @@
-<div class="max-w-3xl mx-auto mt-5">
-  <h2 class="text-2xl font-semibold mb-6">“<%= link_to @round.title, round_path(@round), class: "hover:underline" %>” meeting attendees</h2>
+<div class="mx-auto max-w-3xl">
+  <p class="eyebrow">Attendees</p>
+  <h1 class="page-title mt-2">“<%= link_to @round.title, round_path(@round), class: "hover:text-rose-600 dark:hover:text-rose-400" %>”</h1>
 
-  <% if @audiences.any? %>
-    <div class="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
-      <table class="min-w-full divide-y divide-gray-200 text-sm dark:divide-gray-700">
-        <thead class="bg-gray-50 dark:bg-gray-900/40">
-          <tr>
-            <th scope="col" class="px-4 py-3 text-left font-semibold text-gray-600 dark:text-gray-300">ID</th>
-            <th scope="col" class="px-4 py-3 text-left font-semibold text-gray-600 dark:text-gray-300">Name</th>
-            <th scope="col" class="px-4 py-3 text-left font-semibold text-gray-600 dark:text-gray-300">Username</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-          <% @audiences.each do |audience| %>
+  <div class="mt-8">
+    <% if @audiences.any? %>
+      <div class="card overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 text-sm dark:divide-gray-800">
+          <thead>
             <tr>
-              <td class="px-4 py-3 tabular-nums text-gray-500 dark:text-gray-400"><%= audience.id %></td>
-              <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">“<%= audience.name %>”</td>
-              <td class="px-4 py-3 text-gray-500 dark:text-gray-400"><%= audience.user.username %></td>
+              <th scope="col" class="px-5 py-3 text-left font-semibold text-gray-600 dark:text-gray-300">ID</th>
+              <th scope="col" class="px-5 py-3 text-left font-semibold text-gray-600 dark:text-gray-300">Name</th>
+              <th scope="col" class="px-5 py-3 text-left font-semibold text-gray-600 dark:text-gray-300">Username</th>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-  <% else %>
-    <p class="rounded-lg border border-dashed border-gray-300 px-4 py-8 text-center text-sm text-gray-500 dark:border-gray-600 dark:text-gray-400">
-      No attendees yet. Share the meeting link to invite them.
-    </p>
-  <% end %>
+          </thead>
+          <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+            <% @audiences.each do |audience| %>
+              <tr>
+                <td class="px-5 py-3 tabular-nums text-gray-500 dark:text-gray-400"><%= audience.id %></td>
+                <td class="px-5 py-3 font-medium">“<%= audience.name %>”</td>
+                <td class="px-5 py-3 text-gray-500 dark:text-gray-400"><%= audience.user.username %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <p class="empty-state">
+        No attendees yet. Share the meeting link to invite them.
+      </p>
+    <% end %>
+  </div>
 </div>

@@ -74,7 +74,7 @@ class DecisionMadeTest < ActionDispatch::IntegrationTest
     get round_agenda_items_path(@round)
     assert_select "turbo-frame##{frame_id(:votes)}" do
       assert_select "span", "Decision made"
-      assert_select "button[disabled].bg-green-600", "Favor"
+      assert_select "button[disabled].bg-rose-600", "Favor"
       assert_select "form", 0
     end
   end
