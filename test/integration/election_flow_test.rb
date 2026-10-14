@@ -54,8 +54,9 @@ class ElectionFlowTest < ActionDispatch::IntegrationTest
       post round_agenda_item_votes_path(@round, @election), params: { candidate_id: @bob.id }
     end
     assert_equal @bob, vote.reload.candidate
-    # Bob is now my vote, so clicking him withdraws it
-    assert_select "#{votes_frame} form[action='#{round_agenda_item_vote_path(@round, @election, vote)}'] button", "Bob"
+    # Bob is now my vote, and "No vote" withdraws it
+    assert_select "#{votes_frame} button[aria-pressed=true]", "Bob"
+    assert_select "#{votes_frame} form[action='#{round_agenda_item_vote_path(@round, @election, vote)}'] button", "No vote"
 
     assert_difference "Vote.count", -1 do
       delete round_agenda_item_vote_path(@round, @election, vote)

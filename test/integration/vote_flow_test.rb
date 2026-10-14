@@ -14,6 +14,22 @@ class VoteFlowTest < ActionDispatch::IntegrationTest
     assert_select "button", "Against"
   end
 
+  test "no vote is chosen until voting, then cancels the vote" do
+    votes_frame = "turbo-frame##{ActionView::RecordIdentifier.dom_id(@agenda_item)}_votes"
+    get round_agenda_items_path(@round)
+    assert_select "#{votes_frame} button[aria-pressed=true]", "No vote"
+
+    post round_agenda_item_votes_path(@round, @agenda_item), params: { choice: "favor" }
+    vote = Vote.last
+    assert_select "#{votes_frame} button[aria-pressed=true]", "Favor"
+    assert_select "#{votes_frame} form[action='#{round_agenda_item_vote_path(@round, @agenda_item, vote)}'] button", "No vote"
+
+    assert_difference "Vote.count", -1 do
+      delete round_agenda_item_vote_path(@round, @agenda_item, vote)
+    end
+    assert_select "#{votes_frame} button[aria-pressed=true]", "No vote"
+  end
+
   test "audience votes favor, changes to against, then clears" do
     assert_difference "Vote.count", 1 do
       post round_agenda_item_votes_path(@round, @agenda_item), params: { choice: "favor" }
