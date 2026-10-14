@@ -7,41 +7,38 @@
       Voting is closed.
     </p>
   <% end %>
-  <%# Each option: label, whether it is my vote, and params to cast it %>
+  <%# Each option: label, whether it is my current choice, and params to cast it (nil for "No vote", which withdraws my vote) %>
   <% options = if agenda_item.election?
        agenda_item.candidates.map { |candidate| [candidate.name, vote&.candidate_id == candidate.id, { candidate_id: candidate.id }] }
      else
        [["Favor", vote&.favor?, { choice: "favor" }], ["Against", vote&.against?, { choice: "against" }]]
      end %>
-  <% if agenda_item.election? %>
-    <%# Candidates stack like radio rows %>
-    <div class="flex flex-col gap-2">
-      <% options.each do |label, selected, vote_params| %>
-        <% row_class = "flex w-full items-center gap-3 rounded-md border px-4 py-2 text-left text-sm #{selected ? "border-rose-600 bg-rose-50 font-medium dark:bg-rose-950/40" : "border-gray-300 dark:border-gray-700"}" %>
-        <% dot = tag.span(class: "h-3 w-3 shrink-0 rounded-full #{selected ? "bg-rose-600" : "border border-gray-400"}") %>
-        <% if closed %>
-          <%# Closed: keep showing my vote, but nothing can be clicked %>
-          <button type="button" disabled class="<%= row_class %> cursor-not-allowed opacity-60"><%= dot %><%= label %></button>
-        <% elsif selected %>
-          <%= button_to round_agenda_item_vote_path(agenda_item.round, agenda_item, vote), method: :delete, class: row_class do %><%= dot %><%= label %><% end %>
-        <% else %>
-          <%= button_to round_agenda_item_votes_path(agenda_item.round, agenda_item), params: vote_params, class: "#{row_class} hover:border-rose-600" do %><%= dot %><%= label %><% end %>
-        <% end %>
+  <% options << ["No vote", vote.nil?, nil] %>
+  <div class="<%= agenda_item.election? ? "flex flex-col gap-2" : "flex flex-wrap gap-3" %>">
+    <% options.each do |label, selected, vote_params| %>
+      <% no_vote = vote_params.nil? %>
+      <% selected_look = no_vote ? "border-gray-400 bg-gray-100 font-medium text-gray-900 dark:border-gray-500 dark:bg-gray-800 dark:text-gray-100" : "border-rose-600 #{agenda_item.election? ? "bg-rose-50 font-medium dark:bg-rose-950/40" : "bg-rose-600 text-white"}" %>
+      <% unselected_look = "border-gray-300 dark:border-gray-700 #{no_vote ? "text-gray-500 dark:text-gray-400" : ""}" %>
+      <% option_class = if agenda_item.election?
+           "flex w-full items-center gap-3 rounded-md border px-4 py-2 text-left text-sm #{selected ? selected_look : unselected_look}"
+         else
+           "rounded-md border px-5 py-2 text-sm font-medium #{selected ? selected_look : unselected_look}"
+         end %>
+      <%# Candidates stack like radio rows, with a dot showing the pick %>
+      <% dot = (tag.span(class: "h-3 w-3 shrink-0 rounded-full #{selected ? (no_vote ? "bg-gray-500" : "bg-rose-600") : "border border-gray-400"}") if agenda_item.election?) %>
+      <% if closed %>
+        <%# Closed: keep showing my choice, but nothing can be clicked %>
+        <button type="button" disabled class="<%= option_class %> cursor-not-allowed opacity-60"><%= dot %><%= label %></button>
+      <% elsif selected %>
+        <%# Already my choice: nothing to do %>
+        <button type="button" aria-pressed="true" class="<%= option_class %> cursor-default"><%= dot %><%= label %></button>
+      <% elsif no_vote %>
+        <%= button_to round_agenda_item_vote_path(agenda_item.round, agenda_item, vote), method: :delete,
+              class: "#{option_class} hover:border-gray-400 hover:text-gray-900 dark:hover:text-gray-100" do %><%= dot %><%= label %><% end %>
+      <% else %>
+        <%= button_to round_agenda_item_votes_path(agenda_item.round, agenda_item), params: vote_params,
+              class: "#{option_class} hover:border-rose-600 hover:text-rose-600 dark:hover:text-rose-400" do %><%= dot %><%= label %><% end %>
       <% end %>
-    </div>
-  <% else %>
-    <div class="flex flex-wrap gap-3">
-      <% options.each do |label, selected, vote_params| %>
-        <% button_class = "rounded-md border px-5 py-2 text-sm font-medium #{selected ? "border-rose-600 bg-rose-600 text-white" : "border-gray-300 dark:border-gray-700"}" %>
-        <% if closed %>
-          <%# Closed: keep showing my vote, but nothing can be clicked %>
-          <button type="button" disabled class="<%= button_class %> cursor-not-allowed opacity-60"><%= label %></button>
-        <% elsif selected %>
-          <%= button_to label, round_agenda_item_vote_path(agenda_item.round, agenda_item, vote), method: :delete, class: "#{button_class} hover:bg-rose-500" %>
-        <% else %>
-          <%= button_to label, round_agenda_item_votes_path(agenda_item.round, agenda_item), params: vote_params, class: "#{button_class} hover:border-rose-600 hover:text-rose-600 dark:hover:text-rose-400" %>
-        <% end %>
-      <% end %>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 <% end %>
