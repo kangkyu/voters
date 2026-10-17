@@ -2,8 +2,8 @@
   <% vote = agenda_item.my_vote %>
   <% closed = agenda_item.decision_made? %>
   <% if closed %>
-    <p class="mb-3 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-      <span class="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-gray-600 dark:bg-gray-800 dark:text-gray-300">Decision made</span>
+    <p class="mb-3 flex items-center gap-2 text-sm text-stone-500 dark:text-stone-400">
+      <span class="rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-stone-600 dark:bg-stone-800 dark:text-stone-300">Decision made</span>
       Voting is closed.
     </p>
   <% end %>
@@ -17,15 +17,15 @@
   <div class="<%= agenda_item.election? ? "flex flex-col gap-2" : "flex flex-wrap gap-3" %>">
     <% options.each do |label, selected, vote_params| %>
       <% no_vote = vote_params.nil? %>
-      <% selected_look = no_vote ? "border-gray-400 bg-gray-100 font-medium text-gray-900 dark:border-gray-500 dark:bg-gray-800 dark:text-gray-100" : "border-rose-600 #{agenda_item.election? ? "bg-rose-50 font-medium dark:bg-rose-950/40" : "bg-rose-600 text-white"}" %>
-      <% unselected_look = "border-gray-300 dark:border-gray-700 #{no_vote ? "text-gray-500 dark:text-gray-400" : ""}" %>
+      <% selected_look = no_vote ? "border-stone-400 bg-stone-100 font-medium text-stone-900 dark:border-stone-500 dark:bg-stone-800 dark:text-stone-100" : "border-blue-800 #{agenda_item.election? ? "bg-blue-50 font-medium dark:bg-blue-950/40" : "bg-blue-800 text-white"}" %>
+      <% unselected_look = "border-stone-300 dark:border-stone-700 #{no_vote ? "text-stone-500 dark:text-stone-400" : ""}" %>
       <% option_class = if agenda_item.election?
            "flex w-full items-center gap-3 rounded-md border px-4 py-2 text-left text-sm #{selected ? selected_look : unselected_look}"
          else
            "rounded-md border px-5 py-2 text-sm font-medium #{selected ? selected_look : unselected_look}"
          end %>
       <%# Candidates stack like radio rows, with a dot showing the pick %>
-      <% dot = (tag.span(class: "h-3 w-3 shrink-0 rounded-full #{selected ? (no_vote ? "bg-gray-500" : "bg-rose-600") : "border border-gray-400"}") if agenda_item.election?) %>
+      <% dot = (tag.span(class: "h-3 w-3 shrink-0 rounded-full #{selected ? (no_vote ? "bg-stone-500" : "bg-blue-800") : "border border-stone-400"}") if agenda_item.election?) %>
       <% if closed %>
         <%# Closed: keep showing my choice, but nothing can be clicked %>
         <button type="button" disabled class="<%= option_class %> cursor-not-allowed opacity-60"><%= dot %><%= label %></button>
@@ -34,10 +34,10 @@
         <button type="button" aria-pressed="true" class="<%= option_class %> cursor-default"><%= dot %><%= label %></button>
       <% elsif no_vote %>
         <%= button_to round_agenda_item_vote_path(agenda_item.round, agenda_item, vote), method: :delete,
-              class: "#{option_class} hover:border-gray-400 hover:text-gray-900 dark:hover:text-gray-100" do %><%= dot %><%= label %><% end %>
+              class: "#{option_class} hover:border-stone-400 hover:text-stone-900 dark:hover:text-stone-100" do %><%= dot %><%= label %><% end %>
       <% else %>
         <%= button_to round_agenda_item_votes_path(agenda_item.round, agenda_item), params: vote_params,
-              class: "#{option_class} hover:border-rose-600 hover:text-rose-600 dark:hover:text-rose-400" do %><%= dot %><%= label %><% end %>
+              class: "#{option_class} hover:border-blue-800 hover:text-blue-800 dark:hover:text-blue-400" do %><%= dot %><%= label %><% end %>
       <% end %>
     <% end %>
   </div>

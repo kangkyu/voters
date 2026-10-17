@@ -1,20 +1,20 @@
 <% results_page = current_user.owner?(@round) && current_page?(owner_round_results_path(@round)) %>
 <li id="<%= dom_id(agenda_item) %>" class="card flex items-start gap-4 p-5 [counter-increment:agenda]">
-  <span aria-hidden="true" class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-rose-600 text-sm font-semibold text-white before:content-[counter(agenda)]"></span>
+  <span aria-hidden="true" class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-800 text-sm font-semibold text-white before:content-[counter(agenda)]"></span>
   <div class="min-w-0 flex-1">
     <div class="flex flex-wrap items-center gap-2">
       <h3 class="font-medium"><%= agenda_item.name %></h3>
       <% if agenda_item.election? %>
-        <span class="rounded-full bg-rose-50 px-2.5 py-0.5 text-xs font-medium text-rose-700 dark:bg-rose-950 dark:text-rose-300">Election · <%= pluralize(agenda_item.candidates.size, "candidate") %></span>
+        <span class="rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-900 dark:bg-blue-950 dark:text-blue-300">Election · <%= pluralize(agenda_item.candidates.size, "candidate") %></span>
       <% elsif agenda_item.decision_rule %>
-        <span class="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-700 dark:bg-gray-800 dark:text-gray-300">Decision · <%= agenda_item.decision_rule_label %> approve</span>
+        <span class="rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-medium text-stone-700 dark:bg-stone-800 dark:text-stone-300">Decision · <%= agenda_item.decision_rule_label %> approve</span>
       <% end %>
     </div>
     <% if agenda_item.location.present? %>
-      <p class="text-sm text-gray-500 dark:text-gray-400"><%= agenda_item.location %></p>
+      <p class="text-sm text-stone-500 dark:text-stone-400"><%= agenda_item.location %></p>
     <% end %>
     <% if agenda_item.election? && !results_page %>
-      <p class="candidates text-sm text-gray-500 dark:text-gray-400"><%= agenda_item.candidates.map(&:name).to_sentence %></p>
+      <p class="candidates text-sm text-stone-500 dark:text-stone-400"><%= agenda_item.candidates.map(&:name).to_sentence %></p>
     <% end %>
     <% if results_page %>
       <div class="mt-3">
@@ -27,7 +27,7 @@
       <% if results_page %>
         <%= render "owner/agenda_items/decision_made", agenda_item: agenda_item %>
       <% else %>
-        <%= button_to "Delete", owner_round_agenda_item_path(@round, agenda_item), method: :delete, form: { data: { turbo_confirm: "Are you sure with deleting #{agenda_item.name}?" }}, class: "text-sm font-medium text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400" %>
+        <%= button_to "Delete", owner_round_agenda_item_path(@round, agenda_item), method: :delete, form: { data: { turbo_confirm: "Are you sure with deleting #{agenda_item.name}?" }}, class: "text-sm font-medium text-stone-500 hover:text-red-600 dark:text-stone-400 dark:hover:text-red-400" %>
       <% end %>
     </div>
   <% end %>

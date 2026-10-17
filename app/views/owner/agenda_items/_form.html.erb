@@ -27,7 +27,7 @@
     <div class="sm:col-span-2 lg:col-span-1" data-kind-fields-target="election" <%= "hidden" unless agenda_item.election? %>>
       <%= f.label :candidate_names, "Candidates", class: "form-label" %>
       <%= f.text_area :candidate_names, rows: 4, placeholder: "One name per line", class: "form-input" %>
-      <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">One name per line. Most votes wins.</p>
+      <p class="mt-1 text-xs text-stone-500 dark:text-stone-400">One name per line. Most votes wins.</p>
     </div>
   </div>
   <%= f.submit "Add", class: "btn-primary w-full" %>

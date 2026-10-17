@@ -1,7 +1,7 @@
 <% if flash.present? %>
   <div data-controller="flash" class="mx-auto w-full max-w-6xl space-y-2 px-6 pt-6">
     <% flash.each do |key, message| %>
-      <div class="rounded-md px-4 py-3 text-sm <%= key.to_s == "alert" ? "bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300" : "bg-rose-50 text-rose-800 dark:bg-rose-950 dark:text-rose-200" %>"><%= message %></div>
+      <div class="rounded-md px-4 py-3 text-sm <%= key.to_s == "alert" ? "bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300" : "bg-blue-50 text-blue-950 dark:bg-blue-950 dark:text-blue-200" %>"><%= message %></div>
     <% end %>
   </div>
 <% end %>
