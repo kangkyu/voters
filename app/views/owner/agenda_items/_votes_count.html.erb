@@ -7,27 +7,27 @@
     <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
       <span class="text-sm">Favor <span class="font-medium tabular-nums"><%= favor %></span></span>
       <span class="text-sm">Against <span class="font-medium tabular-nums"><%= against %></span></span>
-      <span class="text-sm text-gray-500 dark:text-gray-400">Not voted <span class="tabular-nums"><%= agenda_item.not_voted_count %></span></span>
+      <span class="text-sm text-stone-500 dark:text-stone-400">Not voted <span class="tabular-nums"><%= agenda_item.not_voted_count %></span></span>
       <% case agenda_item.decision %>
       <% when :passed %>
         <span class="decision-badge rounded-full bg-green-600 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">✓ Passed</span>
       <% when :failed %>
         <span class="decision-badge rounded-full bg-red-600 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">✗ Failed</span>
       <% when :pending %>
-        <span class="decision-badge rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-gray-600 dark:bg-gray-800 dark:text-gray-300">No votes yet</span>
+        <span class="decision-badge rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-stone-600 dark:bg-stone-800 dark:text-stone-300">No votes yet</span>
       <% end %>
     </div>
     <% if agenda_item.decision_rule %>
       <% total = favor + against %>
       <%# Favor share of votes cast, with a marker at the pass threshold %>
-      <div class="relative mt-2 h-2 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800" title="Needs <%= agenda_item.decision_rule_label %> of votes cast in favor">
+      <div class="relative mt-2 h-2 w-full overflow-hidden rounded-full bg-stone-100 dark:bg-stone-800" title="Needs <%= agenda_item.decision_rule_label %> of votes cast in favor">
         <% if total > 0 %>
-          <div class="absolute inset-y-0 left-0 bg-rose-600" style="width: <%= (favor * 100.0 / total).round(2) %>%"></div>
-          <div class="absolute inset-y-0 right-0 bg-gray-400" style="width: <%= (against * 100.0 / total).round(2) %>%"></div>
+          <div class="absolute inset-y-0 left-0 bg-blue-800" style="width: <%= (favor * 100.0 / total).round(2) %>%"></div>
+          <div class="absolute inset-y-0 right-0 bg-stone-400" style="width: <%= (against * 100.0 / total).round(2) %>%"></div>
         <% end %>
-        <div class="absolute inset-y-0 w-0.5 bg-gray-900 dark:bg-white" style="left: <%= agenda_item.decision_threshold_percent.round(2) %>%"></div>
+        <div class="absolute inset-y-0 w-0.5 bg-stone-900 dark:bg-white" style="left: <%= agenda_item.decision_threshold_percent.round(2) %>%"></div>
       </div>
-      <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Needs <%= agenda_item.decision_rule_label %> of votes cast in favor</p>
+      <p class="mt-1 text-xs text-stone-500 dark:text-stone-400">Needs <%= agenda_item.decision_rule_label %> of votes cast in favor</p>
     <% end %>
   <% end %>
 <% end %>

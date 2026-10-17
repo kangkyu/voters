@@ -3,9 +3,9 @@
 <% total = agenda_item.votes_cast + not_voted %>
 <div class="flex flex-wrap items-center gap-2">
   <% if leaders.empty? %>
-    <span class="decision-badge rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-gray-600 dark:bg-gray-800 dark:text-gray-300">No votes yet</span>
+    <span class="decision-badge rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-stone-600 dark:bg-stone-800 dark:text-stone-300">No votes yet</span>
   <% elsif leaders.one? %>
-    <span class="decision-badge rounded-full bg-rose-600 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">★ <%= leaders.first.name %> wins</span>
+    <span class="decision-badge rounded-full bg-blue-800 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">★ <%= leaders.first.name %> wins</span>
   <% else %>
     <span class="decision-badge rounded-full bg-amber-500 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">Tie · <%= leaders.map(&:name).to_sentence %></span>
   <% end %>
@@ -16,24 +16,24 @@
     <% count = agenda_item.candidate_vote_count(candidate) %>
     <li class="candidate-count">
       <div class="flex justify-between text-sm">
-        <span class="<%= leaders.include?(candidate) ? "font-semibold" : "text-gray-600 dark:text-gray-300" %>"><%= candidate.name %></span>
-        <span class="tabular-nums text-gray-600 dark:text-gray-300"><%= count %></span>
+        <span class="<%= leaders.include?(candidate) ? "font-semibold" : "text-stone-600 dark:text-stone-300" %>"><%= candidate.name %></span>
+        <span class="tabular-nums text-stone-600 dark:text-stone-300"><%= count %></span>
       </div>
-      <div class="mt-1 h-2 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
+      <div class="mt-1 h-2 w-full overflow-hidden rounded-full bg-stone-100 dark:bg-stone-800">
         <% if total > 0 %>
-          <div class="h-full <%= leaders.include?(candidate) ? "bg-rose-600" : "bg-rose-200 dark:bg-rose-900" %>" style="width: <%= (count * 100.0 / total).round(2) %>%"></div>
+          <div class="h-full <%= leaders.include?(candidate) ? "bg-blue-800" : "bg-blue-200 dark:bg-blue-900" %>" style="width: <%= (count * 100.0 / total).round(2) %>%"></div>
         <% end %>
       </div>
     </li>
   <% end %>
   <li class="not-voted-count">
-    <div class="flex justify-between text-sm text-gray-500 dark:text-gray-400">
+    <div class="flex justify-between text-sm text-stone-500 dark:text-stone-400">
       <span>Not voted</span>
       <span class="tabular-nums"><%= not_voted %></span>
     </div>
-    <div class="mt-1 h-2 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
+    <div class="mt-1 h-2 w-full overflow-hidden rounded-full bg-stone-100 dark:bg-stone-800">
       <% if total > 0 %>
-        <div class="h-full bg-gray-400 dark:bg-gray-500" style="width: <%= (not_voted * 100.0 / total).round(2) %>%"></div>
+        <div class="h-full bg-stone-400 dark:bg-stone-500" style="width: <%= (not_voted * 100.0 / total).round(2) %>%"></div>
       <% end %>
     </div>
   </li>
