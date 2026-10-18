@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  resources :users, only: [:new, :show, :create, :index]
+  resources :users, only: [:new, :show, :edit, :update, :create, :index]
   get "register" => "users#new"
 
   resource :session, only: [:new, :create, :destroy]

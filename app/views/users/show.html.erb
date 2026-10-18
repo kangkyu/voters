@@ -4,7 +4,10 @@
       <h1 class="page-title"><%= @user.username %></h1>
       <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-900 dark:bg-blue-950 dark:text-blue-300"><%= @user.user_role %></span>
     </div>
-    <%= button_to "Sign Out", session_path, method: :delete, form: { data: { turbo_confirm: "Signing out as \"#{current_user.username}\"?" }}, class: "btn-secondary" %>
+    <div class="flex items-center gap-3">
+      <%= link_to "Edit account", edit_user_path(@user.another_id), class: "btn-secondary" %>
+      <%= button_to "Sign Out", session_path, method: :delete, form: { data: { turbo_confirm: "Signing out as \"#{current_user.username}\"?" }}, class: "btn-secondary" %>
+    </div>
   </div>
   <p class="mt-2 text-sm text-stone-600 dark:text-stone-400">Thank you for using this app. This page shows who the current user is.</p>
 
