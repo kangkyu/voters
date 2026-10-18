@@ -5,7 +5,7 @@ class VotesController < ApplicationController
   before_action :find_agenda_item
   before_action :require_voting_open
 
-  # Sets or changes my vote: favor / against on a motion, a candidate in an election
+  # Sets or changes my vote: favor / against on a motion, a candidate in an election, or abstain on either
   def create
     attributes = vote_attributes
     return head :unprocessable_entity unless attributes
@@ -33,9 +33,11 @@ class VotesController < ApplicationController
 
   # nil when the request doesn't name a valid choice for this agenda item
   def vote_attributes
-    if @agenda_item.election?
+    if @agenda_item.election? && params[:choice] == "abstain"
+      { choice: "abstain", candidate: nil }
+    elsif @agenda_item.election?
       candidate = @agenda_item.candidates.find_by(id: params[:candidate_id])
-      { candidate: candidate } if candidate
+      { candidate: candidate, choice: nil } if candidate
     elsif Vote.choices.key?(params[:choice])
       { choice: params[:choice] }
     end

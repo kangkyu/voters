@@ -52,6 +52,20 @@ class AgendaItemTest < ActiveSupport::TestCase
     passed = agenda_item_with_votes("majority", favor: 2, against: 1)
     empty = @round.agenda_items.create!(name: "Empty")
     fresh = AgendaItem.load_vote_tallies(AgendaItem.where(id: [passed.id, empty.id]).order(:id).to_a)
-    assert_equal [{ "favor" => 2, "against" => 1 }, { "favor" => 0, "against" => 0 }], fresh.map(&:vote_tally)
+    assert_equal [{ "favor" => 2, "against" => 1, "abstain" => 0 }, { "favor" => 0, "against" => 0, "abstain" => 0 }], fresh.map(&:vote_tally)
+  end
+
+  test "abstentions don't count toward pass / fail, nor as not voted" do
+    agenda_item = agenda_item_with_votes("majority", favor: 1, against: 0)
+    user = User.create!(username: "abstainer#{agenda_item.id}", password: "1111")
+    audience = @round.audiences.create!(user: user, name: "Abstainer")
+    agenda_item.votes.create!(user: user, audience: audience, choice: "abstain")
+
+    fresh = AgendaItem.find(agenda_item.id)
+    assert_equal :passed, fresh.decision
+    assert_equal 1, fresh.abstain_count
+    assert_equal 1, fresh.votes_cast
+    # Fixture attendees john and gapbun haven't voted
+    assert_equal 2, fresh.not_voted_count
   end
 end

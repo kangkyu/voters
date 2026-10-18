@@ -63,7 +63,7 @@ class DecisionMadeTest < ActionDispatch::IntegrationTest
     delete round_agenda_item_vote_path(@round, @agenda_item, vote)
     assert_response :unprocessable_entity
     assert Vote.exists?(vote.id)
-    assert_select "turbo-frame##{frame_id(:votes)} button[disabled]", 3
+    assert_select "turbo-frame##{frame_id(:votes)} button[disabled]", 4
   end
 
   test "attendee page shows closed items with their vote and no active buttons" do

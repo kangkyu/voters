@@ -12,6 +12,20 @@ class VoteFlowTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "button", "Favor"
     assert_select "button", "Against"
+    assert_select "button", "Abstain"
+  end
+
+  test "abstains, then changes to favor" do
+    votes_frame = "turbo-frame##{ActionView::RecordIdentifier.dom_id(@agenda_item)}_votes"
+    assert_difference "Vote.count", 1 do
+      post round_agenda_item_votes_path(@round, @agenda_item), params: { choice: "abstain" }
+    end
+    assert Vote.last.abstain?
+    assert_select "#{votes_frame} button[aria-pressed=true]", "Abstain"
+
+    post round_agenda_item_votes_path(@round, @agenda_item), params: { choice: "favor" }
+    assert Vote.last.favor?
+    assert_select "#{votes_frame} button[aria-pressed=true]", "Favor"
   end
 
   test "no vote is chosen until voting, then cancels the vote" do
@@ -85,6 +99,6 @@ class VoteFlowTest < ActionDispatch::IntegrationTest
     post session_path, params: { username: "jimmy", password: "1111" }
 
     get owner_round_results_path(@round)
-    assert_select "turbo-frame##{ActionView::RecordIdentifier.dom_id(@agenda_item)}_votes_count", /Favor 1\s+Against 1\s+Not voted 1/
+    assert_select "turbo-frame##{ActionView::RecordIdentifier.dom_id(@agenda_item)}_votes_count", /Favor 1\s+Against 1\s+Abstain 0\s+Not voted 1/
   end
 end

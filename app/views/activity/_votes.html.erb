@@ -13,6 +13,7 @@
      else
        [["Favor", vote&.favor?, { choice: "favor" }], ["Against", vote&.against?, { choice: "against" }]]
      end %>
+  <% options << ["Abstain", vote&.abstain?, { choice: "abstain" }] %>
   <% options << ["No vote", vote.nil?, nil] %>
   <div class="<%= agenda_item.election? ? "flex flex-col gap-2" : "flex flex-wrap gap-3" %>">
     <% options.each do |label, selected, vote_params| %>
