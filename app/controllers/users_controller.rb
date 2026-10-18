@@ -10,8 +10,11 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
+      intended_url = session[:intended_url]
+      # Signing up also signs in: start a fresh session, as sign-in does
+      reset_session
       session[:user_id] = @user.id
-      redirect_to session[:intended_url] || root_url
+      redirect_to intended_url || root_url
     else
       flash.now[:alert] = "Sign up not successful: #{@user.errors.full_messages.to_sentence}"
       render :new, status: :unprocessable_entity
