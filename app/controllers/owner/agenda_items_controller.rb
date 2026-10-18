@@ -28,11 +28,32 @@ class Owner::AgendaItemsController < ApplicationController
     end
   end
 
-  # Toggles "decision made" from the checkbox in each agenda item
+  # Cancelling an edit puts the agenda item back as it was
+  def show
+    @agenda_item = @round.agenda_items.find(params[:id])
+    render turbo_stream: turbo_stream.replace(@agenda_item, partial: "agenda_item", locals: { agenda_item: @agenda_item })
+  end
+
+  # Turns the agenda item into its edit form, in place
+  def edit
+    @agenda_item = @round.agenda_items.find(params[:id])
+    render turbo_stream: turbo_stream.replace(@agenda_item, partial: "edit_form", locals: { agenda_item: @agenda_item })
+  end
+
+  # Either toggles "decision made" from the checkbox on the results page, or saves the edit form
   def update
     @agenda_item = @round.agenda_items.find(params[:id])
-    @agenda_item.update!(decision_made: params.require(:agenda_item)[:decision_made])
-    render partial: "decision_made", locals: { agenda_item: @agenda_item }
+    if params.require(:agenda_item).key?(:decision_made)
+      @agenda_item.update!(decision_made: params[:agenda_item][:decision_made])
+      render partial: "decision_made", locals: { agenda_item: @agenda_item }
+    elsif @agenda_item.update(agenda_item_edit_params)
+      # Candidates may change without the agenda item itself changing, so refresh attendees here
+      @agenda_item.broadcast_refresh_later_to [@round, :agenda]
+      render turbo_stream: turbo_stream.replace(@agenda_item, partial: "agenda_item", locals: { agenda_item: @agenda_item })
+    else
+      render turbo_stream: turbo_stream.replace(@agenda_item, partial: "edit_form", locals: { agenda_item: @agenda_item }),
+        status: :unprocessable_entity
+    end
   end
 
   def destroy
@@ -55,5 +76,10 @@ class Owner::AgendaItemsController < ApplicationController
 
   def agenda_item_params
     params.require(:agenda_item).permit(:name, :location, :kind, :decision_rule, :candidate_names)
+  end
+
+  # The kind stays as created: votes already cast are favor / against or for a candidate
+  def agenda_item_edit_params
+    params.require(:agenda_item).permit(:name, :location, :decision_rule, :candidate_names)
   end
 end
