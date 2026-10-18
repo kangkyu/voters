@@ -8,6 +8,15 @@
         <%= f.label :title, class: "form-label" %>
         <%= f.text_field :title, autofocus: true, placeholder: "Annual General Meeting", class: "form-input" %>
       </div>
+      <div>
+        <label class="flex items-start gap-2 text-sm">
+          <%= f.check_box :require_passcode, checked: true, class: "mt-0.5 h-4 w-4 rounded border-stone-300 text-blue-800 focus:ring-blue-700 dark:border-stone-700 dark:bg-stone-950" %>
+          <span>
+            Require a passcode to join
+            <span class="block text-xs text-stone-500 dark:text-stone-400">You announce a 6-digit code at the meeting, so a forwarded link alone isn't enough.</span>
+          </span>
+        </label>
+      </div>
       <%= f.submit "Start", class: "btn-primary w-full" %>
     <% end %>
   </div>
