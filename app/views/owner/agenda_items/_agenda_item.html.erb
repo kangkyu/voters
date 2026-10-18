@@ -9,6 +9,11 @@
       <% elsif agenda_item.decision_rule %>
         <span class="rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-medium text-stone-700 dark:bg-stone-800 dark:text-stone-300">Decision · <%= agenda_item.decision_rule_label %> approve</span>
       <% end %>
+      <% if results_page %>
+        <div class="ml-auto">
+          <%= render "owner/agenda_items/decision_made", agenda_item: agenda_item %>
+        </div>
+      <% end %>
     </div>
     <% if agenda_item.location.present? %>
       <p class="text-sm text-stone-500 dark:text-stone-400"><%= agenda_item.location %></p>
@@ -22,13 +27,9 @@
       </div>
     <% end %>
   </div>
-  <% if current_user.owner?(@round) %>
+  <% if current_user.owner?(@round) && !results_page %>
     <div class="shrink-0">
-      <% if results_page %>
-        <%= render "owner/agenda_items/decision_made", agenda_item: agenda_item %>
-      <% else %>
-        <%= button_to "Delete", owner_round_agenda_item_path(@round, agenda_item), method: :delete, form: { data: { turbo_confirm: "Are you sure with deleting #{agenda_item.name}?" }}, class: "text-sm font-medium text-stone-500 hover:text-red-600 dark:text-stone-400 dark:hover:text-red-400" %>
-      <% end %>
+      <%= button_to "Delete", owner_round_agenda_item_path(@round, agenda_item), method: :delete, form: { data: { turbo_confirm: "Are you sure with deleting #{agenda_item.name}?" }}, class: "text-sm font-medium text-stone-500 hover:text-red-600 dark:text-stone-400 dark:hover:text-red-400" %>
     </div>
   <% end %>
 </li>
