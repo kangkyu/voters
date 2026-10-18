@@ -63,6 +63,22 @@ class ElectionFlowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "abstains in an election, then picks a candidate" do
+    sign_in "john"
+    post round_agenda_item_votes_path(@round, @election), params: { choice: "abstain" }
+    vote = Vote.last
+    assert vote.abstain?
+    assert_nil vote.candidate
+    assert_select "#{votes_frame} button[aria-pressed=true]", "Abstain"
+
+    assert_no_difference "Vote.count" do
+      post round_agenda_item_votes_path(@round, @election), params: { candidate_id: @ann.id }
+    end
+    vote.reload
+    assert_nil vote.choice
+    assert_equal @ann, vote.candidate
+  end
+
   test "rejects a candidate from another election" do
     other = @round.agenda_items.create!(name: "Treasurer", kind: "election", candidate_names: "Cy\nDee")
     sign_in "john"
@@ -98,6 +114,7 @@ class ElectionFlowTest < ActionDispatch::IntegrationTest
     assert_select "#{frame} .decision-badge", /Bob wins/
     assert_select "#{frame} .candidate-count", text: /Ann\s+0/
     assert_select "#{frame} .candidate-count", text: /Bob\s+1/
+    assert_select "#{frame} .abstain-count", text: /Abstain\s+0/
     assert_select "#{frame} .not-voted-count", text: /Not voted\s+1/
   end
 

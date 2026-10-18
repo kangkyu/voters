@@ -8,6 +8,11 @@
   }
 }
 
+/* Meeting minutes print on plain pages */
+@page {
+  margin: 2cm;
+}
+
 /* Shared look, matching the landing page */
 @layer components {
   .btn-primary {

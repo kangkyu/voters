@@ -61,7 +61,7 @@ class ElectionTest < ActiveSupport::TestCase
     fresh = AgendaItem.load_vote_tallies(AgendaItem.where(id: [voted.id, empty.id]).order(:id).to_a)
     ann, _bob, cy = voted.candidates
     assert_equal [{ ann.id => 2, cy.id => 1 }, {}], fresh.map(&:candidate_tally)
-    assert_equal [{ "favor" => 0, "against" => 0 }] * 2, fresh.map(&:vote_tally)
+    assert_equal [{ "favor" => 0, "against" => 0, "abstain" => 0 }] * 2, fresh.map(&:vote_tally)
   end
 
   test "counts attendees who haven't voted in an election" do
@@ -99,7 +99,27 @@ class ElectionTest < ActiveSupport::TestCase
     agenda_item = election
     vote = agenda_item.votes.build(user: users(:john), audience: audiences(:john_at_contest), candidate: agenda_item.candidates.first, choice: "favor")
     assert_not vote.valid?
-    assert_includes vote.errors[:choice], "must be blank in an election"
+    assert_includes vote.errors[:choice], "must be blank or abstain in an election"
+  end
+
+  test "an election vote can abstain, without a candidate" do
+    agenda_item = election
+    vote = agenda_item.votes.build(user: users(:john), audience: audiences(:john_at_contest), choice: "abstain")
+    assert vote.valid?
+
+    vote.candidate = agenda_item.candidates.first
+    assert_not vote.valid?
+    assert_includes vote.errors[:candidate], "must be blank when abstaining"
+  end
+
+  test "abstentions in an election aren't candidate votes, nor not voted" do
+    agenda_item = vote_for(election, "Ann")
+    agenda_item.votes.create!(user: users(:john), audience: audiences(:john_at_contest), choice: "abstain")
+    fresh = AgendaItem.find(agenda_item.id)
+    assert_equal 1, fresh.votes_cast
+    assert_equal 1, fresh.abstain_count
+    assert_equal 1, fresh.not_voted_count
+    assert_equal ["Ann"], fresh.leading_candidates.map(&:name)
   end
 
   test "a motion vote needs a choice and no candidate" do

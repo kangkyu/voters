@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" class="[color-scheme:light]">
+  <head>
+    <%= render "layouts/head" %>
+  </head>
+
+  <%# Always light, without the site header and footer, so the page prints as a plain document %>
+  <body class="bg-white text-stone-900 antialiased">
+    <main class="mx-auto w-full max-w-3xl px-6 py-10 print:max-w-none print:p-0">
+      <%= yield %>
+    </main>
+  </body>
+</html>

@@ -7,6 +7,7 @@
     <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
       <span class="text-sm">Favor <span class="font-medium tabular-nums"><%= favor %></span></span>
       <span class="text-sm">Against <span class="font-medium tabular-nums"><%= against %></span></span>
+      <span class="text-sm">Abstain <span class="font-medium tabular-nums"><%= agenda_item.abstain_count %></span></span>
       <span class="text-sm text-stone-500 dark:text-stone-400">Not voted <span class="tabular-nums"><%= agenda_item.not_voted_count %></span></span>
       <% case agenda_item.decision %>
       <% when :passed %>
