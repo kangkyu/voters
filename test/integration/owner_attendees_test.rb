@@ -21,4 +21,26 @@ class OwnerAttendeesTest < ActionDispatch::IntegrationTest
     assert_select "table", 0
     assert_select "p", /No attendees yet/
   end
+
+  test "owner removes an attendee along with their votes in the meeting" do
+    agenda_item = agenda_items(:singer)
+    agenda_item.votes.create!(user: users(:john), audience: audiences(:john_at_contest), choice: "favor")
+
+    assert_difference "Audience.count" => -1, "Vote.count" => -1, "User.count" => 0 do
+      delete owner_round_audience_path(@round, audiences(:john_at_contest))
+    end
+    assert_redirected_to owner_round_audiences_url(@round)
+    assert_equal 0, agenda_item.reload.votes_count
+
+    follow_redirect!
+    assert_select "tbody td", { text: "“Johnny”", count: 0 }
+  end
+
+  test "attendees can't remove each other" do
+    delete session_path
+    post session_path, params: { username: "john", password: "1111" }
+    assert_no_difference "Audience.count" do
+      delete owner_round_audience_path(@round, audiences(:gapbun_at_contest))
+    end
+  end
 end

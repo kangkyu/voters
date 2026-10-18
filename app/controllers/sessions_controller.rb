@@ -5,12 +5,15 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.find_by(username: params[:username])
+    # Usernames are unique regardless of case, so sign-in ignores case too
+    user = User.find_by("LOWER(username) = ?", params[:username].to_s.downcase)
 
     if user && user.authenticate(params[:password])
+      intended_url = session[:intended_url]
+      # A fresh session on sign-in, so a session id set before it can't be reused
+      reset_session
       session[:user_id] = user.id
-      redirect_to session[:intended_url] || root_url
-      session[:intended_url] = nil
+      redirect_to intended_url || root_url
     else
       flash.now[:alert] = "Invalid username/password combination."
       render :new, status: :unprocessable_entity
@@ -18,7 +21,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    session[:user_id] = nil
+    reset_session
     redirect_to new_session_url
   end
 end

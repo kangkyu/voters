@@ -16,7 +16,8 @@ Rails.application.routes.draw do
 
   namespace :owner do
     resources :rounds, only: [] do
-      resources :audiences, only: [:index]
+      resources :audiences, only: [:index, :destroy]
+      resource :passcode, only: [:create, :destroy]
       resources :agenda_items, only: [:new, :create, :show, :edit, :update, :destroy, :index]
       get "results" => "agenda_items#result"
       get "minutes" => "agenda_items#minutes"
