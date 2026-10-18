@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       resources :audiences, only: [:index]
       resources :agenda_items, only: [:new, :create, :update, :destroy, :index]
       get "results" => "agenda_items#result"
+      get "minutes" => "agenda_items#minutes"
     end
   end
 

@@ -11,6 +11,13 @@ class Owner::AgendaItemsController < ApplicationController
     @agenda_items = AgendaItem.load_vote_tallies(@round.agenda_items.includes(:candidates).order(:created_at).to_a)
   end
 
+  # Print-friendly record of the meeting: attendees and each item's outcome
+  def minutes
+    @agenda_items = AgendaItem.load_vote_tallies(@round.agenda_items.includes(:candidates).order(:created_at).to_a)
+    @audiences = @round.audiences.order(:created_at)
+    render layout: "print"
+  end
+
   def create
     @agenda_item = @round.agenda_items.build(agenda_item_params)
     if @agenda_item.save
