@@ -136,6 +136,7 @@ ko:
         id: 번호
         name: 참석자 이름
         remove: 내보내기
+        organizer: 주최자
         remove_confirm: "“%{name}” 님을 이 회의에서 내보내시겠습니까?"
         remove_detail: 이 회의에서의 투표도 삭제됩니다.
         empty: 아직 참석자가 없습니다. 회의 링크를 공유해 초대하세요.
@@ -178,6 +179,9 @@ ko:
       title_placeholder: 정기 총회
       require_passcode: 참석할 때 참가 코드 요구
       require_passcode_hint: 회의에서 6자리 코드를 알려 주므로, 전달받은 링크만으로는 참석할 수 없습니다.
+      organizer_votes: "이 회의에서 나도 투표하기"
+      organizer_votes_hint: "회의 진행만 한다면 체크를 해제하세요."
+      organizer_name_hint: "참석자 목록과 회의록에 표시됩니다."
       submit: 시작
     show:
       eyebrow: 회의
@@ -186,6 +190,7 @@ ko:
       agenda_items: 안건
       attendees: 참석자
       results: 결과
+      vote: 투표
       invite: 참석자 초대
       invite_hint: 이 페이지 주소를 공유하세요. 참석자는 로그인한 뒤 여기서 참석합니다.
       copied: 복사했습니다!
@@ -257,6 +262,7 @@ ko:
         passcode: 참가 코드
       round:
         title: 제목
+        organizer_name: "이 회의에서 쓸 내 이름"
       user:
         username: 아이디
         password: 비밀번호
@@ -308,6 +314,8 @@ ko:
     already_signed_in: 이미 로그인되어 있습니다
     admin_only: 관리자만 이용할 수 있습니다
     owner_only: 회의 주최자만 이용할 수 있습니다
+    organizer_cannot_join: "회의를 시작할 때 투표 여부를 이미 정했습니다."
+    organizer_cannot_leave: "주최자는 회의를 시작할 때 투표하기로 정했으므로 참석자 목록에 남습니다."
     meeting_not_found: 회의가 존재하지 않습니다
     join_first: 먼저 회의에 참석해 주세요
     sign_up_failed: '가입하지 못했습니다: %{errors}'

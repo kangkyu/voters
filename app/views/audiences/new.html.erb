@@ -12,7 +12,7 @@
           <% end %>
         </ul>
       <% end %>
-      <% if @round.passcode.present? && !current_user.owner?(@round) %>
+      <% if @round.passcode.present? %>
         <div>
           <%= label_tag :passcode, Audience.human_attribute_name(:passcode), class: "form-label" %>
           <%= text_field_tag :passcode, nil, required: true, inputmode: "numeric", autocomplete: "off", class: "form-input font-mono tracking-widest" %>
