@@ -10,10 +10,10 @@
       <div class="hidden items-center gap-x-5 sm:flex">
         <%= render "layouts/account_links", extra_class: "" %>
       </div>
-      <%= link_to "New Meeting", new_round_path, class: "rounded-md bg-blue-800 px-3.5 py-2 text-white shadow-sm hover:bg-blue-700" %>
+      <%= link_to t(".new_meeting"), new_round_path, class: "rounded-md bg-blue-800 px-3.5 py-2 text-white shadow-sm hover:bg-blue-700" %>
       <button type="button" data-action="menu#toggle" aria-controls="mobile-menu" aria-expanded="false"
               class="-mr-2 inline-flex items-center justify-center rounded-md p-2 text-stone-500 hover:bg-stone-100 hover:text-stone-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 sm:hidden dark:text-stone-400 dark:hover:bg-stone-800 dark:hover:text-white">
-        <span class="sr-only">Open main menu</span>
+        <span class="sr-only"><%= t(".open_menu") %></span>
         <svg data-menu-target="openIcon" class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
         </svg>

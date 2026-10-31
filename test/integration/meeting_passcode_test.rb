@@ -2,7 +2,7 @@ require "test_helper"
 
 class MeetingPasscodeTest < ActionDispatch::IntegrationTest
   setup do
-    @round = rounds(:contest)
+    @round = rounds(:meeting)
     @round.update!(passcode: "482915")
   end
 

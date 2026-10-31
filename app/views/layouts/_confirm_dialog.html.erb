@@ -8,8 +8,8 @@
     <p class="mt-2 text-sm text-stone-600 dark:text-stone-400" data-confirm-dialog-target="detail" hidden></p>
     <%# Phones: full-width, taller buttons stacked with the confirm button on top; wider screens: side by side %>
     <div class="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-      <button type="submit" value="cancel" class="btn-secondary w-full py-3 text-base sm:w-auto sm:py-2 sm:text-sm" autofocus>Cancel</button>
-      <button type="submit" value="submit" class="btn-primary w-full py-3 text-base sm:w-auto sm:py-2 sm:text-sm" data-confirm-dialog-target="button">OK</button>
+      <button type="submit" value="cancel" class="btn-secondary w-full py-3 text-base sm:w-auto sm:py-2 sm:text-sm" autofocus><%= t("common.cancel") %></button>
+      <button type="submit" value="submit" class="btn-primary w-full py-3 text-base sm:w-auto sm:py-2 sm:text-sm" data-confirm-dialog-target="button"><%= t("common.ok") %></button>
     </div>
   </form>
 </dialog>

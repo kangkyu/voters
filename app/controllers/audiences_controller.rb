@@ -5,13 +5,13 @@ class AudiencesController < ApplicationController
   # Passcodes are short, so guessing is slowed per account and per network.
   # The network limit is loose: everyone in the room may share one Wi-Fi address
   rate_limit to: 10, within: 3.minutes, only: :create, name: "join-by-user", by: -> { current_user.id },
-    with: -> { redirect_to new_round_audience_url(@round), alert: "Too many tries. Wait a few minutes and try again." }
+    with: -> { redirect_to new_round_audience_url(@round), alert: t("flash.too_many_tries") }
   rate_limit to: 100, within: 10.minutes, only: :create, name: "join-by-ip",
-    with: -> { redirect_to new_round_audience_url(@round), alert: "Too many tries. Wait a few minutes and try again." }
+    with: -> { redirect_to new_round_audience_url(@round), alert: t("flash.too_many_tries") }
 
   def new
     if @round.audiences.exists?(user_id: current_user.id)
-      redirect_to round_url(@round), notice: "User already joined as attendee" and return
+      redirect_to round_url(@round), notice: t("flash.already_joined") and return
     end
     @audience = @round.audiences.build
   end
@@ -21,7 +21,7 @@ class AudiencesController < ApplicationController
 
     # The organizer joins their own meeting without the passcode
     unless current_user.owner?(@round) || @round.passcode_matches?(params[:passcode])
-      @audience.errors.add(:passcode, "is incorrect")
+      @audience.errors.add(:base, :incorrect_passcode)
       render "new", status: :unprocessable_entity and return
     end
 

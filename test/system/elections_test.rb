@@ -8,7 +8,7 @@ class ElectionsTest < ApplicationSystemTestCase
     click_button "Sign In"
     assert_no_text "Not logged in"
 
-    visit owner_round_agenda_items_path(rounds(:contest))
+    visit owner_round_agenda_items_path(rounds(:meeting))
     within "#new_agenda_item_form" do
       assert_no_field "Candidates"
       assert_field "Decision vote"

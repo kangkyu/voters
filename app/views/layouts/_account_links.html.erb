@@ -1,6 +1,6 @@
 <% if signed_in? %>
-  <%= link_to "Hello \"#{current_user.username}\"", user_path(current_user.another_id), class: "#{class_name_by_tab(user_path(current_user.another_id))} #{extra_class}" %>
+  <%= link_to t(".hello", name: current_user.username), user_path(current_user.another_id), class: "#{class_name_by_tab(user_path(current_user.another_id))} #{extra_class}" %>
 <% else %>
-  <%= link_to "Sign In", new_session_path, class: "#{class_name_by_tab(new_session_path)} #{extra_class}" %>
-  <%= link_to "Register", register_path, class: "#{class_name_by_tab(register_path)} #{extra_class}" %>
+  <%= link_to t(".sign_in"), new_session_path, class: "#{class_name_by_tab(new_session_path)} #{extra_class}" %>
+  <%= link_to t(".register"), register_path, class: "#{class_name_by_tab(register_path)} #{extra_class}" %>
 <% end %>

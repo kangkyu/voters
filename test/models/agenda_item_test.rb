@@ -4,7 +4,7 @@ class AgendaItemTest < ActiveSupport::TestCase
   include Turbo::Broadcastable::TestHelper
 
   setup do
-    @round = rounds(:contest)
+    @round = rounds(:meeting)
   end
 
   def agenda_item_with_votes(rule, favor:, against:)
@@ -44,8 +44,18 @@ class AgendaItemTest < ActiveSupport::TestCase
   test "new agenda items are broadcast only to their own meeting" do
     other = Round.create!(title: "other", owner: users(:gapbun))
     other.agenda_items.create!(name: "Other item")
-    assert_turbo_stream_broadcasts [other, :agenda], count: 1
-    assert_no_turbo_stream_broadcasts [@round, :agenda]
+    # One render per language, each on its own stream
+    assert_turbo_stream_broadcasts [other, :agenda, :en], count: 1
+    assert_turbo_stream_broadcasts [other, :agenda, :ko], count: 1
+    assert_no_turbo_stream_broadcasts [@round, :agenda, :en]
+    assert_no_turbo_stream_broadcasts [@round, :agenda, :ko]
+  end
+
+  test "each language's stream gets the new item rendered in that language" do
+    other = Round.create!(title: "other", owner: users(:gapbun))
+    other.agenda_items.create!(name: "Other item")
+    assert_match "Motion", capture_turbo_stream_broadcasts([other, :agenda, :en]).sole.to_html
+    assert_match "의안", capture_turbo_stream_broadcasts([other, :agenda, :ko]).sole.to_html
   end
 
   test "loads vote tallies for many agenda_items at once" do

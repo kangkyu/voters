@@ -1,14 +1,14 @@
 <div class="mx-auto max-w-3xl">
-  <h1 class="page-title">Chronicle</h1>
+  <h1 class="page-title"><%= t(".title") %></h1>
 
   <div class="mt-8 grid gap-6 sm:grid-cols-2">
     <div class="card p-6">
-      <p class="text-sm text-stone-500 dark:text-stone-400">Users</p>
-      <p class="mt-2 text-3xl font-semibold tabular-nums"><%= pluralize @users, "user" %></p>
+      <p class="text-sm text-stone-500 dark:text-stone-400"><%= t(".users") %></p>
+      <p class="mt-2 text-3xl font-semibold tabular-nums"><%= t(".user_count", count: @users) %></p>
     </div>
     <div class="card p-6">
-      <p class="text-sm text-stone-500 dark:text-stone-400">Meetings</p>
-      <p class="mt-2 text-3xl font-semibold tabular-nums"><%= pluralize @rounds, "meeting" %></p>
+      <p class="text-sm text-stone-500 dark:text-stone-400"><%= t(".meetings") %></p>
+      <p class="mt-2 text-3xl font-semibold tabular-nums"><%= t(".meeting_count", count: @rounds) %></p>
     </div>
   </div>
 </div>

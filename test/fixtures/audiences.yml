@@ -1,9 +1,9 @@
-john_at_contest:
+john_at_meeting:
   name: Johnny
   user: john
-  round: contest
+  round: meeting
 
-gapbun_at_contest:
+gapbun_at_meeting:
   name: Gap
   user: gapbun
-  round: contest
+  round: meeting

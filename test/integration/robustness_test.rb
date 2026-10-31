@@ -4,7 +4,7 @@ class RobustnessTest < ActionDispatch::IntegrationTest
   MISSING_ROUND = "00000000-0000-0000-0000-000000000000"
 
   setup do
-    @round = rounds(:contest)
+    @round = rounds(:meeting)
     @agenda_item = agenda_items(:item)
   end
 
@@ -50,7 +50,7 @@ class RobustnessTest < ActionDispatch::IntegrationTest
 
   test "attendee name is escaped on the user page" do
     sign_in "john"
-    audiences(:john_at_contest).update_column(:name, "<b id=xss>x</b>")
+    audiences(:john_at_meeting).update_column(:name, "<b id=xss>x</b>")
     get user_path(users(:john).another_id)
     assert_not_includes response.body, "<b id=xss>"
     assert_includes response.body, "&lt;b id=xss&gt;"

@@ -1,0 +1,328 @@
+# 한국어 번역. en.yml과 같은 키를 모두 갖춰야 합니다 (test/i18n_test.rb에서 확인).
+
+ko:
+  # rails-i18n shows only the message; name the field too, e.g. "제목: 내용을 입력해 주세요"
+  errors:
+    format: "%{attribute}: %{message}"
+  choices:
+    favor: 찬성
+    against: 반대
+    abstain: 기권
+    not_voted: 미투표
+  kinds:
+    motion: 의안
+    election: 선거
+  decisions:
+    passed: 가결
+    failed: 부결
+    no_votes_yet: 아직 투표 없음
+    decision_made: 의결 완료
+  decision_rules:
+    label: 의결 방식
+    majority: 과반수 (1/2 초과 찬성)
+    two_thirds: 3분의 2 (2/3 찬성)
+    none: 없음 (집계만)
+  common:
+    save: 저장
+    cancel: 취소
+    edit: 수정
+    delete: 삭제
+    ok: 확인
+  activity:
+    votes:
+      closed: 투표가 마감되었습니다.
+      cast: 투표 완료
+      final: 투표는 변경할 수 없습니다.
+      confirm: 투표 후에는 변경하거나 취소할 수 없습니다. 투표하시겠습니까?
+      confirm_detail: '선택: %{choice}'
+      confirm_button: 투표하기
+  admin:
+    dashboard:
+      index:
+        title: 현황
+        users: 사용자
+        user_count:
+          one: "%{count}명"
+          other: "%{count}명"
+        meetings: 회의
+        meeting_count:
+          one: "%{count}개"
+          other: "%{count}개"
+  agenda_items:
+    index:
+      eyebrow: 안건
+      intro: 각 안건에 투표하세요. 한 번 투표하면 변경할 수 없습니다.
+      empty: 안건이 없습니다
+  audiences:
+    new:
+      eyebrow: 회의 참석
+      intro: 참석자로 등록하면 안건에 투표할 수 있습니다.
+      passcode_hint: 주최자가 회의에서 알려 줍니다.
+      name_hint: 참석자 목록에 이 이름으로 표시됩니다.
+      submit: 참석하기
+  layouts:
+    account_links:
+      hello: "%{name}님"
+      sign_in: 로그인
+      register: 회원가입
+    footer:
+      copyright: "© %{year} Voters · A Lining Link app"
+    header:
+      new_meeting: 새 회의
+      open_menu: 메뉴 열기
+    nav_links:
+      vote: 투표
+      result: 결과
+      users: 사용자
+      chronicle: 현황
+    landing:
+      description: 어떤 회의에서든 투표를 진행하세요. 회의를 열고 참석자를 초대해 의안과 선거를 실시간으로 함께 투표합니다.
+  owner:
+    agenda_items:
+      agenda_item:
+        election_badge:
+          one: 선거 · 후보 %{count}명
+          other: 선거 · 후보 %{count}명
+        decision_badge: 의결 · %{rule} 찬성
+        delete_confirm: 이 안건을 삭제하시겠습니까?
+        delete_detail: 이 안건의 투표도 함께 삭제됩니다.
+      edit_form:
+        edit_election: 선거 수정
+        edit_motion: 의안 수정
+        candidates_fixed: 투표가 시작되면 후보를 바꿀 수 없습니다.
+        one_per_line: 한 줄에 한 명씩 적어 주세요.
+      election_count:
+        wins: "%{name} 당선"
+        tie: 동점 · %{names}
+      form:
+        title: 안건 추가
+        motion_option: 의안 (찬성 / 반대)
+        election_option: 선거 (후보 한 명 선택)
+        candidates_placeholder: 한 줄에 한 명씩
+        candidates_hint: 한 줄에 한 명씩 적어 주세요. 가장 많이 득표한 후보가 당선됩니다.
+        submit: 추가
+      list:
+        empty: 아직 안건이 없습니다.
+      votes_count:
+        needs: 투표수의 %{rule} 찬성 필요
+      index:
+        eyebrow: 안건
+      minutes:
+        back: "← 결과"
+        print: 인쇄
+        eyebrow: 회의록
+        opened: 개회일
+        organizer: 주최자
+        attendance:
+          one: 출석 · %{count}명
+          other: 출석 · %{count}명
+        no_attendees: 참석자가 없습니다.
+        agenda: 안건
+        no_agenda_items: 안건이 없습니다.
+        rule: 투표수의 %{rule}
+        no_votes_cast: 투표 없음
+        elected: '당선: %{name}'
+        tie: '동점: %{names}'
+        tally_only: 집계만
+        still_open: 이 회의록을 인쇄할 때 투표가 아직 진행 중이었습니다.
+        printed: '인쇄: %{time}'
+      result:
+        eyebrow: 결과
+        minutes: 회의록
+        intro: 투표 결과가 실시간으로 갱신됩니다. 안건의 투표를 마감하려면 “의결 완료”를 체크하세요.
+    audiences:
+      index:
+        eyebrow: 참석자
+        id: 번호
+        name: 참석자 이름
+        remove: 내보내기
+        remove_confirm: "“%{name}” 님을 이 회의에서 내보내시겠습니까?"
+        remove_detail: 이 회의에서의 투표도 삭제됩니다.
+        empty: 아직 참석자가 없습니다. 회의 링크를 공유해 초대하세요.
+  pages:
+    home:
+      badge: 모든 회의를 위한 투표
+      headline_html: 모든 목소리를 빠짐없이.<br>거수도, 종이 투표용지도 없이.
+      lede: 회의를 열고 참석자 모두를 초대해 휴대폰으로 안건마다 투표하세요. 의안도 선거도 즉시 집계됩니다.
+      open_meeting: 회의 열기
+      create_account: 계정 만들기 →
+      preview_meeting: 정기 총회
+      preview_joined:
+        one: "%{count}명 참석"
+        other: "%{count}명 참석"
+      preview_item: 의안 · 3번 안건
+      preview_motion: 2027년 예산안 원안 승인
+      approve: 찬성
+      against: 반대
+      how_title: 이용 방법
+      step1: 의장이나 주최자가 회의를 만들고 투표할 안건을 준비합니다.
+      step2_title: 참석자 초대
+      step2: 모두 로그인해 회의에 참석하므로, 한 사람이 정확히 한 표를 가집니다.
+      step3_title: 안건별 투표
+      step3: 안건이 상정될 때마다 투표하고 결과를 바로 확인합니다.
+      kinds_title: 두 가지 안건
+      kinds_intro: 대부분의 회의에서 결정하는 일을 다룹니다.
+      motion_text_html: 회의에 올리는 제안입니다. 각 참석자가 <span class="font-medium text-stone-900 dark:text-stone-100">찬성</span> 또는 <span class="font-medium text-stone-900 dark:text-stone-100">반대</span>에 투표합니다. 예산, 회칙, 정책, 결의안에 사용하세요.
+      election_text_html: 직책을 맡을 사람을 뽑습니다. 각 참석자가 <span class="font-medium text-stone-900 dark:text-stone-100">후보 한 명</span>을 선택합니다. 회장, 총무, 서기 등 모든 직책 선출에 사용하세요.
+      candidate_a: 후보 A
+      candidate_b: 후보 B
+      made_for: 이런 곳에 알맞습니다
+      audiences: 이사회 · 동호회 · 입주자대표회의 · 학생회 · 협회 · 교회 · 노동조합
+      cta_title: 다음 회의를 준비하세요
+      cta_text: 1분이면 준비가 끝납니다. 참석자는 로그인해서 투표만 하면 됩니다.
+      sign_in_to_join: 로그인해서 참석하기
+  rounds:
+    new:
+      title: 회의 시작
+      intro: 회의 이름을 정하세요. 다음 단계에서 안건을 추가하고 참석자를 초대합니다.
+      title_placeholder: 정기 총회
+      require_passcode: 참석할 때 참가 코드 요구
+      require_passcode_hint: 회의에서 6자리 코드를 알려 주므로, 전달받은 링크만으로는 참석할 수 없습니다.
+      submit: 시작
+    show:
+      eyebrow: 회의
+      organizer: 이 회의의 주최자입니다.
+      run: 회의 진행
+      agenda_items: 안건
+      attendees: 참석자
+      results: 결과
+      invite: 참석자 초대
+      invite_hint: 이 페이지 주소를 공유하세요. 참석자는 로그인한 뒤 여기서 참석합니다.
+      copied: 복사했습니다!
+      copy: 링크 복사
+      passcode_hint: 참가 코드입니다. 회의에서 알려 주세요.
+      new_code: 새 코드
+      new_code_confirm: 새 참가 코드를 만드시겠습니까?
+      new_code_detail: 아직 참석하지 않은 사람은 지금 코드를 더 이상 쓸 수 없습니다.
+      new_code_button: 새 코드 만들기
+      turn_off: 끄기
+      turn_off_confirm: 링크만 있으면 누구나 참가 코드 없이 참석할 수 있게 하시겠습니까?
+      open: 링크가 있으면 누구나 참석할 수 있습니다.
+      require_passcode: 참가 코드 요구
+      started_by_html: "%{name}님이 시작한 회의"
+      attending: 참석 중입니다
+      attending_hint: 안건이 상정될 때마다 투표하세요.
+      go_vote: 투표하러 가기
+      join: 참석하고 투표하기
+      join_hint: 참석자로 등록하면 각 안건에 투표할 수 있습니다.
+      join_button: 참석자로 등록
+  sessions:
+    new:
+      title: 로그인
+      new_here: 처음이신가요?
+      create_account: 계정 만들기
+      submit: 로그인
+  users:
+    edit:
+      eyebrow: 계정
+      title: 계정 수정
+      intro: 모든 회의에서 쓰는 로그인 정보입니다. 참석자 이름은 회의마다 따로 정합니다.
+      back: 돌아가기
+      new_password: 새 비밀번호
+      password_hint: 비워 두면 지금 비밀번호를 그대로 씁니다.
+      challenge_hint: 변경 사항을 저장하려면 필요합니다.
+    index:
+      title: 사용자
+      user_id: 사용자 ID
+    new:
+      title: 아이디 만들기
+      locale_hint: 나중에 계정 페이지에서 바꿀 수 있습니다.
+      have_one: 이미 아이디가 있으신가요?
+      sign_in: 로그인
+      submit: 가입하기
+    show:
+      edit: 계정 수정
+      sign_out: 로그아웃
+      sign_out_confirm: "“%{name}” 계정에서 로그아웃하시겠습니까?"
+      sign_out_button: 로그아웃
+      intro: 이용해 주셔서 감사합니다. 이 페이지는 현재 로그인한 사용자를 보여 줍니다.
+      organize: 주최한 회의
+      none_yet: 아직 없습니다.
+      open_meeting: 회의 열기
+      attend: 참석한 회의
+      as: "“%{name}” 이름으로"
+      attend_none: 아직 없습니다. 받은 회의 링크를 열어 참석하세요.
+      language: 언어
+  language_name: 한국어
+  activerecord:
+    attributes:
+      agenda_item:
+        name: 제목
+        subtitle: 부제
+        kind: 유형
+        candidate_names: 후보
+        decision_rule: 의결 방식
+      audience:
+        name: 이름
+        passcode: 참가 코드
+      round:
+        title: 제목
+      user:
+        username: 아이디
+        password: 비밀번호
+        password_confirmation: 새 비밀번호 확인
+        password_challenge: 현재 비밀번호
+        user_role: 역할
+        phone_number: 전화번호
+        locale: 언어
+        user_role/admin: 관리자
+        user_role/member: 회원
+      vote:
+        agenda_item: 안건
+        audience: 참석자
+        candidate: 후보
+        choice: 선택
+        user: 사용자
+    models:
+      agenda_item: 안건
+      audience: 참석자
+      round: 회의
+      user: 사용자
+      vote: 투표
+    errors:
+      models:
+        agenda_item:
+          attributes:
+            candidate_names:
+              fixed_once_voted: 투표가 시작되면 바꿀 수 없습니다
+              too_few: 한 줄에 한 명씩, 두 명 이상 필요합니다
+        audience:
+          incorrect_passcode: 참가 코드가 올바르지 않습니다
+        vote:
+          already_cast: 한 번 투표하면 변경할 수 없습니다
+          attributes:
+            audience:
+              other_round: 안건과 같은 회의의 참석자여야 합니다
+            agenda_item:
+              closed: 투표가 마감되었습니다 (의결 완료)
+            candidate:
+              blank_when_abstaining: 기권할 때는 비워 두어야 합니다
+              not_in_election: 이 선거의 후보여야 합니다
+              not_on_motion: 의안에서는 비워 두어야 합니다
+            choice:
+              not_in_election: 선거에서는 비워 두거나 기권이어야 합니다
+            user:
+              not_attendee: 투표하는 참석자 본인이어야 합니다
+  flash:
+    not_signed_in: 로그인이 필요합니다
+    already_signed_in: 이미 로그인되어 있습니다
+    admin_only: 관리자만 이용할 수 있습니다
+    owner_only: 회의 주최자만 이용할 수 있습니다
+    meeting_not_found: 회의가 존재하지 않습니다
+    join_first: 먼저 회의에 참석해 주세요
+    sign_up_failed: '가입하지 못했습니다: %{errors}'
+    account_and_password_updated: 계정과 비밀번호를 변경했습니다.
+    account_updated: 계정을 변경했습니다.
+    not_your_page: 본인의 사용자 페이지가 아닙니다
+    too_many_tries: 시도 횟수가 너무 많습니다. 몇 분 뒤 다시 시도하세요.
+    already_joined: 이미 참석자로 등록되어 있습니다
+    meeting_created: 새 회의를 만들었습니다.
+    meeting_create_failed: 회의를 만들지 못했습니다
+    attendee_removed: "“%{name}” 님과 그 투표를 삭제했습니다."
+    sign_in_failed: 아이디 또는 비밀번호가 올바르지 않습니다.
+    passcode_created: '새 참가 코드: %{passcode}'
+    passcode_off: 참가 코드를 껐습니다.
+    language_updated: 언어를 한국어로 바꿨습니다.
+  roles:
+    admin: 관리자
+    member: 회원

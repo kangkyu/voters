@@ -2,7 +2,7 @@ require "test_helper"
 
 class ElectionTest < ActiveSupport::TestCase
   setup do
-    @round = rounds(:contest)
+    @round = rounds(:meeting)
   end
 
   def election(names = "Ann\nBob\nCy")
@@ -73,7 +73,7 @@ class ElectionTest < ActiveSupport::TestCase
 
   test "counts attendees who haven't voted on a motion" do
     agenda_item = agenda_items(:item)
-    agenda_item.votes.create!(user: users(:john), audience: audiences(:john_at_contest), choice: "against")
+    agenda_item.votes.create!(user: users(:john), audience: audiences(:john_at_meeting), choice: "against")
     assert_equal 1, agenda_item.not_voted_count
   end
 
@@ -87,7 +87,7 @@ class ElectionTest < ActiveSupport::TestCase
   test "an election vote must name one of its own candidates" do
     agenda_item = election
     other = election("Dee\nEd")
-    vote = agenda_item.votes.build(user: users(:john), audience: audiences(:john_at_contest), candidate: other.candidates.first)
+    vote = agenda_item.votes.build(user: users(:john), audience: audiences(:john_at_meeting), candidate: other.candidates.first)
     assert_not vote.valid?
     assert_includes vote.errors[:candidate], "must be one of this election's candidates"
 
@@ -97,14 +97,14 @@ class ElectionTest < ActiveSupport::TestCase
 
   test "an election vote has no favor / against choice" do
     agenda_item = election
-    vote = agenda_item.votes.build(user: users(:john), audience: audiences(:john_at_contest), candidate: agenda_item.candidates.first, choice: "favor")
+    vote = agenda_item.votes.build(user: users(:john), audience: audiences(:john_at_meeting), candidate: agenda_item.candidates.first, choice: "favor")
     assert_not vote.valid?
     assert_includes vote.errors[:choice], "must be blank or abstain in an election"
   end
 
   test "an election vote can abstain, without a candidate" do
     agenda_item = election
-    vote = agenda_item.votes.build(user: users(:john), audience: audiences(:john_at_contest), choice: "abstain")
+    vote = agenda_item.votes.build(user: users(:john), audience: audiences(:john_at_meeting), choice: "abstain")
     assert vote.valid?
 
     vote.candidate = agenda_item.candidates.first
@@ -114,7 +114,7 @@ class ElectionTest < ActiveSupport::TestCase
 
   test "abstentions in an election aren't candidate votes, nor not voted" do
     agenda_item = vote_for(election, "Ann")
-    agenda_item.votes.create!(user: users(:john), audience: audiences(:john_at_contest), choice: "abstain")
+    agenda_item.votes.create!(user: users(:john), audience: audiences(:john_at_meeting), choice: "abstain")
     fresh = AgendaItem.find(agenda_item.id)
     assert_equal 1, fresh.votes_cast
     assert_equal 1, fresh.abstain_count
@@ -123,7 +123,7 @@ class ElectionTest < ActiveSupport::TestCase
   end
 
   test "a motion vote needs a choice and no candidate" do
-    vote = agenda_items(:item).votes.build(user: users(:john), audience: audiences(:john_at_contest))
+    vote = agenda_items(:item).votes.build(user: users(:john), audience: audiences(:john_at_meeting))
     assert_not vote.valid?
     assert_includes vote.errors[:choice], "can't be blank"
 

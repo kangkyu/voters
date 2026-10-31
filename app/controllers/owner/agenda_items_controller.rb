@@ -64,7 +64,7 @@ class Owner::AgendaItemsController < ApplicationController
 
   def require_owner
     if !owner_user?
-      redirect_to user_url(current_user.another_id), notice: "owner only"
+      redirect_to user_url(current_user.another_id), notice: t("flash.owner_only")
     end
   end
 

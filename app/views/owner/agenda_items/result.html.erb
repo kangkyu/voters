@@ -1,14 +1,16 @@
 <%= turbo_stream_from @round, :results %>
+<%# Tallies arrive already rendered, so they come on a stream in this page's language %>
+<%= turbo_stream_from @round, :results, I18n.locale %>
 
 <div class="mx-auto max-w-3xl">
   <div class="flex flex-wrap items-end justify-between gap-4">
     <div>
-      <p class="eyebrow">Results</p>
+      <p class="eyebrow"><%= t(".eyebrow") %></p>
       <h1 class="page-title mt-2">“<%= link_to @round.title, round_path(@round), class: "hover:text-blue-800 dark:hover:text-blue-400" %>”</h1>
     </div>
-    <%= link_to "Meeting minutes", owner_round_minutes_path(@round), target: "_blank", class: "btn-secondary" %>
+    <%= link_to t(".minutes"), owner_round_minutes_path(@round), target: "_blank", class: "btn-secondary" %>
   </div>
-  <p class="mt-2 text-sm text-stone-600 dark:text-stone-400">Votes update live. Check “Decision made” to close voting on an item.</p>
+  <p class="mt-2 text-sm text-stone-600 dark:text-stone-400"><%= t(".intro") %></p>
 
   <div class="mt-8">
     <%= render "list", agenda_items: @agenda_items %>

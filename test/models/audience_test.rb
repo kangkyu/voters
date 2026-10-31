@@ -5,7 +5,7 @@ class AudienceTest < ActiveSupport::TestCase
   include Turbo::Broadcastable::TestHelper
 
   test "refreshes the meeting's results when an attendee joins or leaves" do
-    round = rounds(:contest)
+    round = rounds(:meeting)
     audience = nil
     perform_enqueued_jobs do
       audience = round.audiences.create!(user: users(:jimmy), name: "Jim")

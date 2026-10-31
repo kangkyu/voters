@@ -2,7 +2,7 @@ require "test_helper"
 
 class SignInTest < ActionDispatch::IntegrationTest
   setup do
-    @round = rounds(:contest)
+    @round = rounds(:meeting)
   end
 
   test "signs in with the username in any case" do

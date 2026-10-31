@@ -10,6 +10,9 @@ class User < ApplicationRecord
 
   enum :user_role, [:admin, :member]
 
+  # nil until chosen: then the browser's language is used
+  validates :locale, inclusion: { in: I18n.available_locales.map(&:to_s) }, allow_nil: true
+
   def owner?(round)
     round.present? && round.owner_id == id
   end

@@ -2,7 +2,7 @@
 <li id="<%= dom_id(agenda_item) %>" class="card flex items-start gap-4 p-5 [counter-increment:agenda]">
   <span aria-hidden="true" class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-800 text-sm font-semibold text-white before:content-[counter(agenda)]"></span>
   <%= form_with model: agenda_item, url: owner_round_agenda_item_path(agenda_item.round, agenda_item), method: :patch, class: "flex min-w-0 flex-1 flex-col gap-3" do |f| %>
-    <p class="eyebrow"><%= agenda_item.election? ? "Edit election" : "Edit motion" %></p>
+    <p class="eyebrow"><%= t(agenda_item.election? ? ".edit_election" : ".edit_motion") %></p>
     <% if agenda_item.errors.any? %>
       <ul class="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
         <% agenda_item.errors.full_messages.each do |message| %>
@@ -22,20 +22,20 @@
       <% if agenda_item.election? %>
         <% voted = agenda_item.votes.exists? %>
         <div class="sm:col-span-2">
-          <%= f.label :candidate_names, "Candidates", class: "form-label" %>
+          <%= f.label :candidate_names, class: "form-label" %>
           <%= f.text_area :candidate_names, value: agenda_item.candidate_names || agenda_item.candidates.map(&:name).join("\n"), rows: 4, disabled: voted, class: "form-input disabled:opacity-60" %>
-          <p class="mt-1 text-xs text-stone-500 dark:text-stone-400"><%= voted ? "Candidates can't change once voting has started." : "One name per line." %></p>
+          <p class="mt-1 text-xs text-stone-500 dark:text-stone-400"><%= t(voted ? ".candidates_fixed" : ".one_per_line") %></p>
         </div>
       <% else %>
         <div class="sm:col-span-2">
-          <%= f.label :decision_rule, "Decision vote", class: "form-label" %>
-          <%= f.select :decision_rule, [["Majority (more than 1/2 approve)", "majority"], ["Two-thirds (2/3 approve)", "two_thirds"]], { include_blank: "None (tally only)" }, class: "form-input" %>
+          <%= f.label :decision_rule, t("decision_rules.label"), class: "form-label" %>
+          <%= f.select :decision_rule, [[t("decision_rules.majority"), "majority"], [t("decision_rules.two_thirds"), "two_thirds"]], { include_blank: t("decision_rules.none") }, class: "form-input" %>
         </div>
       <% end %>
     </div>
     <div class="flex items-center gap-3">
-      <%= f.submit "Save", class: "btn-primary" %>
-      <%= link_to "Cancel", owner_round_agenda_item_path(agenda_item.round, agenda_item), data: { turbo_stream: true }, class: "btn-secondary" %>
+      <%= f.submit t("common.save"), class: "btn-primary" %>
+      <%= link_to t("common.cancel"), owner_round_agenda_item_path(agenda_item.round, agenda_item), data: { turbo_stream: true }, class: "btn-secondary" %>
     </div>
   <% end %>
 </li>

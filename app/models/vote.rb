@@ -23,20 +23,20 @@ class Vote < ApplicationRecord
 
   def audience_in_agenda_item_round
     if audience && agenda_item && audience.round_id != agenda_item.round_id
-      errors.add(:audience, "must be in the same round as the agenda_item")
+      errors.add(:audience, :other_round)
     end
   end
 
   def voting_open
     if agenda_item&.decision_made?
-      errors.add(:agenda_item, "is closed: decision made")
+      errors.add(:agenda_item, :closed)
     end
   end
 
   # Like a ballot in the box: once cast, the choice can't be changed
   def cast_once
     if will_save_change_to_choice? || will_save_change_to_candidate_id?
-      errors.add(:base, "A vote can't be changed once cast")
+      errors.add(:base, :already_cast)
     end
   end
 
@@ -45,28 +45,31 @@ class Vote < ApplicationRecord
     return unless agenda_item
 
     if agenda_item.election? && abstain?
-      errors.add(:candidate, "must be blank when abstaining") if candidate_id
+      errors.add(:candidate, :blank_when_abstaining) if candidate_id
     elsif agenda_item.election?
-      errors.add(:candidate, "must be one of this election's candidates") unless candidate&.agenda_item_id == agenda_item_id
-      errors.add(:choice, "must be blank or abstain in an election") if choice
+      errors.add(:candidate, :not_in_election) unless candidate&.agenda_item_id == agenda_item_id
+      errors.add(:choice, :not_in_election) if choice
     else
-      errors.add(:choice, "can't be blank") unless choice
-      errors.add(:candidate, "must be blank on a motion") if candidate_id
+      errors.add(:choice, :blank) unless choice
+      errors.add(:candidate, :not_on_motion) if candidate_id
     end
   end
 
   def user_matches_audience
     if audience && user_id != audience.user_id
-      errors.add(:user, "must be the attendee who votes")
+      errors.add(:user, :not_attendee)
     end
   end
 
   def broadcast_votes_count
     # Broadcast via the agenda_item: Turbo serializes the broadcasting record into
-    # the job, and a destroyed vote can't be loaded back when the job runs
-    agenda_item.broadcast_replace_later_to [agenda_item.round, :results],
-      target: "#{dom_id(agenda_item)}_votes_count",
-      partial: "owner/agenda_items/votes_count",
-      locals: { agenda_item: agenda_item }
+    # the job, and a destroyed vote can't be loaded back when the job runs.
+    # The job renders without a request, so each language gets its own render and stream
+    I18n.available_locales.each do |locale|
+      agenda_item.broadcast_replace_later_to [agenda_item.round, :results, locale],
+        target: "#{dom_id(agenda_item)}_votes_count",
+        partial: "owner/agenda_items/votes_count",
+        locals: { agenda_item: agenda_item, locale: locale.to_s }
+    end
   end
 end

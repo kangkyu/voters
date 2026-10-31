@@ -5,7 +5,7 @@ class DecisionMadeTest < ActionDispatch::IntegrationTest
   include Turbo::Broadcastable::TestHelper
 
   setup do
-    @round = rounds(:contest)
+    @round = rounds(:meeting)
     @agenda_item = agenda_items(:item)
   end
 
@@ -52,7 +52,7 @@ class DecisionMadeTest < ActionDispatch::IntegrationTest
   end
 
   test "attendee cannot vote once the decision is made" do
-    vote = @agenda_item.votes.create!(user: users(:john), audience: audiences(:john_at_contest), choice: "favor")
+    vote = @agenda_item.votes.create!(user: users(:john), audience: audiences(:john_at_meeting), choice: "favor")
     @agenda_item.update!(decision_made: true)
     sign_in "john"
 
@@ -63,7 +63,7 @@ class DecisionMadeTest < ActionDispatch::IntegrationTest
   end
 
   test "attendee page shows closed items with their vote and no active buttons" do
-    @agenda_item.votes.create!(user: users(:john), audience: audiences(:john_at_contest), choice: "favor")
+    @agenda_item.votes.create!(user: users(:john), audience: audiences(:john_at_meeting), choice: "favor")
     @agenda_item.update!(decision_made: true)
     sign_in "john"
 
@@ -77,7 +77,7 @@ class DecisionMadeTest < ActionDispatch::IntegrationTest
 
   test "a vote cannot be saved on a closed item even outside the controller" do
     @agenda_item.update!(decision_made: true)
-    vote = @agenda_item.votes.build(user: users(:john), audience: audiences(:john_at_contest), choice: "favor")
+    vote = @agenda_item.votes.build(user: users(:john), audience: audiences(:john_at_meeting), choice: "favor")
     assert_not vote.valid?
   end
 end

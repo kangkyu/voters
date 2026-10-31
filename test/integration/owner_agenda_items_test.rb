@@ -5,7 +5,7 @@ class OwnerAgendaItemsTest < ActionDispatch::IntegrationTest
   include Turbo::Broadcastable::TestHelper
 
   setup do
-    @round = rounds(:contest)
+    @round = rounds(:meeting)
     post session_path, params: { username: "jimmy", password: "1111" }
   end
 
@@ -41,7 +41,7 @@ class OwnerAgendaItemsTest < ActionDispatch::IntegrationTest
   test "result page shows the decision of a decision vote" do
     agenda_item = agenda_items(:item)
     agenda_item.update!(decision_rule: "majority")
-    agenda_item.votes.create!(user: users(:john), audience: audiences(:john_at_contest), choice: "favor")
+    agenda_item.votes.create!(user: users(:john), audience: audiences(:john_at_meeting), choice: "favor")
 
     get owner_round_results_path(@round)
     assert_select "##{ActionView::RecordIdentifier.dom_id(agenda_item)} .decision-badge", /Passed/
@@ -73,7 +73,7 @@ class OwnerAgendaItemsTest < ActionDispatch::IntegrationTest
     agenda_item = agenda_items(:item)
     patch owner_round_agenda_item_path(@round, agenda_item), params: { agenda_item: { decision_rule: "unanimous" } }, as: :turbo_stream
     assert_response :unprocessable_entity
-    assert_select "turbo-stream[action=replace] form li", /Decision rule/
+    assert_select "turbo-stream[action=replace] form li", /Decision vote/
     assert_nil agenda_item.reload.decision_rule
   end
 
@@ -86,7 +86,7 @@ class OwnerAgendaItemsTest < ActionDispatch::IntegrationTest
 
   test "an election's candidates stay once voting has started" do
     election = @round.agenda_items.create!(name: "Chair", kind: "election", candidate_names: "Ann\nBob")
-    election.votes.create!(user: users(:john), audience: audiences(:john_at_contest), candidate: election.candidates.first)
+    election.votes.create!(user: users(:john), audience: audiences(:john_at_meeting), candidate: election.candidates.first)
 
     get edit_owner_round_agenda_item_path(@round, election), as: :turbo_stream
     assert_select "textarea[name='agenda_item[candidate_names]'][disabled]"

@@ -81,3 +81,5 @@ end
 
 gem "tailwindcss-rails", "~> 3.3"
 gem "twilio-ruby", "~> 7.2"
+
+gem "rails-i18n", "~> 8.1"

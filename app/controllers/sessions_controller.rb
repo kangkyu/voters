@@ -15,7 +15,7 @@ class SessionsController < ApplicationController
       session[:user_id] = user.id
       redirect_to intended_url || root_url
     else
-      flash.now[:alert] = "Invalid username/password combination."
+      flash.now[:alert] = t("flash.sign_in_failed")
       render :new, status: :unprocessable_entity
     end
   end

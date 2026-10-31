@@ -1,3 +1,5 @@
+<%# Live updates render this in a background job, which passes the language of the stream it goes to %>
+<% I18n.with_locale(local_assigns[:locale] || I18n.locale) do %>
 <%= turbo_frame_tag "#{dom_id(agenda_item)}_votes_count" do %>
   <% if agenda_item.election? %>
     <%= render "owner/agenda_items/election_count", agenda_item: agenda_item %>
@@ -5,30 +7,31 @@
     <% favor = agenda_item.favor_count %>
     <% against = agenda_item.against_count %>
     <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
-      <span class="text-sm">Favor <span class="font-medium tabular-nums"><%= favor %></span></span>
-      <span class="text-sm">Against <span class="font-medium tabular-nums"><%= against %></span></span>
-      <span class="text-sm">Abstain <span class="font-medium tabular-nums"><%= agenda_item.abstain_count %></span></span>
-      <span class="text-sm text-stone-500 dark:text-stone-400">Not voted <span class="tabular-nums"><%= agenda_item.not_voted_count %></span></span>
+      <span class="text-sm"><%= t("choices.favor") %> <span class="font-medium tabular-nums"><%= favor %></span></span>
+      <span class="text-sm"><%= t("choices.against") %> <span class="font-medium tabular-nums"><%= against %></span></span>
+      <span class="text-sm"><%= t("choices.abstain") %> <span class="font-medium tabular-nums"><%= agenda_item.abstain_count %></span></span>
+      <span class="text-sm text-stone-500 dark:text-stone-400"><%= t("choices.not_voted") %> <span class="tabular-nums"><%= agenda_item.not_voted_count %></span></span>
       <% case agenda_item.decision %>
       <% when :passed %>
-        <span class="decision-badge rounded-full bg-green-600 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">✓ Passed</span>
+        <span class="decision-badge rounded-full bg-green-600 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">✓ <%= t("decisions.passed") %></span>
       <% when :failed %>
-        <span class="decision-badge rounded-full bg-red-600 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">✗ Failed</span>
+        <span class="decision-badge rounded-full bg-red-600 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">✗ <%= t("decisions.failed") %></span>
       <% when :pending %>
-        <span class="decision-badge rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-stone-600 dark:bg-stone-800 dark:text-stone-300">No votes yet</span>
+        <span class="decision-badge rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-stone-600 dark:bg-stone-800 dark:text-stone-300"><%= t("decisions.no_votes_yet") %></span>
       <% end %>
     </div>
     <% if agenda_item.decision_rule %>
       <% total = favor + against %>
       <%# Favor share of votes cast, with a marker at the pass threshold %>
-      <div class="relative mt-2 h-2 w-full overflow-hidden rounded-full bg-stone-100 dark:bg-stone-800" title="Needs <%= agenda_item.decision_rule_label %> of votes cast in favor">
+      <div class="relative mt-2 h-2 w-full overflow-hidden rounded-full bg-stone-100 dark:bg-stone-800" title="<%= t(".needs", rule: agenda_item.decision_rule_label) %>">
         <% if total > 0 %>
           <div class="absolute inset-y-0 left-0 bg-blue-800" style="width: <%= (favor * 100.0 / total).round(2) %>%"></div>
           <div class="absolute inset-y-0 right-0 bg-stone-400" style="width: <%= (against * 100.0 / total).round(2) %>%"></div>
         <% end %>
         <div class="absolute inset-y-0 w-0.5 bg-stone-900 dark:bg-white" style="left: <%= agenda_item.decision_threshold_percent.round(2) %>%"></div>
       </div>
-      <p class="mt-1 text-xs text-stone-500 dark:text-stone-400">Needs <%= agenda_item.decision_rule_label %> of votes cast in favor</p>
+      <p class="mt-1 text-xs text-stone-500 dark:text-stone-400"><%= t(".needs", rule: agenda_item.decision_rule_label) %></p>
     <% end %>
   <% end %>
+<% end %>
 <% end %>
