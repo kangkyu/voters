@@ -15,8 +15,8 @@
         </div>
       <% end %>
     </div>
-    <% if agenda_item.location.present? %>
-      <p class="text-sm text-stone-500 dark:text-stone-400"><%= agenda_item.location %></p>
+    <% if agenda_item.subtitle.present? %>
+      <p class="text-sm text-stone-500 dark:text-stone-400"><%= agenda_item.subtitle %></p>
     <% end %>
     <% if agenda_item.election? && !results_page %>
       <p class="candidates text-sm text-stone-500 dark:text-stone-400"><%= agenda_item.candidates.map(&:name).to_sentence %></p>

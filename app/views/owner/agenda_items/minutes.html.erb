@@ -37,8 +37,8 @@
             <%= agenda_item.election? ? "Election" : "Motion" %><% if agenda_item.decision_rule %> · <%= agenda_item.decision_rule_label %> of votes cast<% end %>
           </span>
         </div>
-        <% if agenda_item.location.present? %>
-          <p class="text-sm text-stone-600"><%= agenda_item.location %></p>
+        <% if agenda_item.subtitle.present? %>
+          <p class="text-sm text-stone-600"><%= agenda_item.subtitle %></p>
         <% end %>
 
         <% if agenda_item.election? %>

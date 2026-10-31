@@ -16,8 +16,8 @@
         <%= f.text_field :name, required: true, class: "form-input" %>
       </div>
       <div>
-        <%= f.label :location, class: "form-label" %>
-        <%= f.text_field :location, class: "form-input" %>
+        <%= f.label :subtitle, class: "form-label" %>
+        <%= f.text_field :subtitle, class: "form-input" %>
       </div>
       <% if agenda_item.election? %>
         <% voted = agenda_item.votes.exists? %>

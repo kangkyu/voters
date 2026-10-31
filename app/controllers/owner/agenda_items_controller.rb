@@ -75,11 +75,11 @@ class Owner::AgendaItemsController < ApplicationController
   private
 
   def agenda_item_params
-    params.require(:agenda_item).permit(:name, :location, :kind, :decision_rule, :candidate_names)
+    params.require(:agenda_item).permit(:name, :subtitle, :kind, :decision_rule, :candidate_names)
   end
 
   # The kind stays as created: votes already cast are favor / against or for a candidate
   def agenda_item_edit_params
-    params.require(:agenda_item).permit(:name, :location, :decision_rule, :candidate_names)
+    params.require(:agenda_item).permit(:name, :subtitle, :decision_rule, :candidate_names)
   end
 end

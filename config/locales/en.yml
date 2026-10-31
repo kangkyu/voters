@@ -35,7 +35,6 @@ en:
     attributes:
       agenda_item:
         name: "Title"
-        location: "Subtitle"
         candidate_names: "Candidates"
       user:
         password_challenge: "Current password"

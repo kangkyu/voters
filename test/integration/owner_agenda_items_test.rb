@@ -18,7 +18,7 @@ class OwnerAgendaItemsTest < ActionDispatch::IntegrationTest
 
   test "owner adds an agenda item and gets a fresh form" do
     assert_difference "AgendaItem.count", 1 do
-      post owner_round_agenda_items_path(@round), params: { agenda_item: { name: "Budget", location: "Q3" } }, as: :turbo_stream
+      post owner_round_agenda_items_path(@round), params: { agenda_item: { name: "Budget", subtitle: "Q3" } }, as: :turbo_stream
     end
     assert_select "turbo-stream[action=append][target=admin_agenda_items] h3", "Budget"
     assert_select "turbo-stream[action=replace][target=new_agenda_item_form] input[name='agenda_item[name]']:not([value])"
@@ -58,15 +58,15 @@ class OwnerAgendaItemsTest < ActionDispatch::IntegrationTest
     assert_select "turbo-stream[action=replace][target=#{target}] h3", "item"
   end
 
-  test "owner edits a motion's name, location and decision rule" do
+  test "owner edits a motion's name, subtitle and decision rule" do
     agenda_item = agenda_items(:item)
     patch owner_round_agenda_item_path(@round, agenda_item),
-      params: { agenda_item: { name: "Singer of the year", location: "NY", decision_rule: "two_thirds", kind: "election" } }, as: :turbo_stream
+      params: { agenda_item: { name: "Board chair", subtitle: "NY", decision_rule: "two_thirds", kind: "election" } }, as: :turbo_stream
     agenda_item.reload
-    assert_equal ["Singer of the year", "NY"], [agenda_item.name, agenda_item.location]
+    assert_equal ["Board chair", "NY"], [agenda_item.name, agenda_item.subtitle]
     assert agenda_item.two_thirds?
     assert agenda_item.motion?
-    assert_select "turbo-stream[action=replace][target=#{ActionView::RecordIdentifier.dom_id(agenda_item)}] h3", "Singer of the year"
+    assert_select "turbo-stream[action=replace][target=#{ActionView::RecordIdentifier.dom_id(agenda_item)}] h3", "Board chair"
   end
 
   test "owner sees why an edit was not saved" do

@@ -6,9 +6,9 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 agenda_items = AgendaItem.create([
-  { name: "Trapp Family Singers", location: "Salzburg" },
-  { name: "TShirts", location: "La Cañada Flintridge" },
-  { name: "Star Wars", location: "Galaxy" }
+  { name: "Budget approval", subtitle: "Salzburg" },
+  { name: "TShirts", subtitle: "La Cañada Flintridge" },
+  { name: "Star Wars", subtitle: "Galaxy" }
 ])
 users = User.create([
   { username: "jimmy", phone_number: "+13231234567", password: "secret" },
