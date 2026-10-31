@@ -26,8 +26,8 @@
             <p class="text-sm text-stone-600 dark:text-stone-400">Passcode to join. Announce it at the meeting.</p>
             <p class="passcode mt-2 font-mono text-3xl font-semibold tracking-[0.3em]"><%= @round.passcode %></p>
             <div class="mt-4 flex flex-wrap gap-3">
-              <%= button_to "New code", owner_round_passcode_path(@round), method: :post, class: "btn-secondary", form: { data: { turbo_confirm: "Make a new passcode? The current one stops working for anyone who hasn't joined yet." } } %>
-              <%= button_to "Turn off", owner_round_passcode_path(@round), method: :delete, class: "btn-secondary", form: { data: { turbo_confirm: "Let anyone with the link join without a passcode?" } } %>
+              <%= button_to "New code", owner_round_passcode_path(@round), method: :post, class: "btn-secondary", form: { data: { turbo_confirm: "Make a new passcode?", confirm_detail: "The current one stops working for anyone who hasn't joined yet.", confirm_button: "Make new code" } } %>
+              <%= button_to "Turn off", owner_round_passcode_path(@round), method: :delete, class: "btn-secondary", form: { data: { turbo_confirm: "Let anyone with the link join without a passcode?", confirm_button: "Turn off" } } %>
             </div>
           <% else %>
             <p class="text-sm text-stone-600 dark:text-stone-400">Anyone with the link can join.</p>

@@ -3,7 +3,7 @@ require "test_helper"
 class VoteFlowTest < ActionDispatch::IntegrationTest
   setup do
     @round = rounds(:contest)
-    @agenda_item = agenda_items(:singer)
+    @agenda_item = agenda_items(:item)
     post session_path, params: { username: "john", password: "1111" }
   end
 
@@ -15,7 +15,7 @@ class VoteFlowTest < ActionDispatch::IntegrationTest
     assert_select "button", "Abstain"
   end
 
-  test "abstains, then changes to favor" do
+  test "abstains, and the vote is final" do
     votes_frame = "turbo-frame##{ActionView::RecordIdentifier.dom_id(@agenda_item)}_votes"
     assert_difference "Vote.count", 1 do
       post round_agenda_item_votes_path(@round, @agenda_item), params: { choice: "abstain" }
@@ -24,27 +24,32 @@ class VoteFlowTest < ActionDispatch::IntegrationTest
     assert_select "#{votes_frame} button[aria-pressed=true]", "Abstain"
 
     post round_agenda_item_votes_path(@round, @agenda_item), params: { choice: "favor" }
-    assert Vote.last.favor?
-    assert_select "#{votes_frame} button[aria-pressed=true]", "Favor"
+    assert_response :unprocessable_entity
+    assert Vote.last.abstain?
+    assert_select "#{votes_frame} button[aria-pressed=true]", "Abstain"
   end
 
-  test "no vote is chosen until voting, then cancels the vote" do
+  test "before voting every option can be cast; after, my vote stays and the rest are locked" do
     votes_frame = "turbo-frame##{ActionView::RecordIdentifier.dom_id(@agenda_item)}_votes"
     get round_agenda_items_path(@round)
-    assert_select "#{votes_frame} button[aria-pressed=true]", "No vote"
+    assert_select "#{votes_frame} form", 3
+    assert_select "#{votes_frame} form[data-turbo-confirm]", 3
+    assert_select "#{votes_frame} button", text: "No vote", count: 0
 
     post round_agenda_item_votes_path(@round, @agenda_item), params: { choice: "favor" }
-    vote = Vote.last
-    assert_select "#{votes_frame} button[aria-pressed=true]", "Favor"
-    assert_select "#{votes_frame} form[action='#{round_agenda_item_vote_path(@round, @agenda_item, vote)}'] button", "No vote"
-
-    assert_difference "Vote.count", -1 do
-      delete round_agenda_item_vote_path(@round, @agenda_item, vote)
+    assert_select votes_frame do
+      assert_select "span", "Vote cast"
+      assert_select "button[aria-pressed=true]", "Favor"
+      assert_select "button[disabled]", 2
+      assert_select "form", 0
     end
-    assert_select "#{votes_frame} button[aria-pressed=true]", "No vote"
+
+    get round_agenda_items_path(@round)
+    assert_select "#{votes_frame} button[aria-pressed=true]", "Favor"
+    assert_select "#{votes_frame} form", 0
   end
 
-  test "audience votes favor, changes to against, then clears" do
+  test "audience votes favor and cannot change or withdraw it" do
     assert_difference "Vote.count", 1 do
       post round_agenda_item_votes_path(@round, @agenda_item), params: { choice: "favor" }
     end
@@ -55,11 +60,12 @@ class VoteFlowTest < ActionDispatch::IntegrationTest
     assert_no_difference "Vote.count" do
       post round_agenda_item_votes_path(@round, @agenda_item), params: { choice: "against" }
     end
-    assert vote.reload.against?
+    assert_response :unprocessable_entity
+    assert vote.reload.favor?
 
-    assert_difference "Vote.count", -1 do
-      delete round_agenda_item_vote_path(@round, @agenda_item, vote)
-    end
+    delete "/rounds/#{@round.id}/agenda_items/#{@agenda_item.id}/votes/#{vote.id}"
+    assert_response :not_found
+    assert Vote.exists?(vote.id)
   end
 
   test "cannot vote before login" do

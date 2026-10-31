@@ -6,7 +6,7 @@ class DecisionMadeTest < ActionDispatch::IntegrationTest
 
   setup do
     @round = rounds(:contest)
-    @agenda_item = agenda_items(:singer)
+    @agenda_item = agenda_items(:item)
   end
 
   def sign_in(username)
@@ -51,7 +51,7 @@ class DecisionMadeTest < ActionDispatch::IntegrationTest
     assert_turbo_stream_broadcasts [@round, :agenda], count: 1
   end
 
-  test "attendee cannot vote, change, or withdraw once the decision is made" do
+  test "attendee cannot vote once the decision is made" do
     vote = @agenda_item.votes.create!(user: users(:john), audience: audiences(:john_at_contest), choice: "favor")
     @agenda_item.update!(decision_made: true)
     sign_in "john"
@@ -59,11 +59,7 @@ class DecisionMadeTest < ActionDispatch::IntegrationTest
     post round_agenda_item_votes_path(@round, @agenda_item), params: { choice: "against" }
     assert_response :unprocessable_entity
     assert vote.reload.favor?
-
-    delete round_agenda_item_vote_path(@round, @agenda_item, vote)
-    assert_response :unprocessable_entity
-    assert Vote.exists?(vote.id)
-    assert_select "turbo-frame##{frame_id(:votes)} button[disabled]", 4
+    assert_select "turbo-frame##{frame_id(:votes)} button[disabled]", 3
   end
 
   test "attendee page shows closed items with their vote and no active buttons" do

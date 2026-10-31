@@ -72,14 +72,14 @@ class ElectionTest < ActiveSupport::TestCase
   end
 
   test "counts attendees who haven't voted on a motion" do
-    agenda_item = agenda_items(:singer)
+    agenda_item = agenda_items(:item)
     agenda_item.votes.create!(user: users(:john), audience: audiences(:john_at_contest), choice: "against")
     assert_equal 1, agenda_item.not_voted_count
   end
 
   test "loads not-voted counts for many agenda items at once" do
     voted = vote_for(election, "Ann")
-    fresh = AgendaItem.load_vote_tallies(AgendaItem.where(id: [voted.id, agenda_items(:singer).id]).order(:id).to_a)
+    fresh = AgendaItem.load_vote_tallies(AgendaItem.where(id: [voted.id, agenda_items(:item).id]).order(:id).to_a)
     assert_equal [3, 3], fresh.map(&:attendee_count)
     assert_equal [3, 2], fresh.map(&:not_voted_count)
   end
@@ -123,7 +123,7 @@ class ElectionTest < ActiveSupport::TestCase
   end
 
   test "a motion vote needs a choice and no candidate" do
-    vote = agenda_items(:singer).votes.build(user: users(:john), audience: audiences(:john_at_contest))
+    vote = agenda_items(:item).votes.build(user: users(:john), audience: audiences(:john_at_contest))
     assert_not vote.valid?
     assert_includes vote.errors[:choice], "can't be blank"
 

@@ -41,7 +41,7 @@ class ElectionFlowTest < ActionDispatch::IntegrationTest
     assert_select "#{votes_frame} button", text: "Favor", count: 0
   end
 
-  test "attendee votes, changes the vote, then withdraws it" do
+  test "attendee votes for a candidate and cannot change it" do
     sign_in "john"
     assert_difference "Vote.count", 1 do
       post round_agenda_item_votes_path(@round, @election), params: { candidate_id: @ann.id }
@@ -49,21 +49,17 @@ class ElectionFlowTest < ActionDispatch::IntegrationTest
     vote = Vote.last
     assert_equal @ann, vote.candidate
     assert_nil vote.choice
+    assert_select "#{votes_frame} button[aria-pressed=true]", "Ann"
+    assert_select "#{votes_frame} button[disabled]", "Bob"
 
     assert_no_difference "Vote.count" do
       post round_agenda_item_votes_path(@round, @election), params: { candidate_id: @bob.id }
     end
-    assert_equal @bob, vote.reload.candidate
-    # Bob is now my vote, and "No vote" withdraws it
-    assert_select "#{votes_frame} button[aria-pressed=true]", "Bob"
-    assert_select "#{votes_frame} form[action='#{round_agenda_item_vote_path(@round, @election, vote)}'] button", "No vote"
-
-    assert_difference "Vote.count", -1 do
-      delete round_agenda_item_vote_path(@round, @election, vote)
-    end
+    assert_response :unprocessable_entity
+    assert_equal @ann, vote.reload.candidate
   end
 
-  test "abstains in an election, then picks a candidate" do
+  test "abstains in an election and cannot pick a candidate afterwards" do
     sign_in "john"
     post round_agenda_item_votes_path(@round, @election), params: { choice: "abstain" }
     vote = Vote.last
@@ -74,9 +70,10 @@ class ElectionFlowTest < ActionDispatch::IntegrationTest
     assert_no_difference "Vote.count" do
       post round_agenda_item_votes_path(@round, @election), params: { candidate_id: @ann.id }
     end
+    assert_response :unprocessable_entity
     vote.reload
-    assert_nil vote.choice
-    assert_equal @ann, vote.candidate
+    assert vote.abstain?
+    assert_nil vote.candidate
   end
 
   test "rejects a candidate from another election" do

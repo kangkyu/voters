@@ -3,7 +3,7 @@
 <div class="mx-auto max-w-2xl">
   <p class="eyebrow">Agenda</p>
   <h1 class="page-title mt-2">“<%= link_to @round.title, round_path(@round), class: "hover:text-blue-800 dark:hover:text-blue-400" %>”</h1>
-  <p class="mt-2 text-sm text-stone-600 dark:text-stone-400">Cast your vote on each item. Choose “No vote” to cancel it.</p>
+  <p class="mt-2 text-sm text-stone-600 dark:text-stone-400">Cast your vote on each item. Once cast, a vote is final and can't be changed.</p>
 
   <%= turbo_frame_tag "agenda_items", class: "mt-8 block" do %>
     <%# The list is always rendered so items added live have a place to go; the placeholder shows only while it is empty %>
