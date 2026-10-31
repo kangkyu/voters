@@ -14,6 +14,12 @@
         <%= f.label :password, class: "form-label" %>
         <%= f.password_field :password, required: true, autocomplete: "new-password", class: "form-input" %>
       </div>
+      <div>
+        <%= f.label :locale, class: "form-label" %>
+        <%# Each language is named in itself, so it can be found whatever this page is shown in %>
+        <%= f.select :locale, I18n.available_locales.map { |locale| [t("language_name", locale: locale), locale] }, {}, class: "form-input" %>
+        <p class="mt-1 text-xs text-stone-500 dark:text-stone-400"><%= t(".locale_hint") %></p>
+      </div>
       <%= f.submit t(".submit"), class: "btn-primary w-full" %>
     <% end %>
   </div>

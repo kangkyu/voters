@@ -226,6 +226,7 @@ ko:
       user_id: 사용자 ID
     new:
       title: 아이디 만들기
+      locale_hint: 나중에 계정 페이지에서 바꿀 수 있습니다.
       have_one: 이미 아이디가 있으신가요?
       sign_in: 로그인
       submit: 가입하기

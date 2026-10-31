@@ -61,7 +61,28 @@ class LanguageTest < ActionDispatch::IntegrationTest
     assert_redirected_to signin_url
   end
 
-  test "signing up keeps the language the page was shown in" do
+  test "the sign-up form offers both languages, with the page's own preselected" do
+    get register_path, headers: { "Accept-Language" => "ko" }
+    assert_select "select[name='user[locale]'] option[selected][value=ko]", "한국어"
+    assert_select "select[name='user[locale]'] option[value=en]", "English"
+    assert_select "label", "언어"
+  end
+
+  test "signing up saves the chosen language, even if the page was in another" do
+    post users_path, params: { user: { username: "newbie", password: "1111", locale: "ko" } }, headers: { "Accept-Language" => "en" }
+    assert_equal "ko", User.find_by(username: "newbie").locale
+    follow_redirect!
+    assert_select "html[lang=ko]"
+  end
+
+  test "signing up with an unknown language shows an error" do
+    assert_no_difference "User.count" do
+      post users_path, params: { user: { username: "newbie", password: "1111", locale: "xx" } }
+    end
+    assert_response :unprocessable_entity
+  end
+
+  test "signing up without choosing keeps the language the page was shown in" do
     post users_path, params: { user: { username: "새사용자", password: "1111" } }, headers: { "Accept-Language" => "ko" }
     assert_equal "ko", User.find_by(username: "새사용자").locale
   end

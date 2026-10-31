@@ -227,6 +227,7 @@ en:
       user_id: User ID
     new:
       title: Create a username
+      locale_hint: You can change it later on your account page.
       have_one: Have a username already?
       sign_in: Sign In
       submit: Register

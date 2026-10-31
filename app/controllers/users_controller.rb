@@ -4,12 +4,14 @@ class UsersController < ApplicationController
   before_action :require_own_user, only: [:show, :edit, :update]
 
   def new
-    @user = User.new
+    # Preselect the language this page is shown in
+    @user = User.new(locale: I18n.locale.to_s)
   end
 
   def create
-    # Start in the language the sign-up page was shown in
-    @user = User.new(user_params.merge(locale: I18n.locale.to_s))
+    @user = User.new(user_params)
+    # Not chosen on the form: start in the language the sign-up page was shown in
+    @user.locale = I18n.locale.to_s if @user.locale.blank?
 
     if @user.save
       intended_url = session[:intended_url]
@@ -63,6 +65,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:username, :password)
+    params.require(:user).permit(:username, :password, :locale)
   end
 end
