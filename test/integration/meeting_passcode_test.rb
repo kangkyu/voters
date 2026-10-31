@@ -23,10 +23,10 @@ class MeetingPasscodeTest < ActionDispatch::IntegrationTest
 
   test "a new meeting can require a passcode" do
     sign_in "jimmy"
-    post rounds_path, params: { round: { title: "AGM", require_passcode: "1" } }
+    post rounds_path, params: { round: { title: "AGM", organizer_name: "Chair", require_passcode: "1" } }
     assert_match(/\A\d{6}\z/, Round.last.passcode)
 
-    post rounds_path, params: { round: { title: "Picnic", require_passcode: "0" } }
+    post rounds_path, params: { round: { title: "Picnic", organizer_name: "Chair", require_passcode: "0" } }
     assert_nil Round.last.passcode
   end
 
@@ -59,11 +59,13 @@ class MeetingPasscodeTest < ActionDispatch::IntegrationTest
     assert_difference("Audience.count", 1) { join }
   end
 
-  test "the organizer joins their own meeting without the passcode" do
+  test "the organizer can't join later: they chose whether to vote when starting the meeting" do
     sign_in "jimmy"
     get new_round_audience_path(@round)
-    assert_select "input[name=passcode]", 0
-    assert_difference("Audience.count", 1) { join }
+    assert_redirected_to round_url(@round)
+    assert_no_difference("Audience.count") { join(passcode: "482915") }
+    assert_redirected_to round_url(@round)
+    assert_equal "You chose whether to vote when you started this meeting.", flash[:notice]
   end
 
   test "organizer sees the passcode, makes a new one, and turns it off" do

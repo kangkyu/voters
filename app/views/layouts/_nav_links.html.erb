@@ -1,4 +1,4 @@
-<% if @round.present? && signed_in? %>
+<% if @round&.persisted? && signed_in? %>
   <% if current_user.audience?(@round) %>
     <%= link_to t(".vote"), round_agenda_items_path(@round), class: "#{class_name_by_tab(round_agenda_items_path(@round))} #{extra_class}" %>
   <% end %>

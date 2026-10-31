@@ -10,6 +10,10 @@ class Owner::AudiencesController < ApplicationController
   # Takes someone out of this meeting, with their votes in it; their account stays
   def destroy
     audience = @round.audiences.find(params[:id])
+    # The organizer chose to vote when starting the meeting, and that choice is final
+    if audience.user_id == @round.owner_id
+      redirect_to owner_round_audiences_url(@round), alert: t("flash.organizer_cannot_leave") and return
+    end
     audience.destroy!
     redirect_to owner_round_audiences_url(@round), notice: t("flash.attendee_removed", name: audience.name)
   end

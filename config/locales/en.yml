@@ -137,6 +137,7 @@ en:
         id: ID
         name: Attendee Name
         remove: Remove
+        organizer: Organizer
         remove_confirm: Remove “%{name}” from this meeting?
         remove_detail: Their votes in it will be deleted.
         empty: No attendees yet. Share the meeting link to invite them.
@@ -179,6 +180,9 @@ en:
       title_placeholder: Annual General Meeting
       require_passcode: Require a passcode to join
       require_passcode_hint: You announce a 6-digit code at the meeting, so a forwarded link alone isn't enough.
+      organizer_votes: "I'll vote in this meeting"
+      organizer_votes_hint: "Untick if you only run the meeting."
+      organizer_name_hint: "Shown in the attendee list and minutes."
       submit: Start
     show:
       eyebrow: Meeting
@@ -187,6 +191,7 @@ en:
       agenda_items: Agenda items
       attendees: Attendees
       results: Results
+      vote: Vote
       invite: Invite attendees
       invite_hint: Share this page's address. Attendees sign in and join from there.
       copied: Copied!
@@ -258,6 +263,7 @@ en:
         passcode: Passcode
       round:
         title: Title
+        organizer_name: "Your name in this meeting"
       user:
         username: Username
         password: Password
@@ -309,6 +315,8 @@ en:
     already_signed_in: Already logged in
     admin_only: admin only
     owner_only: owner only
+    organizer_cannot_join: "You chose whether to vote when you started this meeting."
+    organizer_cannot_leave: "The organizer chose to vote when starting the meeting, so they stay on the attendee list."
     meeting_not_found: Meeting does not exist
     join_first: Please join the meeting first
     sign_up_failed: 'Sign up not successful: %{errors}'

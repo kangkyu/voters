@@ -8,6 +8,13 @@ class Round < ApplicationRecord
 
   validates :title, presence: true
 
+  # Chosen once on the new meeting form: whether the organizer votes too, and under what name.
+  # When they do, they join as an attendee in the same transaction
+  attribute :organizer_votes, :boolean, default: true
+  attribute :organizer_name, :string
+  validates :organizer_name, presence: true, on: :organize, if: :organizer_votes
+  after_create :join_organizer, if: -> { organizer_votes && organizer_name.present? }
+
   # Ticked on the new meeting form: joining needs the passcode the organizer announces
   attribute :require_passcode, :boolean, default: false
   before_create :generate_passcode, if: :require_passcode
@@ -38,6 +45,10 @@ class Round < ApplicationRecord
   end
 
   private
+
+  def join_organizer
+    audiences.create!(user: owner, name: organizer_name)
+  end
 
   def generate_passcode
     self.passcode = self.class.new_passcode

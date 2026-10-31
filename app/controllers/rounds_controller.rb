@@ -2,13 +2,14 @@ class RoundsController < ApplicationController
   before_action :require_signin
 
   def new
-    @round = Round.new
+    @round = Round.new(organizer_name: current_user.username)
   end
 
   def create
     @round = current_user.rounds.build(round_params)
 
-    if @round.save
+    # :organize also requires the organizer's attendee name when they vote; they join under it on save
+    if @round.save(context: [:create, :organize])
       redirect_to round_url(@round.reload), notice: t("flash.meeting_created")
     else
       flash.now[:alert] = t("flash.meeting_create_failed")
@@ -26,6 +27,6 @@ class RoundsController < ApplicationController
   private
 
   def round_params
-    params.require(:round).permit(:title, :require_passcode)
+    params.require(:round).permit(:title, :require_passcode, :organizer_votes, :organizer_name)
   end
 end

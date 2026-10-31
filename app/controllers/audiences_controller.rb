@@ -1,6 +1,7 @@
 class AudiencesController < ApplicationController
   before_action :require_signin
   before_action :set_round
+  before_action :forbid_organizer
 
   # Passcodes are short, so guessing is slowed per account and per network.
   # The network limit is loose: everyone in the room may share one Wi-Fi address
@@ -19,8 +20,7 @@ class AudiencesController < ApplicationController
   def create
     @audience = @round.audiences.build(audience_params.merge(user_id: current_user.id))
 
-    # The organizer joins their own meeting without the passcode
-    unless current_user.owner?(@round) || @round.passcode_matches?(params[:passcode])
+    unless @round.passcode_matches?(params[:passcode])
       @audience.errors.add(:base, :incorrect_passcode)
       render "new", status: :unprocessable_entity and return
     end
@@ -33,6 +33,13 @@ class AudiencesController < ApplicationController
   end
 
   private
+
+  # The organizer chose whether to vote when starting the meeting, and that choice is final
+  def forbid_organizer
+    if current_user.owner?(@round)
+      redirect_to round_url(@round), notice: t("flash.organizer_cannot_join")
+    end
+  end
 
   def audience_params
     params.require(:audience).permit(:name)
