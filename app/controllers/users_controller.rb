@@ -8,7 +8,8 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
+    # Start in the language the sign-up page was shown in
+    @user = User.new(user_params.merge(locale: I18n.locale.to_s))
 
     if @user.save
       intended_url = session[:intended_url]
@@ -17,7 +18,7 @@ class UsersController < ApplicationController
       session[:user_id] = @user.id
       redirect_to intended_url || root_url
     else
-      flash.now[:alert] = "Sign up not successful: #{@user.errors.full_messages.to_sentence}"
+      flash.now[:alert] = t("flash.sign_up_failed", errors: @user.errors.full_messages.to_sentence)
       render :new, status: :unprocessable_entity
     end
   end
@@ -48,7 +49,7 @@ class UsersController < ApplicationController
         reset_session
         session[:user_id] = @user.id
       end
-      redirect_to user_url(@user.another_id), notice: changing_password ? "Account and password updated." : "Account updated."
+      redirect_to user_url(@user.another_id), notice: changing_password ? t("flash.account_and_password_updated") : t("flash.account_updated")
     else
       render :edit, status: :unprocessable_entity
     end
@@ -58,7 +59,7 @@ class UsersController < ApplicationController
 
   def require_own_user
     @user = User.find_by(another_id: params[:id])
-    redirect_to root_url, notice: "Not your user page" unless @user && @user == current_user
+    redirect_to root_url, notice: t("flash.not_your_page") unless @user && @user == current_user
   end
 
   def user_params

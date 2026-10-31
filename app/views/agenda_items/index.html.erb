@@ -1,14 +1,16 @@
 <%= turbo_stream_from @round, :agenda %>
+<%# New items arrive already rendered, so they come on a stream in this page's language %>
+<%= turbo_stream_from @round, :agenda, I18n.locale %>
 
 <div class="mx-auto max-w-2xl">
-  <p class="eyebrow">Agenda</p>
+  <p class="eyebrow"><%= t(".eyebrow") %></p>
   <h1 class="page-title mt-2">“<%= link_to @round.title, round_path(@round), class: "hover:text-blue-800 dark:hover:text-blue-400" %>”</h1>
-  <p class="mt-2 text-sm text-stone-600 dark:text-stone-400">Cast your vote on each item. Once cast, a vote is final and can't be changed.</p>
+  <p class="mt-2 text-sm text-stone-600 dark:text-stone-400"><%= t(".intro") %></p>
 
   <%= turbo_frame_tag "agenda_items", class: "mt-8 block" do %>
     <%# The list is always rendered so items added live have a place to go; the placeholder shows only while it is empty %>
     <ul class="flex flex-col gap-4" id="audience_agenda_item">
-      <li class="empty-state hidden only:block">No agenda items</li>
+      <li class="empty-state hidden only:block"><%= t(".empty") %></li>
       <%= render collection: @agenda_items, partial: "agenda_item" %>
     </ul>
   <% end %>

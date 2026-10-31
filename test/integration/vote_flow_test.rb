@@ -2,7 +2,7 @@ require "test_helper"
 
 class VoteFlowTest < ActionDispatch::IntegrationTest
   setup do
-    @round = rounds(:contest)
+    @round = rounds(:meeting)
     @agenda_item = agenda_items(:item)
     post session_path, params: { username: "john", password: "1111" }
   end
@@ -55,7 +55,7 @@ class VoteFlowTest < ActionDispatch::IntegrationTest
     end
     vote = Vote.last
     assert vote.favor?
-    assert_equal audiences(:john_at_contest), vote.audience
+    assert_equal audiences(:john_at_meeting), vote.audience
 
     assert_no_difference "Vote.count" do
       post round_agenda_item_votes_path(@round, @agenda_item), params: { choice: "against" }
@@ -98,8 +98,8 @@ class VoteFlowTest < ActionDispatch::IntegrationTest
   end
 
   test "owner sees favor, against and not voted counts in results" do
-    @agenda_item.votes.create!(user: users(:john), audience: audiences(:john_at_contest), choice: :favor)
-    @agenda_item.votes.create!(user: users(:gapbun), audience: audiences(:gapbun_at_contest), choice: :against)
+    @agenda_item.votes.create!(user: users(:john), audience: audiences(:john_at_meeting), choice: :favor)
+    @agenda_item.votes.create!(user: users(:gapbun), audience: audiences(:gapbun_at_meeting), choice: :against)
     @round.audiences.create!(user: users(:jimmy), name: "Jim")
     delete session_path
     post session_path, params: { username: "jimmy", password: "1111" }

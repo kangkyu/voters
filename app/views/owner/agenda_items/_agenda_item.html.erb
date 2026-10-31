@@ -5,9 +5,9 @@
     <div class="flex flex-wrap items-center gap-2">
       <h3 class="font-medium"><%= agenda_item.name %></h3>
       <% if agenda_item.election? %>
-        <span class="rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-900 dark:bg-blue-950 dark:text-blue-300">Election · <%= pluralize(agenda_item.candidates.size, "candidate") %></span>
+        <span class="rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-900 dark:bg-blue-950 dark:text-blue-300"><%= t(".election_badge", count: agenda_item.candidates.size) %></span>
       <% elsif agenda_item.decision_rule %>
-        <span class="rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-medium text-stone-700 dark:bg-stone-800 dark:text-stone-300">Decision · <%= agenda_item.decision_rule_label %> approve</span>
+        <span class="rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-medium text-stone-700 dark:bg-stone-800 dark:text-stone-300"><%= t(".decision_badge", rule: agenda_item.decision_rule_label) %></span>
       <% end %>
       <% if results_page %>
         <div class="ml-auto">
@@ -29,8 +29,8 @@
   </div>
   <% if current_user.owner?(@round) && !results_page %>
     <div class="flex shrink-0 items-center gap-3">
-      <%= link_to "Edit", edit_owner_round_agenda_item_path(@round, agenda_item), data: { turbo_stream: true }, class: "text-sm font-medium text-stone-500 hover:text-blue-800 dark:text-stone-400 dark:hover:text-blue-400" %>
-      <%= button_to "Delete", owner_round_agenda_item_path(@round, agenda_item), method: :delete, form: { data: { turbo_confirm: "Delete this agenda item?", confirm_detail: "Its votes will be deleted too.", confirm_button: "Delete" }}, class: "text-sm font-medium text-stone-500 hover:text-red-600 dark:text-stone-400 dark:hover:text-red-400" %>
+      <%= link_to t("common.edit"), edit_owner_round_agenda_item_path(@round, agenda_item), data: { turbo_stream: true }, class: "text-sm font-medium text-stone-500 hover:text-blue-800 dark:text-stone-400 dark:hover:text-blue-400" %>
+      <%= button_to t("common.delete"), owner_round_agenda_item_path(@round, agenda_item), method: :delete, form: { data: { turbo_confirm: t(".delete_confirm"), confirm_detail: t(".delete_detail"), confirm_button: t("common.delete") }}, class: "text-sm font-medium text-stone-500 hover:text-red-600 dark:text-stone-400 dark:hover:text-red-400" %>
     </div>
   <% end %>
 </li>

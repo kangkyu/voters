@@ -2,7 +2,7 @@ require "test_helper"
 
 class MeetingMinutesTest < ActionDispatch::IntegrationTest
   setup do
-    @round = rounds(:contest)
+    @round = rounds(:meeting)
     @motion = agenda_items(:item)
     @motion.update!(decision_rule: "majority")
   end
@@ -18,17 +18,17 @@ class MeetingMinutesTest < ActionDispatch::IntegrationTest
   end
 
   test "minutes show attendees and each item's outcome, without the site header" do
-    @motion.votes.create!(user: users(:john), audience: audiences(:john_at_contest), choice: "favor")
-    @motion.votes.create!(user: users(:gapbun), audience: audiences(:gapbun_at_contest), choice: "abstain")
+    @motion.votes.create!(user: users(:john), audience: audiences(:john_at_meeting), choice: "favor")
+    @motion.votes.create!(user: users(:gapbun), audience: audiences(:gapbun_at_meeting), choice: "abstain")
     election = @round.agenda_items.create!(name: "Chair", kind: "election", candidate_names: "Ann\nBob")
-    election.votes.create!(user: users(:john), audience: audiences(:john_at_contest), candidate: election.candidates.last)
+    election.votes.create!(user: users(:john), audience: audiences(:john_at_meeting), candidate: election.candidates.last)
     election.update!(decision_made: true)
 
     sign_in "jimmy"
     get owner_round_minutes_path(@round)
     assert_response :success
     assert_select "header nav", 0
-    assert_select "h1", "“contest”"
+    assert_select "h1", "“meeting”"
     assert_select "h2", /2 attendees/
     assert_select ".attendees", "Johnny and Gap"
 

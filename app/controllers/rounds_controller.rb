@@ -9,9 +9,9 @@ class RoundsController < ApplicationController
     @round = current_user.rounds.build(round_params)
 
     if @round.save
-      redirect_to round_url(@round.reload), notice: "New meeting added."
+      redirect_to round_url(@round.reload), notice: t("flash.meeting_created")
     else
-      flash.now[:alert] = "New meeting adding not successful"
+      flash.now[:alert] = t("flash.meeting_create_failed")
       render :new, status: :unprocessable_entity
     end
   end
@@ -19,7 +19,7 @@ class RoundsController < ApplicationController
   def show
     @round = Round.find_by(another_id: params[:id])
     unless @round.present?
-      redirect_to root_url, alert: "Meeting does not exist"
+      redirect_to root_url, alert: t("flash.meeting_not_found")
     end
   end
 

@@ -11,12 +11,12 @@ class Owner::AudiencesController < ApplicationController
   def destroy
     audience = @round.audiences.find(params[:id])
     audience.destroy!
-    redirect_to owner_round_audiences_url(@round), notice: "Removed “#{audience.name}” and their votes."
+    redirect_to owner_round_audiences_url(@round), notice: t("flash.attendee_removed", name: audience.name)
   end
 
   def require_owner
     if !owner_user?
-      redirect_to user_url(current_user.another_id), notice: "owner only"
+      redirect_to user_url(current_user.another_id), notice: t("flash.owner_only")
     end
   end
 

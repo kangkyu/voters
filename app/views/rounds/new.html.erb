@@ -1,23 +1,23 @@
 <div class="mx-auto max-w-md py-6">
-  <h1 class="page-title">Start a meeting</h1>
-  <p class="mt-2 text-sm text-stone-600 dark:text-stone-400">Give it a name. You'll add agenda items and invite attendees next.</p>
+  <h1 class="page-title"><%= t(".title") %></h1>
+  <p class="mt-2 text-sm text-stone-600 dark:text-stone-400"><%= t(".intro") %></p>
 
   <div class="card mt-8 p-6">
     <%= form_with model: @round, url: rounds_path, method: :post, class: "space-y-5" do |f| %>
       <div>
         <%= f.label :title, class: "form-label" %>
-        <%= f.text_field :title, autofocus: true, placeholder: "Annual General Meeting", class: "form-input" %>
+        <%= f.text_field :title, autofocus: true, placeholder: t(".title_placeholder"), class: "form-input" %>
       </div>
       <div>
         <label class="flex items-start gap-2 text-sm">
           <%= f.check_box :require_passcode, checked: true, class: "mt-0.5 h-4 w-4 rounded border-stone-300 text-blue-800 focus:ring-blue-700 dark:border-stone-700 dark:bg-stone-950" %>
           <span>
-            Require a passcode to join
-            <span class="block text-xs text-stone-500 dark:text-stone-400">You announce a 6-digit code at the meeting, so a forwarded link alone isn't enough.</span>
+            <%= t(".require_passcode") %>
+            <span class="block text-xs text-stone-500 dark:text-stone-400"><%= t(".require_passcode_hint") %></span>
           </span>
         </label>
       </div>
-      <%= f.submit "Start", class: "btn-primary w-full" %>
+      <%= f.submit t(".submit"), class: "btn-primary w-full" %>
     <% end %>
   </div>
 </div>

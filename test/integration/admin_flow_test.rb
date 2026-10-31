@@ -32,13 +32,13 @@ class AdminFlowTest < ActionDispatch::IntegrationTest
     get signin_path
     post session_path, params: { username: "gapbun", password: "1111" }
     get user_path(users(:gapbun).another_id)
-    assert_select "span.rounded-full", "admin"
+    assert_select "span.rounded-full", "Admin"
   end
 
   test "member can see their own user page" do
     get signin_path
     post session_path, params: { username: "jimmy", password: "1111" }
     get user_path(users(:jimmy).another_id)
-    assert_select "span", "member"
+    assert_select "span", "Member"
   end
 end

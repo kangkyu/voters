@@ -1,5 +1,5 @@
 <div class="mx-auto max-w-3xl">
-  <p class="eyebrow">Attendees</p>
+  <p class="eyebrow"><%= t(".eyebrow") %></p>
   <h1 class="page-title mt-2">“<%= link_to @round.title, round_path(@round), class: "hover:text-blue-800 dark:hover:text-blue-400" %>”</h1>
 
   <div class="mt-8">
@@ -8,10 +8,10 @@
         <table class="min-w-full divide-y divide-stone-200 text-sm dark:divide-stone-800">
           <thead>
             <tr>
-              <th scope="col" class="px-5 py-3 text-left font-semibold text-stone-600 dark:text-stone-300">ID</th>
-              <th scope="col" class="px-5 py-3 text-left font-semibold text-stone-600 dark:text-stone-300">Attendee Name</th>
-              <th scope="col" class="px-5 py-3 text-left font-semibold text-stone-600 dark:text-stone-300">Username</th>
-              <th scope="col" class="px-5 py-3"><span class="sr-only">Remove</span></th>
+              <th scope="col" class="px-5 py-3 text-left font-semibold text-stone-600 dark:text-stone-300"><%= t(".id") %></th>
+              <th scope="col" class="px-5 py-3 text-left font-semibold text-stone-600 dark:text-stone-300"><%= t(".name") %></th>
+              <th scope="col" class="px-5 py-3 text-left font-semibold text-stone-600 dark:text-stone-300"><%= User.human_attribute_name(:username) %></th>
+              <th scope="col" class="px-5 py-3"><span class="sr-only"><%= t(".remove") %></span></th>
             </tr>
           </thead>
           <tbody class="divide-y divide-stone-100 dark:divide-stone-800">
@@ -21,8 +21,8 @@
                 <td class="px-5 py-3 font-medium">“<%= audience.name %>”</td>
                 <td class="px-5 py-3 text-stone-500 dark:text-stone-400"><%= audience.user.username %></td>
                 <td class="px-5 py-3 text-right">
-                  <%= button_to "Remove", owner_round_audience_path(@round, audience), method: :delete,
-                        form: { data: { turbo_confirm: "Remove “#{audience.name}” from this meeting?", confirm_detail: "Their votes in it will be deleted.", confirm_button: "Remove" } },
+                  <%= button_to t(".remove"), owner_round_audience_path(@round, audience), method: :delete,
+                        form: { data: { turbo_confirm: t(".remove_confirm", name: audience.name), confirm_detail: t(".remove_detail"), confirm_button: t(".remove") } },
                         class: "text-sm font-medium text-stone-500 hover:text-red-600 dark:text-stone-400 dark:hover:text-red-400" %>
                 </td>
               </tr>
@@ -32,7 +32,7 @@
       </div>
     <% else %>
       <p class="empty-state">
-        No attendees yet. Share the meeting link to invite them.
+        <%= t(".empty") %>
       </p>
     <% end %>
   </div>

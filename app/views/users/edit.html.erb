@@ -1,8 +1,8 @@
 <div class="mx-auto max-w-sm py-6">
-  <p class="eyebrow">Account</p>
-  <h1 class="page-title mt-2">Edit account</h1>
+  <p class="eyebrow"><%= t(".eyebrow") %></p>
+  <h1 class="page-title mt-2"><%= t(".title") %></h1>
   <p class="mt-2 text-sm text-stone-600 dark:text-stone-400">
-    Your login for every meeting. Attendee names are set per meeting. <%= link_to "Back", user_path(@user.another_id), class: "link" %>
+    <%= t(".intro") %> <%= link_to t(".back"), user_path(@user.another_id), class: "link" %>
   </p>
 
   <div class="card mt-8 p-6">
@@ -19,20 +19,20 @@
         <%= f.text_field :username, required: true, autocomplete: "username", class: "form-input" %>
       </div>
       <div>
-        <%= f.label :password, "New password", class: "form-label" %>
+        <%= f.label :password, t(".new_password"), class: "form-label" %>
         <%= f.password_field :password, autocomplete: "new-password", class: "form-input" %>
-        <p class="mt-1 text-xs text-stone-500 dark:text-stone-400">Leave blank to keep your current password.</p>
+        <p class="mt-1 text-xs text-stone-500 dark:text-stone-400"><%= t(".password_hint") %></p>
       </div>
       <div>
-        <%= f.label :password_confirmation, "New password again", class: "form-label" %>
+        <%= f.label :password_confirmation, class: "form-label" %>
         <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-input" %>
       </div>
       <div class="border-t border-stone-100 pt-5 dark:border-stone-800">
-        <%= f.label :password_challenge, "Current password", class: "form-label" %>
+        <%= f.label :password_challenge, class: "form-label" %>
         <%= f.password_field :password_challenge, required: true, autocomplete: "current-password", class: "form-input" %>
-        <p class="mt-1 text-xs text-stone-500 dark:text-stone-400">Needed to save any change.</p>
+        <p class="mt-1 text-xs text-stone-500 dark:text-stone-400"><%= t(".challenge_hint") %></p>
       </div>
-      <%= f.submit "Save", class: "btn-primary w-full" %>
+      <%= f.submit t("common.save"), class: "btn-primary w-full" %>
     <% end %>
   </div>
 </div>

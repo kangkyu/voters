@@ -1,13 +1,13 @@
 <!-- Hero -->
 <section class="mx-auto max-w-6xl px-6 py-20 sm:py-28 grid gap-14 lg:grid-cols-2 lg:items-center">
   <div>
-    <p class="inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-900 dark:bg-blue-950 dark:text-blue-300">Voting for any meeting</p>
-    <h1 class="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl">Every voice counted.<br>No hands, no paper slips.</h1>
-    <p class="mt-6 text-lg leading-8 text-stone-600 dark:text-stone-400">Open a meeting, invite everyone in the room, and vote on each agenda item from your phones. Motions and elections, tallied instantly.</p>
+    <p class="inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-900 dark:bg-blue-950 dark:text-blue-300"><%= t(".badge") %></p>
+    <h1 class="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl"><%= t(".headline_html") %></h1>
+    <p class="mt-6 text-lg leading-8 text-stone-600 dark:text-stone-400"><%= t(".lede") %></p>
     <div class="mt-9 flex flex-wrap items-center gap-4">
-      <%= link_to "Open a meeting", new_round_path, class: "rounded-md bg-blue-800 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-700" %>
+      <%= link_to t(".open_meeting"), new_round_path, class: "rounded-md bg-blue-800 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-700" %>
       <% unless signed_in? %>
-        <%= link_to "Create an account →", register_path, class: "text-sm font-semibold text-stone-900 hover:text-blue-800 dark:text-stone-100" %>
+        <%= link_to t(".create_account"), register_path, class: "text-sm font-semibold text-stone-900 hover:text-blue-800 dark:text-stone-100" %>
       <% end %>
     </div>
   </div>
@@ -15,19 +15,19 @@
   <!-- Preview card -->
   <div class="rounded-2xl border border-stone-200 bg-stone-50 p-6 shadow-sm dark:border-stone-800 dark:bg-stone-900">
     <div class="flex items-center justify-between text-xs text-stone-500">
-      <span>Annual General Meeting</span>
-      <span class="inline-flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-green-500"></span>12 joined</span>
+      <span><%= t(".preview_meeting") %></span>
+      <span class="inline-flex items-center gap-1.5"><span class="h-2 w-2 rounded-full bg-green-500"></span><%= t(".preview_joined", count: 12) %></span>
     </div>
     <div class="mt-4 rounded-xl bg-white p-5 dark:bg-stone-950">
-      <p class="text-xs font-semibold uppercase tracking-wide text-blue-800">Motion · Item 3</p>
-      <p class="mt-2 font-medium">Approve the 2027 budget as presented</p>
+      <p class="text-xs font-semibold uppercase tracking-wide text-blue-800"><%= t(".preview_item") %></p>
+      <p class="mt-2 font-medium"><%= t(".preview_motion") %></p>
       <div class="mt-4 space-y-3 text-sm">
         <div>
-          <div class="flex justify-between"><span>Approve</span><span class="font-medium">9</span></div>
+          <div class="flex justify-between"><span><%= t(".approve") %></span><span class="font-medium">9</span></div>
           <div class="mt-1 h-2 rounded-full bg-stone-100 dark:bg-stone-800"><div class="h-2 w-3/4 rounded-full bg-blue-800"></div></div>
         </div>
         <div>
-          <div class="flex justify-between"><span>Against</span><span class="font-medium">3</span></div>
+          <div class="flex justify-between"><span><%= t(".against") %></span><span class="font-medium">3</span></div>
           <div class="mt-1 h-2 rounded-full bg-stone-100 dark:bg-stone-800"><div class="h-2 w-1/4 rounded-full bg-stone-400"></div></div>
         </div>
       </div>
@@ -38,22 +38,22 @@
 <!-- How it works -->
 <section class="border-t border-stone-100 bg-stone-50 py-20 dark:border-stone-800 dark:bg-stone-900">
   <div class="mx-auto max-w-6xl px-6">
-    <h2 class="text-3xl font-semibold tracking-tight">How it works</h2>
+    <h2 class="text-3xl font-semibold tracking-tight"><%= t(".how_title") %></h2>
     <div class="mt-12 grid gap-10 sm:grid-cols-3">
       <div>
         <div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-800 font-semibold text-white">1</div>
-        <h3 class="mt-4 font-semibold">Open a meeting</h3>
-        <p class="mt-2 text-sm leading-6 text-stone-600 dark:text-stone-400">The chair or organizer creates a meeting and sets up the agenda items to vote on.</p>
+        <h3 class="mt-4 font-semibold"><%= t(".open_meeting") %></h3>
+        <p class="mt-2 text-sm leading-6 text-stone-600 dark:text-stone-400"><%= t(".step1") %></p>
       </div>
       <div>
         <div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-800 font-semibold text-white">2</div>
-        <h3 class="mt-4 font-semibold">Invite attendees</h3>
-        <p class="mt-2 text-sm leading-6 text-stone-600 dark:text-stone-400">Everyone signs in and joins the meeting, so each person gets exactly one vote.</p>
+        <h3 class="mt-4 font-semibold"><%= t(".step2_title") %></h3>
+        <p class="mt-2 text-sm leading-6 text-stone-600 dark:text-stone-400"><%= t(".step2") %></p>
       </div>
       <div>
         <div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-800 font-semibold text-white">3</div>
-        <h3 class="mt-4 font-semibold">Vote item by item</h3>
-        <p class="mt-2 text-sm leading-6 text-stone-600 dark:text-stone-400">As each agenda item comes up, members cast their vote and see the result right away.</p>
+        <h3 class="mt-4 font-semibold"><%= t(".step3_title") %></h3>
+        <p class="mt-2 text-sm leading-6 text-stone-600 dark:text-stone-400"><%= t(".step3") %></p>
       </div>
     </div>
   </div>
@@ -62,25 +62,25 @@
 <!-- Vote types -->
 <section class="py-20">
   <div class="mx-auto max-w-6xl px-6">
-    <h2 class="text-3xl font-semibold tracking-tight">Two kinds of agenda items</h2>
-    <p class="mt-3 max-w-2xl text-stone-600 dark:text-stone-400">Covers what most meetings actually decide.</p>
+    <h2 class="text-3xl font-semibold tracking-tight"><%= t(".kinds_title") %></h2>
+    <p class="mt-3 max-w-2xl text-stone-600 dark:text-stone-400"><%= t(".kinds_intro") %></p>
     <div class="mt-12 grid gap-8 md:grid-cols-2">
       <div class="rounded-2xl border border-stone-200 p-8 dark:border-stone-800">
         <p class="text-3xl">✅</p>
-        <h3 class="mt-4 text-xl font-semibold">Motion</h3>
-        <p class="mt-3 text-sm leading-6 text-stone-600 dark:text-stone-400">A proposal put to the room. Each member votes <span class="font-medium text-stone-900 dark:text-stone-100">Approve</span> or <span class="font-medium text-stone-900 dark:text-stone-100">Against</span>. Use it for budgets, bylaws, policies and resolutions.</p>
+        <h3 class="mt-4 text-xl font-semibold"><%= t("kinds.motion") %></h3>
+        <p class="mt-3 text-sm leading-6 text-stone-600 dark:text-stone-400"><%= t(".motion_text_html") %></p>
         <div class="mt-6 flex gap-3">
-          <span class="rounded-md bg-blue-800 px-4 py-2 text-sm font-medium text-white">Approve</span>
-          <span class="rounded-md border border-stone-300 px-4 py-2 text-sm font-medium dark:border-stone-700">Against</span>
+          <span class="rounded-md bg-blue-800 px-4 py-2 text-sm font-medium text-white"><%= t(".approve") %></span>
+          <span class="rounded-md border border-stone-300 px-4 py-2 text-sm font-medium dark:border-stone-700"><%= t(".against") %></span>
         </div>
       </div>
       <div class="rounded-2xl border border-stone-200 p-8 dark:border-stone-800">
         <p class="text-3xl">🙋</p>
-        <h3 class="mt-4 text-xl font-semibold">Election</h3>
-        <p class="mt-3 text-sm leading-6 text-stone-600 dark:text-stone-400">Choose a person for a role. Each member picks <span class="font-medium text-stone-900 dark:text-stone-100">one candidate</span>. Use it for chair, treasurer, secretary or any open seat.</p>
+        <h3 class="mt-4 text-xl font-semibold"><%= t("kinds.election") %></h3>
+        <p class="mt-3 text-sm leading-6 text-stone-600 dark:text-stone-400"><%= t(".election_text_html") %></p>
         <div class="mt-6 space-y-2 text-sm">
-          <div class="flex items-center gap-3 rounded-md border border-blue-800 px-4 py-2"><span class="h-3 w-3 rounded-full bg-blue-800"></span>Candidate A</div>
-          <div class="flex items-center gap-3 rounded-md border border-stone-300 px-4 py-2 dark:border-stone-700"><span class="h-3 w-3 rounded-full border border-stone-400"></span>Candidate B</div>
+          <div class="flex items-center gap-3 rounded-md border border-blue-800 px-4 py-2"><span class="h-3 w-3 rounded-full bg-blue-800"></span><%= t(".candidate_a") %></div>
+          <div class="flex items-center gap-3 rounded-md border border-stone-300 px-4 py-2 dark:border-stone-700"><span class="h-3 w-3 rounded-full border border-stone-400"></span><%= t(".candidate_b") %></div>
         </div>
       </div>
     </div>
@@ -90,20 +90,20 @@
 <!-- Use cases -->
 <section class="border-t border-stone-100 bg-stone-50 py-16 dark:border-stone-800 dark:bg-stone-900">
   <div class="mx-auto max-w-6xl px-6 text-center">
-    <p class="text-sm font-medium text-stone-500">Made for</p>
-    <p class="mt-3 text-lg font-medium">Boards · Clubs · HOAs · Student councils · Associations · Churches · Unions</p>
+    <p class="text-sm font-medium text-stone-500"><%= t(".made_for") %></p>
+    <p class="mt-3 text-lg font-medium"><%= t(".audiences") %></p>
   </div>
 </section>
 
 <!-- CTA -->
 <section class="py-20">
   <div class="mx-auto max-w-3xl px-6 text-center">
-    <h2 class="text-3xl font-semibold tracking-tight">Ready for your next meeting?</h2>
-    <p class="mt-4 text-stone-600 dark:text-stone-400">Set it up in a minute. Your attendees just sign in and vote.</p>
+    <h2 class="text-3xl font-semibold tracking-tight"><%= t(".cta_title") %></h2>
+    <p class="mt-4 text-stone-600 dark:text-stone-400"><%= t(".cta_text") %></p>
     <div class="mt-8 flex flex-wrap justify-center gap-4">
-      <%= link_to "Open a meeting", new_round_path, class: "rounded-md bg-blue-800 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-700" %>
+      <%= link_to t(".open_meeting"), new_round_path, class: "rounded-md bg-blue-800 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-700" %>
       <% unless signed_in? %>
-        <%= link_to "Sign in to join", new_session_path, class: "rounded-md border border-stone-300 px-5 py-3 text-sm font-semibold hover:bg-stone-50 dark:border-stone-700 dark:hover:bg-stone-900" %>
+        <%= link_to t(".sign_in_to_join"), new_session_path, class: "rounded-md border border-stone-300 px-5 py-3 text-sm font-semibold hover:bg-stone-50 dark:border-stone-700 dark:hover:bg-stone-900" %>
       <% end %>
     </div>
   </div>

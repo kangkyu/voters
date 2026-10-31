@@ -1,41 +1,328 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# The following keys must be escaped otherwise they will not be retrieved by
-# the default I18n backend:
-#
-# true, false, on, off, yes, no
-#
-# Instead, surround them with single quotes.
-#
-# en:
-#   "true": "foo"
-#
-# To learn more, please read the Rails Internationalization guide
-# available at https://guides.rubyonrails.org/i18n.html.
+# Files in the config/locales directory are used for internationalization and
+# are automatically loaded by Rails. English is the default; ko.yml mirrors every key.
 
 en:
-  hello: "Hello world"
+  # Rails' default, listed so ko.yml can mirror it
+  errors:
+    format: "%{attribute} %{message}"
+  choices:
+    favor: Favor
+    against: Against
+    abstain: Abstain
+    not_voted: Not voted
+  kinds:
+    motion: Motion
+    election: Election
+  decisions:
+    passed: Passed
+    failed: Failed
+    no_votes_yet: No votes yet
+    decision_made: Decision made
+  decision_rules:
+    label: Decision vote
+    majority: Majority (more than 1/2 approve)
+    two_thirds: Two-thirds (2/3 approve)
+    none: None (tally only)
+  common:
+    save: Save
+    cancel: Cancel
+    edit: Edit
+    delete: Delete
+    ok: OK
+  activity:
+    votes:
+      closed: Voting is closed.
+      cast: Vote cast
+      final: Your vote is final.
+      confirm: Your vote is final and can't be changed or withdrawn. Are you sure?
+      confirm_detail: 'Your vote: %{choice}'
+      confirm_button: Submit
+  admin:
+    dashboard:
+      index:
+        title: Chronicle
+        users: Users
+        user_count:
+          one: "%{count} user"
+          other: "%{count} users"
+        meetings: Meetings
+        meeting_count:
+          one: "%{count} meeting"
+          other: "%{count} meetings"
+  agenda_items:
+    index:
+      eyebrow: Agenda
+      intro: Cast your vote on each item. Once cast, a vote is final and can't be changed.
+      empty: No agenda items
+  audiences:
+    new:
+      eyebrow: Join meeting
+      intro: Become an attendee to vote on its agenda items.
+      passcode_hint: The organizer announces it at the meeting.
+      name_hint: How the organizer sees you in the attendee list.
+      submit: Attend
+  layouts:
+    account_links:
+      hello: Hello "%{name}"
+      sign_in: Sign In
+      register: Register
+    footer:
+      copyright: "© %{year} Voters · A Lining Link app"
+    header:
+      new_meeting: New Meeting
+      open_menu: Open main menu
+    nav_links:
+      vote: Vote
+      result: Result
+      users: Users
+      chronicle: Chronicle
+    landing:
+      description: Run votes at any meeting. Open a meeting, invite attendees, and vote on motions and elections together in real time.
+  owner:
+    agenda_items:
+      agenda_item:
+        election_badge:
+          one: Election · %{count} candidate
+          other: Election · %{count} candidates
+        decision_badge: Decision · %{rule} approve
+        delete_confirm: Delete this agenda item?
+        delete_detail: Its votes will be deleted too.
+      edit_form:
+        edit_election: Edit election
+        edit_motion: Edit motion
+        candidates_fixed: Candidates can't change once voting has started.
+        one_per_line: One name per line.
+      election_count:
+        wins: "%{name} wins"
+        tie: Tie · %{names}
+      form:
+        title: Add an agenda item
+        motion_option: Motion (favor / against)
+        election_option: Election (pick one candidate)
+        candidates_placeholder: One name per line
+        candidates_hint: One name per line. Most votes wins.
+        submit: Add
+      list:
+        empty: No agenda items yet.
+      votes_count:
+        needs: Needs %{rule} of votes cast in favor
+      index:
+        eyebrow: Agenda items
+      minutes:
+        back: "← Results"
+        print: Print
+        eyebrow: Minutes of the meeting
+        opened: Opened
+        organizer: Organizer
+        attendance:
+          one: Attendance · %{count} attendee
+          other: Attendance · %{count} attendees
+        no_attendees: No attendees joined.
+        agenda: Agenda
+        no_agenda_items: No agenda items.
+        rule: "%{rule} of votes cast"
+        no_votes_cast: No votes cast
+        elected: 'Elected: %{name}'
+        tie: 'Tie: %{names}'
+        tally_only: Tally only
+        still_open: Voting was still open when these minutes were printed.
+        printed: Printed %{time}
+      result:
+        eyebrow: Results
+        minutes: Meeting minutes
+        intro: Votes update live. Check “Decision made” to close voting on an item.
+    audiences:
+      index:
+        eyebrow: Attendees
+        id: ID
+        name: Attendee Name
+        remove: Remove
+        remove_confirm: Remove “%{name}” from this meeting?
+        remove_detail: Their votes in it will be deleted.
+        empty: No attendees yet. Share the meeting link to invite them.
+  pages:
+    home:
+      badge: Voting for any meeting
+      headline_html: Every voice counted.<br>No hands, no paper slips.
+      lede: Open a meeting, invite everyone in the room, and vote on each agenda item from your phones. Motions and elections, tallied instantly.
+      open_meeting: Open a meeting
+      create_account: Create an account →
+      preview_meeting: Annual General Meeting
+      preview_joined:
+        one: "%{count} joined"
+        other: "%{count} joined"
+      preview_item: Motion · Item 3
+      preview_motion: Approve the 2027 budget as presented
+      approve: Approve
+      against: Against
+      how_title: How it works
+      step1: The chair or organizer creates a meeting and sets up the agenda items to vote on.
+      step2_title: Invite attendees
+      step2: Everyone signs in and joins the meeting, so each person gets exactly one vote.
+      step3_title: Vote item by item
+      step3: As each agenda item comes up, members cast their vote and see the result right away.
+      kinds_title: Two kinds of agenda items
+      kinds_intro: Covers what most meetings actually decide.
+      motion_text_html: A proposal put to the room. Each member votes <span class="font-medium text-stone-900 dark:text-stone-100">Approve</span> or <span class="font-medium text-stone-900 dark:text-stone-100">Against</span>. Use it for budgets, bylaws, policies and resolutions.
+      election_text_html: Choose a person for a role. Each member picks <span class="font-medium text-stone-900 dark:text-stone-100">one candidate</span>. Use it for chair, treasurer, secretary or any open seat.
+      candidate_a: Candidate A
+      candidate_b: Candidate B
+      made_for: Made for
+      audiences: Boards · Clubs · HOAs · Student councils · Associations · Churches · Unions
+      cta_title: Ready for your next meeting?
+      cta_text: Set it up in a minute. Your attendees just sign in and vote.
+      sign_in_to_join: Sign in to join
+  rounds:
+    new:
+      title: Start a meeting
+      intro: Give it a name. You'll add agenda items and invite attendees next.
+      title_placeholder: Annual General Meeting
+      require_passcode: Require a passcode to join
+      require_passcode_hint: You announce a 6-digit code at the meeting, so a forwarded link alone isn't enough.
+      submit: Start
+    show:
+      eyebrow: Meeting
+      organizer: You're the organizer of this meeting.
+      run: Run the meeting
+      agenda_items: Agenda items
+      attendees: Attendees
+      results: Results
+      invite: Invite attendees
+      invite_hint: Share this page's address. Attendees sign in and join from there.
+      copied: Copied!
+      copy: Copy link
+      passcode_hint: Passcode to join. Announce it at the meeting.
+      new_code: New code
+      new_code_confirm: Make a new passcode?
+      new_code_detail: The current one stops working for anyone who hasn't joined yet.
+      new_code_button: Make new code
+      turn_off: Turn off
+      turn_off_confirm: Let anyone with the link join without a passcode?
+      open: Anyone with the link can join.
+      require_passcode: Require a passcode
+      started_by_html: Started by %{name}
+      attending: You're attending
+      attending_hint: Vote on each agenda item as it comes up.
+      go_vote: Go vote
+      join: Join to vote
+      join_hint: Become an attendee to get your vote on each agenda item.
+      join_button: Join as an attendee
+  sessions:
+    new:
+      title: Sign In
+      new_here: New here?
+      create_account: Create an account
+      submit: Sign In
+  users:
+    edit:
+      eyebrow: Account
+      title: Edit account
+      intro: Your login for every meeting. Attendee names are set per meeting.
+      back: Back
+      new_password: New password
+      password_hint: Leave blank to keep your current password.
+      challenge_hint: Needed to save any change.
+    index:
+      title: Users
+      user_id: User ID
+    new:
+      title: Create a username
+      have_one: Have a username already?
+      sign_in: Sign In
+      submit: Register
+    show:
+      edit: Edit account
+      sign_out: Sign Out
+      sign_out_confirm: Signing out as "%{name}"?
+      sign_out_button: Sign out
+      intro: Thank you for using this app. This page shows who the current user is.
+      organize: Meetings you organize
+      none_yet: None yet.
+      open_meeting: Open a meeting
+      attend: Meetings you attend
+      as: as “%{name}”
+      attend_none: None yet. Open a meeting link you were sent to join.
+      language: Language
+  language_name: English
   activerecord:
     attributes:
       agenda_item:
-        name: "Title"
-        candidate_names: "Candidates"
+        name: Title
+        subtitle: Subtitle
+        kind: Type
+        candidate_names: Candidates
+        decision_rule: Decision vote
+      audience:
+        name: Name
+        passcode: Passcode
+      round:
+        title: Title
       user:
-        password_challenge: "Current password"
-        password_confirmation: "New password again"
+        username: Username
+        password: Password
+        password_confirmation: New password again
+        password_challenge: Current password
+        user_role: Role
+        phone_number: Phone number
+        locale: Language
+        user_role/admin: Admin
+        user_role/member: Member
+      vote:
+        agenda_item: Agenda item
+        audience: Attendee
+        candidate: Candidate
+        choice: Choice
+        user: User
+    models:
+      agenda_item: Agenda item
+      audience: Attendee
+      round: Meeting
+      user: User
+      vote: Vote
+    errors:
+      models:
+        agenda_item:
+          attributes:
+            candidate_names:
+              fixed_once_voted: can't change once voting has started
+              too_few: need at least two names, one per line
+        audience:
+          incorrect_passcode: Passcode is incorrect
+        vote:
+          already_cast: A vote can't be changed once cast
+          attributes:
+            audience:
+              other_round: must be in the same round as the agenda_item
+            agenda_item:
+              closed: 'is closed: decision made'
+            candidate:
+              blank_when_abstaining: must be blank when abstaining
+              not_in_election: must be one of this election's candidates
+              not_on_motion: must be blank on a motion
+            choice:
+              not_in_election: must be blank or abstain in an election
+            user:
+              not_attendee: must be the attendee who votes
+  flash:
+    not_signed_in: Not logged in
+    already_signed_in: Already logged in
+    admin_only: admin only
+    owner_only: owner only
+    meeting_not_found: Meeting does not exist
+    join_first: Please join the meeting first
+    sign_up_failed: 'Sign up not successful: %{errors}'
+    account_and_password_updated: Account and password updated.
+    account_updated: Account updated.
+    not_your_page: Not your user page
+    too_many_tries: Too many tries. Wait a few minutes and try again.
+    already_joined: User already joined as attendee
+    meeting_created: New meeting added.
+    meeting_create_failed: New meeting adding not successful
+    attendee_removed: Removed “%{name}” and their votes.
+    sign_in_failed: Invalid username/password combination.
+    passcode_created: 'New passcode: %{passcode}'
+    passcode_off: Passcode turned off.
+    language_updated: Language changed to English.
+  roles:
+    admin: Admin
+    member: Member

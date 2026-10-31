@@ -6,17 +6,17 @@ class Owner::PasscodesController < ApplicationController
   # Turns the passcode on, or replaces it with a new one
   def create
     @round.regenerate_passcode!
-    redirect_to round_url(@round, anchor: "passcode"), notice: "New passcode: #{@round.passcode}"
+    redirect_to round_url(@round, anchor: "passcode"), notice: t("flash.passcode_created", passcode: @round.passcode)
   end
 
   def destroy
     @round.update!(passcode: nil)
-    redirect_to round_url(@round, anchor: "passcode"), notice: "Passcode turned off."
+    redirect_to round_url(@round, anchor: "passcode"), notice: t("flash.passcode_off")
   end
 
   def require_owner
     if !owner_user?
-      redirect_to user_url(current_user.another_id), notice: "owner only"
+      redirect_to user_url(current_user.another_id), notice: t("flash.owner_only")
     end
   end
 

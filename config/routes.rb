@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get "register" => "users#new"
 
   resource :session, only: [:new, :create, :destroy]
+  resource :language, only: [:update]
   get "signin" => "sessions#new"
 
   resources :rounds, only: [:show, :new, :create] do

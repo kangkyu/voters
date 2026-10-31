@@ -110,11 +110,16 @@ class AgendaItem < ApplicationRecord
   end
 
   # Streams are per meeting, so attendees only see their own meeting's agenda
+  # Rendered once per language, each on that language's stream, so viewers get their own
   after_create_commit -> {
-    broadcast_append_to [round, :agenda],
-      target: "audience_agenda_item",
-      partial: "agenda_items/agenda_item",
-      locals: { agenda_item: self }
+    I18n.available_locales.each do |locale|
+      I18n.with_locale(locale) do
+        broadcast_append_to [round, :agenda, locale],
+          target: "audience_agenda_item",
+          partial: "agenda_items/agenda_item",
+          locals: { agenda_item: self }
+      end
+    end
   }
 
   # Voting pages show each attendee's own vote, so they refresh themselves rather than take shared HTML
@@ -150,13 +155,13 @@ class AgendaItem < ApplicationRecord
 
   def candidates_fixed_once_voted
     if votes.exists?
-      errors.add(:candidate_names, "can't change once voting has started")
+      errors.add(:candidate_names, :fixed_once_voted)
     end
   end
 
   def election_has_candidates
     if (candidate_names_changed? ? typed_candidate_names : candidates).size < 2
-      errors.add(:candidate_names, "need at least two names, one per line")
+      errors.add(:candidate_names, :too_few)
     end
   end
 end

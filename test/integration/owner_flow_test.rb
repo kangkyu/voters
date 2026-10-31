@@ -2,7 +2,7 @@ require "test_helper"
 
 class OwnerFlowTest < ActionDispatch::IntegrationTest
   test "cannot see result before login" do
-    round = rounds(:contest)
+    round = rounds(:meeting)
 
     get owner_round_results_path(round)
     assert_response :redirect
@@ -65,7 +65,7 @@ class OwnerFlowTest < ActionDispatch::IntegrationTest
 
   test "owner sees a copy link button on the meeting page" do
     post session_path, params: { username: "jimmy", password: "1111" }
-    round = rounds(:contest)
+    round = rounds(:meeting)
 
     get round_path(round)
     assert_select "[data-controller=clipboard] [data-clipboard-target=source]", round.url

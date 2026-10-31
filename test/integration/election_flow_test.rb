@@ -2,7 +2,7 @@ require "test_helper"
 
 class ElectionFlowTest < ActionDispatch::IntegrationTest
   setup do
-    @round = rounds(:contest)
+    @round = rounds(:meeting)
     @election = @round.agenda_items.create!(name: "Chair", kind: "election", candidate_names: "Ann\nBob")
     @ann, @bob = @election.candidates
   end
@@ -104,7 +104,7 @@ class ElectionFlowTest < ActionDispatch::IntegrationTest
   end
 
   test "results show each candidate's votes and the winner" do
-    @election.votes.create!(user: users(:john), audience: audiences(:john_at_contest), candidate: @bob)
+    @election.votes.create!(user: users(:john), audience: audiences(:john_at_meeting), candidate: @bob)
     sign_in "jimmy"
     get owner_round_results_path(@round)
     frame = "turbo-frame##{ActionView::RecordIdentifier.dom_id(@election)}_votes_count"
@@ -116,8 +116,8 @@ class ElectionFlowTest < ActionDispatch::IntegrationTest
   end
 
   test "results show a tie" do
-    @election.votes.create!(user: users(:john), audience: audiences(:john_at_contest), candidate: @ann)
-    @election.votes.create!(user: users(:gapbun), audience: audiences(:gapbun_at_contest), candidate: @bob)
+    @election.votes.create!(user: users(:john), audience: audiences(:john_at_meeting), candidate: @ann)
+    @election.votes.create!(user: users(:gapbun), audience: audiences(:gapbun_at_meeting), candidate: @bob)
     sign_in "jimmy"
     get owner_round_results_path(@round)
     assert_select "##{ActionView::RecordIdentifier.dom_id(@election)} .decision-badge", /Tie · Ann and Bob/

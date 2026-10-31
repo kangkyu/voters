@@ -2,7 +2,7 @@ require "application_system_test_case"
 
 class VotesTest < ApplicationSystemTestCase
   setup do
-    @round = rounds(:contest)
+    @round = rounds(:meeting)
     @agenda_item = agenda_items(:item)
     visit signin_path
     fill_in "username", with: "john"
