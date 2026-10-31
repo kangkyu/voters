@@ -14,6 +14,13 @@ class MeetingPasscodeTest < ActionDispatch::IntegrationTest
     post round_audiences_path(@round), params: { audience: { name: "Jim" }, passcode: passcode }.compact
   end
 
+  test "the new meeting form leaves the passcode off unless checked" do
+    sign_in "jimmy"
+    get new_round_path
+    assert_select "input[type=checkbox][name='round[require_passcode]']"
+    assert_select "input[type=checkbox][name='round[require_passcode]'][checked]", 0
+  end
+
   test "a new meeting can require a passcode" do
     sign_in "jimmy"
     post rounds_path, params: { round: { title: "AGM", require_passcode: "1" } }
