@@ -18,11 +18,18 @@ class VoteTest < ActiveSupport::TestCase
     end
   end
 
-  test "broadcasts the tally when a vote is changed" do
+  test "a cast vote can't be changed" do
     vote = cast_vote
-    assert_enqueued_jobs 1, only: Turbo::Streams::ActionBroadcastJob do
-      vote.update!(choice: "against")
-    end
+    assert_not vote.update(choice: "against")
+    assert_includes vote.errors[:base], "A vote can't be changed once cast"
+    assert vote.reload.favor?
+  end
+
+  test "an election vote can't switch candidates" do
+    election = agenda_items(:singer).round.agenda_items.create!(name: "Chair", kind: "election", candidate_names: "Ann\nBob")
+    ann, bob = election.candidates.order(:id).to_a
+    vote = election.votes.create!(user: users(:john), audience: audiences(:john_at_contest), candidate: ann)
+    assert_not vote.update(candidate: bob)
   end
 
   test "broadcasts the tally when a vote is withdrawn" do

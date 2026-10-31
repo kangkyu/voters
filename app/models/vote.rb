@@ -14,6 +14,7 @@ class Vote < ApplicationRecord
   validate :user_matches_audience
   validate :matches_agenda_item_kind
   validate :voting_open, on: [:create, :update]
+  validate :cast_once, on: :update
 
   # One callback: registering the same method twice makes the last one win
   after_commit :broadcast_votes_count, unless: :destroyed_by_association
@@ -29,6 +30,13 @@ class Vote < ApplicationRecord
   def voting_open
     if agenda_item&.decision_made?
       errors.add(:agenda_item, "is closed: decision made")
+    end
+  end
+
+  # Like a ballot in the box: once cast, the choice can't be changed
+  def cast_once
+    if will_save_change_to_choice? || will_save_change_to_candidate_id?
+      errors.add(:base, "A vote can't be changed once cast")
     end
   end
 

@@ -3,7 +3,7 @@
 <div class="mx-auto max-w-2xl">
   <p class="eyebrow">Agenda</p>
   <h1 class="page-title mt-2">“<%= link_to @round.title, round_path(@round), class: "hover:text-blue-800 dark:hover:text-blue-400" %>”</h1>
-  <p class="mt-2 text-sm text-stone-600 dark:text-stone-400">Cast your vote on each item. Choose “No vote” to cancel it.</p>
+  <p class="mt-2 text-sm text-stone-600 dark:text-stone-400">Cast your vote on each item. Once cast, a vote is final and can't be changed.</p>
 
   <%= turbo_frame_tag "agenda_items", class: "mt-8 block" do %>
     <%# The list is always rendered so items added live have a place to go; the placeholder shows only while it is empty %>
@@ -13,3 +13,19 @@
     </ul>
   <% end %>
 </div>
+
+<%# Asks before a vote is cast: votes are final %>
+<dialog id="confirm_dialog" data-controller="confirm-dialog" data-turbo-permanent
+        data-action="close->confirm-dialog#closed click->confirm-dialog#backdropClick"
+        aria-labelledby="confirm_dialog_message"
+        class="m-auto w-[calc(100%-2rem)] max-w-md rounded-lg border border-stone-200 bg-white p-0 text-stone-900 shadow-xl backdrop:bg-stone-900/50 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-100">
+  <form method="dialog" class="p-6">
+    <h2 id="confirm_dialog_message" class="font-serif text-lg font-semibold" data-confirm-dialog-target="message"></h2>
+    <p class="mt-2 text-sm text-stone-600 dark:text-stone-400" data-confirm-dialog-target="detail" hidden></p>
+    <%# Phones: full-width, taller buttons stacked with Submit on top; wider screens: side by side %>
+    <div class="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+      <button type="submit" value="cancel" class="btn-secondary w-full py-3 text-base sm:w-auto sm:py-2 sm:text-sm" autofocus>Cancel</button>
+      <button type="submit" value="submit" class="btn-primary w-full py-3 text-base sm:w-auto sm:py-2 sm:text-sm">Submit</button>
+    </div>
+  </form>
+</dialog>

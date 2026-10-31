@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   resources :rounds, only: [:show, :new, :create] do
     resources :audiences, only: [:new, :create]
     resources :agenda_items, only: [:index] do
-      resources :votes
+      resources :votes, only: [:create]
     end
   end
 

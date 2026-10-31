@@ -40,10 +40,11 @@ class RobustnessTest < ActionDispatch::IntegrationTest
     assert_select "ul#audience_agenda_item > li##{ActionView::RecordIdentifier.dom_id(@agenda_item)} turbo-frame"
   end
 
-  test "withdrawing an already-withdrawn vote still returns the vote buttons" do
+  test "a second vote on the same item still returns the vote buttons" do
     sign_in "john"
-    delete round_agenda_item_vote_path(@round, @agenda_item, 0)
-    assert_response :success
+    post round_agenda_item_votes_path(@round, @agenda_item), params: { choice: "favor" }
+    post round_agenda_item_votes_path(@round, @agenda_item), params: { choice: "favor" }
+    assert_response :unprocessable_entity
     assert_select "turbo-frame##{ActionView::RecordIdentifier.dom_id(@agenda_item)}_votes"
   end
 
