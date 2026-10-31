@@ -3,7 +3,7 @@ require "test_helper"
 class MeetingMinutesTest < ActionDispatch::IntegrationTest
   setup do
     @round = rounds(:contest)
-    @motion = agenda_items(:singer)
+    @motion = agenda_items(:item)
     @motion.update!(decision_rule: "majority")
   end
 

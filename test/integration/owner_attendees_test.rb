@@ -23,7 +23,7 @@ class OwnerAttendeesTest < ActionDispatch::IntegrationTest
   end
 
   test "owner removes an attendee along with their votes in the meeting" do
-    agenda_item = agenda_items(:singer)
+    agenda_item = agenda_items(:item)
     agenda_item.votes.create!(user: users(:john), audience: audiences(:john_at_contest), choice: "favor")
 
     assert_difference "Audience.count" => -1, "Vote.count" => -1, "User.count" => 0 do

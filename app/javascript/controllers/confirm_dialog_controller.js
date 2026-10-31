@@ -1,10 +1,11 @@
 import { Controller } from "@hotwired/stimulus"
 import { Turbo } from "@hotwired/turbo-rails"
 
-// Shows data-turbo-confirm prompts in this page's <dialog> instead of the browser's confirm box.
-// The form submits only when "Submit" is pressed; Cancel, Escape or clicking outside keeps it unsent.
+// Shows every data-turbo-confirm prompt in the layout's <dialog> instead of the browser's confirm box.
+// Optional on the form: data-confirm-detail (a second, lighter line) and data-confirm-button (label, "OK" by default).
+// The form submits only when that button is pressed; Cancel, Escape or clicking outside keeps it unsent.
 export default class extends Controller {
-  static targets = ["message", "detail"]
+  static targets = ["message", "detail", "button"]
 
   connect() {
     this.previousConfirm = Turbo.config.forms.confirm
@@ -21,13 +22,14 @@ export default class extends Controller {
     const detail = form?.dataset.confirmDetail || ""
     this.detailTarget.textContent = detail
     this.detailTarget.hidden = !detail
+    this.buttonTarget.textContent = form?.dataset.confirmButton || "OK"
 
     this.element.returnValue = ""
     this.element.showModal()
     return new Promise((resolve) => { this.resolve = resolve })
   }
 
-  // Fires on Submit, Cancel and Escape alike; only Submit sets the return value
+  // Fires on confirm, Cancel and Escape alike; only the confirm button sets the return value
   closed() {
     this.resolve?.(this.element.returnValue === "submit")
     this.resolve = null

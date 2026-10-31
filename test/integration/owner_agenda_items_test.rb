@@ -12,7 +12,7 @@ class OwnerAgendaItemsTest < ActionDispatch::IntegrationTest
   test "owner sees agenda items and the add form" do
     get owner_round_agenda_items_path(@round)
     assert_response :success
-    assert_select "ol#admin_agenda_items li##{ActionView::RecordIdentifier.dom_id(agenda_items(:singer))} h3", "singer"
+    assert_select "ol#admin_agenda_items li##{ActionView::RecordIdentifier.dom_id(agenda_items(:item))} h3", "item"
     assert_select "aside form#new_agenda_item_form"
   end
 
@@ -25,7 +25,7 @@ class OwnerAgendaItemsTest < ActionDispatch::IntegrationTest
   end
 
   test "owner deletes an agenda item" do
-    agenda_item = agenda_items(:singer)
+    agenda_item = agenda_items(:item)
     assert_difference "AgendaItem.count", -1 do
       delete owner_round_agenda_item_path(@round, agenda_item), as: :turbo_stream
     end
@@ -39,7 +39,7 @@ class OwnerAgendaItemsTest < ActionDispatch::IntegrationTest
   end
 
   test "result page shows the decision of a decision vote" do
-    agenda_item = agenda_items(:singer)
+    agenda_item = agenda_items(:item)
     agenda_item.update!(decision_rule: "majority")
     agenda_item.votes.create!(user: users(:john), audience: audiences(:john_at_contest), choice: "favor")
 
@@ -48,18 +48,18 @@ class OwnerAgendaItemsTest < ActionDispatch::IntegrationTest
   end
 
   test "owner opens an agenda item's edit form in place, and cancels" do
-    agenda_item = agenda_items(:singer)
+    agenda_item = agenda_items(:item)
     target = ActionView::RecordIdentifier.dom_id(agenda_item)
     get edit_owner_round_agenda_item_path(@round, agenda_item), as: :turbo_stream
-    assert_select "turbo-stream[action=replace][target=#{target}] input[name='agenda_item[name]'][value=singer]"
+    assert_select "turbo-stream[action=replace][target=#{target}] input[name='agenda_item[name]'][value=item]"
     assert_select "turbo-stream[action=replace][target=#{target}] select[name='agenda_item[kind]']", 0
 
     get owner_round_agenda_item_path(@round, agenda_item), as: :turbo_stream
-    assert_select "turbo-stream[action=replace][target=#{target}] h3", "singer"
+    assert_select "turbo-stream[action=replace][target=#{target}] h3", "item"
   end
 
   test "owner edits a motion's name, location and decision rule" do
-    agenda_item = agenda_items(:singer)
+    agenda_item = agenda_items(:item)
     patch owner_round_agenda_item_path(@round, agenda_item),
       params: { agenda_item: { name: "Singer of the year", location: "NY", decision_rule: "two_thirds", kind: "election" } }, as: :turbo_stream
     agenda_item.reload
@@ -70,7 +70,7 @@ class OwnerAgendaItemsTest < ActionDispatch::IntegrationTest
   end
 
   test "owner sees why an edit was not saved" do
-    agenda_item = agenda_items(:singer)
+    agenda_item = agenda_items(:item)
     patch owner_round_agenda_item_path(@round, agenda_item), params: { agenda_item: { decision_rule: "unanimous" } }, as: :turbo_stream
     assert_response :unprocessable_entity
     assert_select "turbo-stream[action=replace] form li", /Decision rule/
@@ -102,7 +102,7 @@ class OwnerAgendaItemsTest < ActionDispatch::IntegrationTest
   end
 
   test "attendees' agenda refreshes after an edit" do
-    agenda_item = agenda_items(:singer)
+    agenda_item = agenda_items(:item)
     perform_enqueued_jobs do
       patch owner_round_agenda_item_path(@round, agenda_item), params: { agenda_item: { name: "Duet" } }, as: :turbo_stream
     end

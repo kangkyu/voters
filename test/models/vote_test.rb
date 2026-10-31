@@ -5,7 +5,7 @@ class VoteTest < ActiveSupport::TestCase
   include Turbo::Broadcastable::TestHelper
 
   setup do
-    @agenda_item = agenda_items(:singer)
+    @agenda_item = agenda_items(:item)
   end
 
   def cast_vote
@@ -26,7 +26,7 @@ class VoteTest < ActiveSupport::TestCase
   end
 
   test "an election vote can't switch candidates" do
-    election = agenda_items(:singer).round.agenda_items.create!(name: "Chair", kind: "election", candidate_names: "Ann\nBob")
+    election = agenda_items(:item).round.agenda_items.create!(name: "Chair", kind: "election", candidate_names: "Ann\nBob")
     ann, bob = election.candidates.order(:id).to_a
     vote = election.votes.create!(user: users(:john), audience: audiences(:john_at_contest), candidate: ann)
     assert_not vote.update(candidate: bob)

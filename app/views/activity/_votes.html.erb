@@ -44,7 +44,7 @@
       <% else %>
         <%= button_to round_agenda_item_votes_path(agenda_item.round, agenda_item), params: vote_params,
               form: { data: { turbo_confirm: "Your vote is final and can't be changed or withdrawn. Are you sure?",
-                              confirm_detail: "Your vote: #{label}" } },
+                              confirm_detail: "Your vote: #{label}", confirm_button: "Submit" } },
               class: "#{option_class} hover:border-blue-800 hover:text-blue-800 dark:hover:text-blue-400" do %><%= dot %><%= label %><% end %>
       <% end %>
     <% end %>

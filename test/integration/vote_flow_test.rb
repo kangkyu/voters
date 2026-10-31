@@ -3,7 +3,7 @@ require "test_helper"
 class VoteFlowTest < ActionDispatch::IntegrationTest
   setup do
     @round = rounds(:contest)
-    @agenda_item = agenda_items(:singer)
+    @agenda_item = agenda_items(:item)
     post session_path, params: { username: "john", password: "1111" }
   end
 

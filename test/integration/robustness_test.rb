@@ -5,7 +5,7 @@ class RobustnessTest < ActionDispatch::IntegrationTest
 
   setup do
     @round = rounds(:contest)
-    @agenda_item = agenda_items(:singer)
+    @agenda_item = agenda_items(:item)
   end
 
   def sign_in(username)
