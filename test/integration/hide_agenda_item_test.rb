@@ -11,7 +11,7 @@ class HideAgendaItemTest < ActionDispatch::IntegrationTest
   end
 
   def sign_in(username)
-    post session_path, params: { username: username, password: "1111" }
+    post session_path, params: { username: username, password: "tV7qLm2xRz9pWk4d" }
   end
 
   test "the organizer hides an item, and it's marked hidden in their list" do

@@ -4,11 +4,11 @@ require "test_helper"
 class AccountSettingsTest < ActionDispatch::IntegrationTest
   setup do
     @user = users(:john)
-    post session_path, params: { username: "john", password: "1111" }
+    post session_path, params: { username: "john", password: "tV7qLm2xRz9pWk4d" }
   end
 
   def change_password(**attributes)
-    patch user_path(@user.another_id), params: { user: { password_challenge: "1111" }.merge(attributes) }
+    patch user_path(@user.another_id), params: { user: { password_challenge: "tV7qLm2xRz9pWk4d" }.merge(attributes) }
   end
 
   test "user page links to the change password page, which has no username field" do
@@ -49,7 +49,7 @@ class AccountSettingsTest < ActionDispatch::IntegrationTest
     change_password(password: "", password_confirmation: "")
     assert_response :unprocessable_entity
     assert_select "li", "Password can't be blank"
-    assert @user.reload.authenticate("1111")
+    assert @user.reload.authenticate("tV7qLm2xRz9pWk4d")
   end
 
   test "nothing changes without the right current password" do
@@ -58,14 +58,14 @@ class AccountSettingsTest < ActionDispatch::IntegrationTest
       assert_response :unprocessable_entity
       assert_select "li", "Current password is invalid"
     end
-    assert @user.reload.authenticate("1111")
+    assert @user.reload.authenticate("tV7qLm2xRz9pWk4d")
   end
 
   test "new passwords must match" do
     change_password(password: "a-new-one", password_confirmation: "another")
     assert_response :unprocessable_entity
     assert_select "li", "New password again doesn't match Password"
-    assert @user.reload.authenticate("1111")
+    assert @user.reload.authenticate("tV7qLm2xRz9pWk4d")
   end
 
   test "can't change someone else's password" do
@@ -73,15 +73,15 @@ class AccountSettingsTest < ActionDispatch::IntegrationTest
     get edit_user_path(jimmy.another_id)
     assert_redirected_to root_url
 
-    patch user_path(jimmy.another_id), params: { user: { password: "hijack-it", password_confirmation: "hijack-it", password_challenge: "1111" } }
+    patch user_path(jimmy.another_id), params: { user: { password: "hijack-it", password_confirmation: "hijack-it", password_challenge: "tV7qLm2xRz9pWk4d" } }
     assert_redirected_to root_url
-    assert jimmy.reload.authenticate("1111")
+    assert jimmy.reload.authenticate("tV7qLm2xRz9pWk4d")
   end
 
   test "signed-out visitors can't change anything" do
     delete session_path
     change_password(password: "hijack-it", password_confirmation: "hijack-it")
     assert_redirected_to signin_url
-    assert @user.reload.authenticate("1111")
+    assert @user.reload.authenticate("tV7qLm2xRz9pWk4d")
   end
 end

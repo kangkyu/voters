@@ -2,11 +2,7 @@ require "application_system_test_case"
 
 class ElectionsTest < ApplicationSystemTestCase
   test "owner adds an election from the agenda form" do
-    visit signin_path
-    fill_in "username", with: "jimmy"
-    fill_in "password", with: "1111"
-    click_button "Sign In"
-    assert_no_text "Not logged in"
+    sign_in "jimmy"
 
     visit owner_round_agenda_items_path(rounds(:meeting))
     within "#new_agenda_item_form" do

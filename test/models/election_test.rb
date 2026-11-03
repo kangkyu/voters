@@ -12,7 +12,7 @@ class ElectionTest < ActiveSupport::TestCase
   # Casts one vote per name given, each from a new attendee
   def vote_for(agenda_item, *names)
     names.each_with_index do |name, i|
-      user = User.create!(username: "voter#{agenda_item.id}-#{i}", password: "1111")
+      user = User.create!(username: "voter#{agenda_item.id}-#{i}", password: "tV7qLm2xRz9pWk4d")
       audience = @round.audiences.create!(user: user, name: "Voter #{i}")
       agenda_item.votes.create!(user: user, audience: audience, candidate: agenda_item.candidates.find_by!(name: name))
     end

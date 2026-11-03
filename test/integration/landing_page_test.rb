@@ -11,7 +11,7 @@ class LandingPageTest < ActionDispatch::IntegrationTest
 
   test "landing page greets a signed-in user" do
     user = users(:jimmy)
-    post session_path, params: { username: user.username, password: "1111" }
+    post session_path, params: { username: user.username, password: "tV7qLm2xRz9pWk4d" }
 
     get root_path
     assert_response :success

@@ -3,7 +3,7 @@ require "test_helper"
 # The organizer chooses once, when starting the meeting, whether they vote in it too
 class OrganizerAttendanceTest < ActionDispatch::IntegrationTest
   def sign_in(username)
-    post session_path, params: { username: username, password: "1111" }
+    post session_path, params: { username: username, password: "tV7qLm2xRz9pWk4d" }
   end
 
   def start_meeting(**round)

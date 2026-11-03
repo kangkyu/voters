@@ -9,7 +9,7 @@ class RobustnessTest < ActionDispatch::IntegrationTest
   end
 
   def sign_in(username)
-    post session_path, params: { username: username, password: "1111" }
+    post session_path, params: { username: username, password: "tV7qLm2xRz9pWk4d" }
   end
 
   test "logged-out user opening the join link is sent to sign in" do

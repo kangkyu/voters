@@ -2,11 +2,7 @@ require "application_system_test_case"
 
 class RenameAttendeeSystemTest < ApplicationSystemTestCase
   test "the organizer renames an attendee in place" do
-    visit signin_path
-    fill_in "username", with: "jimmy"
-    fill_in "password", with: "1111"
-    click_button "Sign In"
-    assert_text "Hello \"jimmy\""
+    sign_in "jimmy"
     visit owner_round_audiences_path(rounds(:meeting))
 
     row = find("tr", text: "Johnny")

@@ -7,7 +7,7 @@ class DeleteMeetingTest < ActionDispatch::IntegrationTest
   end
 
   def sign_in(username)
-    post session_path, params: { username: username, password: "1111" }
+    post session_path, params: { username: username, password: "tV7qLm2xRz9pWk4d" }
   end
 
   def leave_only_organizer

@@ -4,7 +4,7 @@ class VoteFlowTest < ActionDispatch::IntegrationTest
   setup do
     @round = rounds(:meeting)
     @agenda_item = agenda_items(:item)
-    post session_path, params: { username: "john", password: "1111" }
+    post session_path, params: { username: "john", password: "tV7qLm2xRz9pWk4d" }
   end
 
   test "audience sees favor and against buttons" do
@@ -79,7 +79,7 @@ class VoteFlowTest < ActionDispatch::IntegrationTest
 
   test "member who has not joined the meeting cannot vote" do
     delete session_path
-    post session_path, params: { username: "jimmy", password: "1111" }
+    post session_path, params: { username: "jimmy", password: "tV7qLm2xRz9pWk4d" }
 
     get round_agenda_items_path(@round)
     assert_redirected_to new_round_audience_path(@round)
@@ -102,7 +102,7 @@ class VoteFlowTest < ActionDispatch::IntegrationTest
     @agenda_item.votes.create!(user: users(:gapbun), audience: audiences(:gapbun_at_meeting), choice: :against)
     @round.audiences.create!(user: users(:jimmy), name: "Jim")
     delete session_path
-    post session_path, params: { username: "jimmy", password: "1111" }
+    post session_path, params: { username: "jimmy", password: "tV7qLm2xRz9pWk4d" }
 
     get owner_round_results_path(@round)
     assert_select "turbo-frame##{ActionView::RecordIdentifier.dom_id(@agenda_item)}_votes_count", /Favor 1\s+Against 1\s+Abstain 0\s+Not voted 1/

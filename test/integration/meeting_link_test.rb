@@ -7,7 +7,7 @@ class MeetingLinkTest < ActionDispatch::IntegrationTest
   end
 
   def sign_in(username)
-    post session_path, params: { username: username, password: "1111" }
+    post session_path, params: { username: username, password: "tV7qLm2xRz9pWk4d" }
   end
 
   test "a new user follows the link, registers, attends under their username, and votes" do
@@ -16,7 +16,7 @@ class MeetingLinkTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_select "div", "Sign in or create an account to join “meeting”."
 
-    post users_path, params: { user: { username: "newbie", password: "1111" } }
+    post users_path, params: { user: { username: "newbie", password: "tV7qLm2xRz9pWk4d" } }
     follow_redirect! # back to the meeting link
     assert_redirected_to new_round_audience_url(@round)
     follow_redirect!
