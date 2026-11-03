@@ -88,6 +88,9 @@ en:
           other: Election · %{count} candidates
         decision_badge: Decision · %{rule} approve
         delete_confirm: Delete this agenda item?
+        hidden_badge: Hidden from attendees
+        hide: Hide
+        show: Show
         delete_detail: Its votes will be deleted too.
       edit_form:
         edit_election: Edit election
@@ -319,8 +322,8 @@ en:
     not_signed_in: Not logged in
     sign_in_to_join: "Sign in or create an account to join “%{title}”."
     already_signed_in: Already logged in
-    admin_only: admin only
-    owner_only: owner only
+    admin_only: Admin only
+    owner_only: Only the organizer can open this page.
     organizer_cannot_join: "You chose whether to vote when you started this meeting."
     organizer_cannot_leave: "The organizer chose to vote when starting the meeting, so they stay on the attendee list."
     meeting_not_found: Meeting does not exist

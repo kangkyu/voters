@@ -35,7 +35,8 @@ class VotesController < ApplicationController
   end
 
   def find_agenda_item
-    @agenda_item = @round.agenda_items.find(params[:agenda_item_id])
+    # Hidden items take no votes until the organizer shows them
+    @agenda_item = @round.agenda_items.where(hidden: false).find(params[:agenda_item_id])
   end
 
   def render_votes(status: :ok)

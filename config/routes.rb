@@ -19,7 +19,10 @@ Rails.application.routes.draw do
     resources :rounds, only: [] do
       resources :audiences, only: [:index, :edit, :update, :destroy]
       resource :passcode, only: [:create, :destroy]
-      resources :agenda_items, only: [:new, :create, :show, :edit, :update, :destroy, :index]
+      resources :agenda_items, only: [:new, :create, :show, :edit, :update, :destroy, :index] do
+        # Hidden from attendees' voting page until shown
+        resource :hiding, only: [:create, :destroy]
+      end
       get "results" => "agenda_items#result"
       get "minutes" => "agenda_items#minutes"
     end
