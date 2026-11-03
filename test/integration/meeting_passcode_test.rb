@@ -11,7 +11,7 @@ class MeetingPasscodeTest < ActionDispatch::IntegrationTest
   end
 
   def join(passcode: nil)
-    post round_audiences_path(@round), params: { audience: { name: "Jim" }, passcode: passcode }.compact
+    post round_audiences_path(@round), params: { passcode: passcode }.compact
   end
 
   test "the new meeting form leaves the passcode off unless checked" do

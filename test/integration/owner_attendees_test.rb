@@ -10,7 +10,7 @@ class OwnerAttendeesTest < ActionDispatch::IntegrationTest
     get owner_round_audiences_path(@round)
     assert_response :success
     assert_select "tbody tr", @round.audiences.count
-    assert_select "tbody td", "“Johnny”"
+    assert_select "tbody td span", "“Johnny”"
     assert_select "tbody td", "john"
   end
 

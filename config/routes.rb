@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   resource :language, only: [:update]
   get "signin" => "sessions#new"
 
-  resources :rounds, only: [:show, :new, :create] do
+  resources :rounds, only: [:show, :new, :create, :destroy] do
     resources :audiences, only: [:new, :create]
     resources :agenda_items, only: [:index] do
       resources :votes, only: [:create]
@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
   namespace :owner do
     resources :rounds, only: [] do
-      resources :audiences, only: [:index, :destroy]
+      resources :audiences, only: [:index, :edit, :update, :destroy]
       resource :passcode, only: [:create, :destroy]
       resources :agenda_items, only: [:new, :create, :show, :edit, :update, :destroy, :index]
       get "results" => "agenda_items#result"

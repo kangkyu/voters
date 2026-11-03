@@ -58,8 +58,10 @@ en:
     new:
       eyebrow: Join meeting
       intro: Become an attendee to vote on its agenda items.
+      intro_attending: "You're already an attendee. Tap Attend to go to voting."
+      attending_as: "You're attending as “%{name}”."
       passcode_hint: The organizer announces it at the meeting.
-      name_hint: How the organizer sees you in the attendee list.
+      will_attend_as: "You'll attend as “%{name}”."
       submit: Attend
   layouts:
     account_links:
@@ -134,9 +136,9 @@ en:
     audiences:
       index:
         eyebrow: Attendees
-        id: ID
         name: Attendee Name
         remove: Remove
+        rename: Rename
         organizer: Organizer
         remove_confirm: Remove “%{name}” from this meeting?
         remove_detail: Their votes in it will be deleted.
@@ -205,6 +207,10 @@ en:
       turn_off_confirm: Let anyone with the link join without a passcode?
       open: Anyone with the link can join.
       require_passcode: Require a passcode
+      delete: Delete meeting
+      delete_hint: Nobody else has joined yet, so this meeting can still be deleted.
+      delete_confirm: Delete this meeting?
+      delete_detail: Its agenda items and votes will be deleted too.
       started_by_html: Started by %{name}
       attending: You're attending
       attending_hint: Vote on each agenda item as it comes up.
@@ -227,6 +233,7 @@ en:
       new_password: New password
       password_hint: Leave blank to keep your current password.
       challenge_hint: Needed to save any change.
+      username_hint: For signing in only. Your name in meetings you've already joined stays the same; ask the organizer to change it there.
     index:
       title: Users
       user_id: User ID
@@ -312,6 +319,7 @@ en:
               not_attendee: must be the attendee who votes
   flash:
     not_signed_in: Not logged in
+    sign_in_to_join: "Sign in or create an account to join “%{title}”."
     already_signed_in: Already logged in
     admin_only: admin only
     owner_only: owner only
@@ -324,10 +332,11 @@ en:
     account_updated: Account updated.
     not_your_page: Not your user page
     too_many_tries: Too many tries. Wait a few minutes and try again.
-    already_joined: User already joined as attendee
     meeting_created: New meeting added.
     meeting_create_failed: New meeting adding not successful
     attendee_removed: Removed “%{name}” and their votes.
+    meeting_deleted: Deleted “%{title}”.
+    meeting_has_attendees: Attendees have joined this meeting, so it can't be deleted.
     sign_in_failed: Invalid username/password combination.
     passcode_created: 'New passcode: %{passcode}'
     passcode_off: Passcode turned off.

@@ -4,7 +4,7 @@
 
 <div class="mx-auto max-w-2xl">
   <p class="eyebrow"><%= t(".eyebrow") %></p>
-  <h1 class="page-title mt-2">“<%= link_to @round.title, round_path(@round), class: "hover:text-blue-800 dark:hover:text-blue-400" %>”</h1>
+  <h1 class="page-title mt-2">“<%= current_user.owner?(@round) ? link_to(@round.title, round_path(@round), class: "hover:text-blue-800 dark:hover:text-blue-400") : @round.title %>”</h1>
   <p class="mt-2 text-sm text-stone-600 dark:text-stone-400"><%= t(".intro") %></p>
 
   <%= turbo_frame_tag "agenda_items", class: "mt-8 block" do %>
