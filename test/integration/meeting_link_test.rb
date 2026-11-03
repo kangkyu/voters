@@ -1,6 +1,6 @@
 require "test_helper"
 
-# Opening the meeting link: sign in or up if needed, then the join page (name prefilled), then voting
+# Opening the meeting link: sign in or up if needed, then the join page, then voting
 class MeetingLinkTest < ActionDispatch::IntegrationTest
   setup do
     @round = rounds(:meeting) # organized by jimmy; john and gapbun have joined; no passcode
@@ -10,7 +10,7 @@ class MeetingLinkTest < ActionDispatch::IntegrationTest
     post session_path, params: { username: username, password: "1111" }
   end
 
-  test "a new user follows the link, registers, confirms their name, and votes" do
+  test "a new user follows the link, registers, attends under their username, and votes" do
     get round_path(@round)
     assert_redirected_to signin_url
     follow_redirect!
@@ -20,16 +20,16 @@ class MeetingLinkTest < ActionDispatch::IntegrationTest
     follow_redirect! # back to the meeting link
     assert_redirected_to new_round_audience_url(@round)
     follow_redirect!
-    assert_select "input[name='audience[name]'][value=newbie]"
+    assert_select "p", "You'll attend as “newbie”."
     assert_select "input[name=passcode]", 0
 
     assert_difference "@round.audiences.count", 1 do
-      post round_audiences_path(@round), params: { audience: { name: "New Member" } }
+      post round_audiences_path(@round)
     end
     assert_redirected_to round_agenda_items_url(@round)
     follow_redirect!
     assert_select "button", "Favor"
-    assert_equal "New Member", @round.audiences.find_by!(user: User.find_by!(username: "newbie")).name
+    assert_equal "newbie", @round.audiences.find_by!(user: User.find_by!(username: "newbie")).name
   end
 
   test "a signed-out user follows the link, signs in, and goes to the join page" do
@@ -57,11 +57,10 @@ class MeetingLinkTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_round_audience_url(@round)
     follow_redirect!
     assert_select "p", "You're attending as “Johnny”."
-    assert_select "input[name='audience[name]']", 0
     assert_select "input[type=submit][value=Attend]"
 
     assert_no_difference "@round.audiences.count" do
-      post round_audiences_path(@round), params: { audience: { name: "Someone else" } }
+      post round_audiences_path(@round)
     end
     assert_redirected_to round_agenda_items_url(@round)
     assert_equal "Johnny", audiences(:john_at_meeting).reload.name
@@ -90,7 +89,7 @@ class MeetingLinkTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "with a passcode, the join page asks for it too, with the name prefilled" do
+  test "with a passcode, the right one joins a new attendee under their username" do
     @round.update!(passcode: "482915")
     @round.audiences.find_by!(user: users(:john)).destroy!
     sign_in "john"
@@ -100,7 +99,13 @@ class MeetingLinkTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_round_audience_url(@round)
     follow_redirect!
     assert_select "input[name=passcode]"
-    assert_select "input[name='audience[name]'][value=john]"
+    assert_select "p", "You'll attend as “john”."
+
+    assert_difference "@round.audiences.count", 1 do
+      post round_audiences_path(@round), params: { passcode: "482915" }
+    end
+    assert_redirected_to round_agenda_items_url(@round)
+    assert_equal "john", @round.audiences.find_by!(user: users(:john)).name
   end
 
   test "the organizer gets the meeting page and isn't joined" do

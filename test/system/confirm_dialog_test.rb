@@ -6,7 +6,7 @@ class ConfirmDialogTest < ApplicationSystemTestCase
     fill_in "username", with: "john"
     fill_in "password", with: "1111"
     click_button "Sign In"
-    assert_no_text "Not logged in"
+    assert_text "Hello \"john\"" # signed in before leaving the page
     visit user_path(users(:john).another_id)
   end
 

@@ -12,12 +12,11 @@ class AudiencesController < ApplicationController
 
   # Also for attendees coming back by the meeting link: they tap Attend again, with the passcode if any
   def new
-    @audience = @round.audiences.find_by(user: current_user) || @round.audiences.build(name: current_user.username)
+    @audience = find_or_build_audience
   end
 
   def create
-    @audience = @round.audiences.find_by(user: current_user) ||
-      @round.audiences.build(audience_params.merge(user_id: current_user.id))
+    @audience = find_or_build_audience
 
     unless @round.passcode_matches?(params[:passcode])
       @audience.errors.add(:base, :incorrect_passcode)
@@ -41,7 +40,8 @@ class AudiencesController < ApplicationController
     end
   end
 
-  def audience_params
-    params.require(:audience).permit(:name)
+  # New attendees join under their username
+  def find_or_build_audience
+    @round.audiences.find_by(user: current_user) || @round.audiences.build(user: current_user, name: current_user.username)
   end
 end

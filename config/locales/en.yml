@@ -61,7 +61,7 @@ en:
       intro_attending: "You're already an attendee. Tap Attend to go to voting."
       attending_as: "You're attending as “%{name}”."
       passcode_hint: The organizer announces it at the meeting.
-      name_hint: How the organizer sees you in the attendee list.
+      will_attend_as: "You'll attend as “%{name}”."
       submit: Attend
   layouts:
     account_links:
