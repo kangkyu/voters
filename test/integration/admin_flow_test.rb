@@ -25,7 +25,7 @@ class AdminFlowTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_equal user_path(users(:jimmy).another_id), path
 
-    assert_equal "admin only", flash[:notice]
+    assert_equal "Admin only", flash[:notice]
   end
 
   test "admin can see their own user page" do

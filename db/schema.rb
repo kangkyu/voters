@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_31_163615) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_03_051339) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -25,6 +25,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_31_163615) do
     t.integer "decision_rule"
     t.boolean "decision_made", default: false, null: false
     t.integer "kind", default: 0, null: false
+    t.boolean "hidden", default: false, null: false
     t.index ["round_id"], name: "index_agenda_items_on_round_id"
   end
 
