@@ -32,6 +32,11 @@ class Round < ApplicationRecord
     passcode.blank? || ActiveSupport::SecurityUtils.secure_compare(passcode, code.to_s.gsub(/\s/, ""))
   end
 
+  # Nobody else has joined yet, so nobody else loses anything. The organizer's own attendance doesn't count
+  def deletable?
+    audiences.where.not(user_id: owner_id).none?
+  end
+
   def to_param
     another_id
   end

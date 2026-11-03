@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   resource :language, only: [:update]
   get "signin" => "sessions#new"
 
-  resources :rounds, only: [:show, :new, :create] do
+  resources :rounds, only: [:show, :new, :create, :destroy] do
     resources :audiences, only: [:new, :create]
     resources :agenda_items, only: [:index] do
       resources :votes, only: [:create]

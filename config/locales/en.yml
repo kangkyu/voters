@@ -207,6 +207,10 @@ en:
       turn_off_confirm: Let anyone with the link join without a passcode?
       open: Anyone with the link can join.
       require_passcode: Require a passcode
+      delete: Delete meeting
+      delete_hint: Nobody else has joined yet, so this meeting can still be deleted.
+      delete_confirm: Delete this meeting?
+      delete_detail: Its agenda items and votes will be deleted too.
       started_by_html: Started by %{name}
       attending: You're attending
       attending_hint: Vote on each agenda item as it comes up.
@@ -331,6 +335,8 @@ en:
     meeting_created: New meeting added.
     meeting_create_failed: New meeting adding not successful
     attendee_removed: Removed “%{name}” and their votes.
+    meeting_deleted: Deleted “%{title}”.
+    meeting_has_attendees: Attendees have joined this meeting, so it can't be deleted.
     sign_in_failed: Invalid username/password combination.
     passcode_created: 'New passcode: %{passcode}'
     passcode_off: Passcode turned off.

@@ -39,4 +39,14 @@
       </div>
     </section>
   </div>
+
+  <%# Gone once anyone else joins: then the meeting is theirs too %>
+  <% if @round.deletable? %>
+    <div class="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-stone-200 pt-6 dark:border-stone-800">
+      <p class="text-sm text-stone-600 dark:text-stone-400"><%= t(".delete_hint") %></p>
+      <%= button_to t(".delete"), round_path(@round), method: :delete,
+            form: { data: { turbo_confirm: t(".delete_confirm"), confirm_detail: t(".delete_detail"), confirm_button: t(".delete") } },
+            class: "text-sm font-medium text-stone-500 hover:text-red-600 dark:text-stone-400 dark:hover:text-red-400" %>
+    </div>
+  <% end %>
 </div>
