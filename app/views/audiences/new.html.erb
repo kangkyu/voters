@@ -1,7 +1,7 @@
 <div class="mx-auto max-w-md py-6">
   <p class="eyebrow"><%= t(".eyebrow") %></p>
   <h1 class="page-title mt-2">“<%= @round.title %>”</h1>
-  <p class="mt-2 text-sm text-stone-600 dark:text-stone-400"><%= t(@audience.persisted? ? ".intro_attending" : ".intro") %></p>
+  <p class="mt-2 text-sm text-stone-600 dark:text-stone-400"><%= t(".intro") %></p>
 
   <div class="card mt-8 p-6">
     <%= form_with url: round_audiences_path(@round), method: :post, class: "space-y-5" do |f| %>
@@ -19,7 +19,7 @@
           <p class="mt-1 text-xs text-stone-500 dark:text-stone-400"><%= t(".passcode_hint") %></p>
         </div>
       <% end %>
-      <p class="text-sm"><%= t(@audience.persisted? ? ".attending_as" : ".will_attend_as", name: @audience.name) %></p>
+      <p class="text-sm"><%= t(".will_attend_as", name: @audience.name) %></p>
       <%= f.submit t(".submit"), class: "btn-primary w-full" %>
     <% end %>
   </div>

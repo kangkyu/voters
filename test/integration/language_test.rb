@@ -122,10 +122,8 @@ class LanguageTest < ActionDispatch::IntegrationTest
     delete session_path
     sign_in "john"
     get round_path(@round)
-    assert_redirected_to new_round_audience_url(@round)
+    assert_redirected_to round_agenda_items_url(@round)
     follow_redirect!
-    assert_select "p", "“Johnny” 이름으로 참석 중입니다."
-    get round_agenda_items_path(@round)
     assert_response :success
 
     delete session_path

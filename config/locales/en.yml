@@ -58,8 +58,6 @@ en:
     new:
       eyebrow: Join meeting
       intro: Become an attendee to vote on its agenda items.
-      intro_attending: "You're already an attendee. Tap Attend to go to voting."
-      attending_as: "You're attending as “%{name}”."
       passcode_hint: The organizer announces it at the meeting.
       will_attend_as: "You'll attend as “%{name}”."
       submit: Attend
