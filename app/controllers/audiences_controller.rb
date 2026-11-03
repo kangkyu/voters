@@ -10,22 +10,22 @@ class AudiencesController < ApplicationController
   rate_limit to: 100, within: 10.minutes, only: :create, name: "join-by-ip",
     with: -> { redirect_to new_round_audience_url(@round), alert: t("flash.too_many_tries") }
 
+  # Also for attendees coming back by the meeting link: they tap Attend again, with the passcode if any
   def new
-    if @round.audiences.exists?(user_id: current_user.id)
-      redirect_to round_url(@round), notice: t("flash.already_joined") and return
-    end
-    @audience = @round.audiences.build
+    @audience = @round.audiences.find_by(user: current_user) || @round.audiences.build(name: current_user.username)
   end
 
   def create
-    @audience = @round.audiences.build(audience_params.merge(user_id: current_user.id))
+    @audience = @round.audiences.find_by(user: current_user) ||
+      @round.audiences.build(audience_params.merge(user_id: current_user.id))
 
     unless @round.passcode_matches?(params[:passcode])
       @audience.errors.add(:base, :incorrect_passcode)
       render "new", status: :unprocessable_entity and return
     end
 
-    if @audience.save
+    # Already attending: the passcode was all there was to check
+    if @audience.persisted? || @audience.save
       redirect_to round_agenda_items_url(@round)
     else
       render "new", status: :unprocessable_entity

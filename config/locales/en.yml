@@ -58,6 +58,8 @@ en:
     new:
       eyebrow: Join meeting
       intro: Become an attendee to vote on its agenda items.
+      intro_attending: "You're already an attendee. Tap Attend to go to voting."
+      attending_as: "You're attending as “%{name}”."
       passcode_hint: The organizer announces it at the meeting.
       name_hint: How the organizer sees you in the attendee list.
       submit: Attend
@@ -312,6 +314,7 @@ en:
               not_attendee: must be the attendee who votes
   flash:
     not_signed_in: Not logged in
+    sign_in_to_join: "Sign in or create an account to join “%{title}”."
     already_signed_in: Already logged in
     admin_only: admin only
     owner_only: owner only
@@ -324,7 +327,6 @@ en:
     account_updated: Account updated.
     not_your_page: Not your user page
     too_many_tries: Too many tries. Wait a few minutes and try again.
-    already_joined: User already joined as attendee
     meeting_created: New meeting added.
     meeting_create_failed: New meeting adding not successful
     attendee_removed: Removed “%{name}” and their votes.

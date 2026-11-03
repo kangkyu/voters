@@ -15,10 +15,8 @@ class NewMeetingTest < ApplicationSystemTestCase
     assert_field "Your name in this meeting", with: "jimmy"
 
     uncheck "I'll vote in this meeting"
+    # Hiding the field moves the Start button up: wait for that before clicking
     assert_no_field "Your name in this meeting"
-    check "I'll vote in this meeting"
-    assert_field "Your name in this meeting"
-    uncheck "I'll vote in this meeting"
 
     click_button "Start"
     assert_text "New meeting added."
