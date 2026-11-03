@@ -12,11 +12,11 @@ class AudiencesController < ApplicationController
     with: -> { redirect_to new_round_audience_url(@round), alert: t("flash.too_many_tries") }
 
   def new
-    @audience = build_audience
+    @audience = @round.audiences.build(user: current_user, name: current_user.username)
   end
 
   def create
-    @audience = build_audience
+    @audience = @round.audiences.build(user: current_user, name: current_user.username)
 
     unless @round.passcode_matches?(params[:passcode])
       @audience.errors.add(:base, :incorrect_passcode)
@@ -42,10 +42,5 @@ class AudiencesController < ApplicationController
   # Already attending: nothing to join, and no passcode to ask for again
   def skip_attendee
     redirect_to round_agenda_items_url(@round) if current_user.audience?(@round)
-  end
-
-  # New attendees join under their username
-  def build_audience
-    @round.audiences.build(user: current_user, name: current_user.username)
   end
 end

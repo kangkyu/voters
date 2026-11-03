@@ -1,10 +1,9 @@
-<% if @round&.persisted? && signed_in? %>
+<% if @round&.persisted? && signed_in? && current_user.owner?(@round) %>
+  <%# Only organizers move between pages of a meeting: the voting page is all a regular attendee has %>
   <% if current_user.audience?(@round) %>
     <%= link_to t(".vote"), round_agenda_items_path(@round), class: "#{class_name_by_tab(round_agenda_items_path(@round))} #{extra_class}" %>
   <% end %>
-  <% if current_user.owner?(@round) %>
-    <%= link_to t(".result"), owner_round_results_path(@round), class: "#{class_name_by_tab(owner_round_results_path(@round))} #{extra_class}" %>
-  <% end %>
+  <%= link_to t(".result"), owner_round_results_path(@round), class: "#{class_name_by_tab(owner_round_results_path(@round))} #{extra_class}" %>
 <% end %>
 
 <% if admin_user? %>

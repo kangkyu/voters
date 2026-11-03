@@ -136,6 +136,21 @@ class MeetingLinkTest < ActionDispatch::IntegrationTest
     assert_select "h1 a[href='#{round_path(@round)}']"
   end
 
+  test "the Vote link in the nav is only for an organizer who votes, not a regular attendee" do
+    sign_in "john"
+    get round_agenda_items_path(@round)
+    assert_select "nav a[href='#{round_agenda_items_path(@round)}']", 0
+
+    delete session_path
+    sign_in "jimmy"
+    get owner_round_results_path(@round)
+    assert_select "nav a[href='#{round_agenda_items_path(@round)}']", 0
+
+    @round.audiences.create!(user: users(:jimmy), name: "Chair")
+    get owner_round_results_path(@round)
+    assert_select "nav a[href='#{round_agenda_items_path(@round)}']", "Vote"
+  end
+
   test "an unknown meeting link goes home" do
     get round_path("missing")
     assert_redirected_to root_url
