@@ -17,9 +17,9 @@ class RoundsController < ApplicationController
     end
   end
 
-  # The meeting link. The organizer gets the meeting page; anyone else is signed in (or signs up),
-  # then always goes to the join page and taps Attend (with the passcode, if the meeting has one),
-  # attendees included
+  # The meeting link. Anyone not signed in does that first (or signs up). The organizer gets the meeting
+  # page, attendees go straight to voting, and anyone else to the join page, to tap Attend (with the
+  # passcode, if the meeting has one)
   def show
     @round = Round.find_by(another_id: params[:id])
     return redirect_to(root_url, alert: t("flash.meeting_not_found")) unless @round
@@ -30,6 +30,7 @@ class RoundsController < ApplicationController
       return redirect_to(signin_url, notice: t("flash.sign_in_to_join", title: @round.title))
     end
     return if current_user.owner?(@round)
+    return redirect_to(round_agenda_items_url(@round)) if current_user.audience?(@round)
 
     redirect_to new_round_audience_url(@round)
   end
