@@ -55,10 +55,4 @@ class RenameAttendeeTest < ActionDispatch::IntegrationTest
     assert_response :not_found
     assert_equal "J", other.reload.name
   end
-
-  test "the account page explains a username change doesn't rename attendees" do
-    sign_in "john"
-    get edit_user_path(users(:john).another_id)
-    assert_select "p", /ask the organizer to change it there/
-  end
 end

@@ -227,13 +227,11 @@ en:
   users:
     edit:
       eyebrow: Account
-      title: Edit account
-      intro: Your login for every meeting. Attendee names are set per meeting.
+      title: Change password
+      intro: For signing in as “%{username}”.
       back: Back
       new_password: New password
-      password_hint: Leave blank to keep your current password.
-      challenge_hint: Needed to save any change.
-      username_hint: For signing in only. Your name in meetings you've already joined stays the same; ask the organizer to change it there.
+      challenge_hint: Needed to change it.
     index:
       title: Users
       user_id: User ID
@@ -244,7 +242,7 @@ en:
       sign_in: Sign In
       submit: Register
     show:
-      edit: Edit account
+      edit: Change password
       sign_out: Sign Out
       sign_out_confirm: Signing out as "%{name}"?
       sign_out_button: Sign out
@@ -328,8 +326,7 @@ en:
     meeting_not_found: Meeting does not exist
     join_first: Please join the meeting first
     sign_up_failed: 'Sign up not successful: %{errors}'
-    account_and_password_updated: Account and password updated.
-    account_updated: Account updated.
+    password_changed: Password changed.
     not_your_page: Not your user page
     too_many_tries: Too many tries. Wait a few minutes and try again.
     meeting_created: New meeting added.

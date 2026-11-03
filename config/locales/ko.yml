@@ -226,13 +226,11 @@ ko:
   users:
     edit:
       eyebrow: 계정
-      title: 계정 수정
-      intro: 모든 회의에서 쓰는 로그인 정보입니다. 참석자 이름은 회의마다 따로 정합니다.
+      title: 비밀번호 변경
+      intro: "“%{username}” 로그인에 쓰는 비밀번호입니다."
       back: 돌아가기
       new_password: 새 비밀번호
-      password_hint: 비워 두면 지금 비밀번호를 그대로 씁니다.
-      challenge_hint: 변경 사항을 저장하려면 필요합니다.
-      username_hint: 로그인에만 쓰입니다. 이미 참석한 회의의 참석자 이름은 바뀌지 않으니, 바꾸려면 주최자에게 요청하세요.
+      challenge_hint: 비밀번호를 바꾸려면 필요합니다.
     index:
       title: 사용자
       user_id: 사용자 ID
@@ -243,7 +241,7 @@ ko:
       sign_in: 로그인
       submit: 가입하기
     show:
-      edit: 계정 수정
+      edit: 비밀번호 변경
       sign_out: 로그아웃
       sign_out_confirm: "“%{name}” 계정에서 로그아웃하시겠습니까?"
       sign_out_button: 로그아웃
@@ -327,8 +325,7 @@ ko:
     meeting_not_found: 회의가 존재하지 않습니다
     join_first: 먼저 회의에 참석해 주세요
     sign_up_failed: '가입하지 못했습니다: %{errors}'
-    account_and_password_updated: 계정과 비밀번호를 변경했습니다.
-    account_updated: 계정을 변경했습니다.
+    password_changed: 비밀번호를 변경했습니다.
     not_your_page: 본인의 사용자 페이지가 아닙니다
     too_many_tries: 시도 횟수가 너무 많습니다. 몇 분 뒤 다시 시도하세요.
     meeting_created: 새 회의를 만들었습니다.

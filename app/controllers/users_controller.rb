@@ -35,23 +35,22 @@ class UsersController < ApplicationController
   def edit
   end
 
-  # Changes the username, and the password when a new one is typed. Either way the
-  # current password is needed, so an unattended signed-in browser can't take over the account
+  # Changes the password; usernames stay as they are, so attendees aren't confused by a new one.
+  # The current password is needed, so an unattended signed-in browser can't take over the account
   def update
-    attributes = params.require(:user).permit(:username, :password, :password_confirmation, :password_challenge)
-    # A blank new password means keep the current one
-    changing_password = attributes[:password].present?
-    attributes = attributes.except(:password, :password_confirmation) unless changing_password
+    attributes = params.require(:user).permit(:password, :password_confirmation, :password_challenge)
     # has_secure_password only checks the challenge when it's given, so always give it
     attributes[:password_challenge] = attributes[:password_challenge].to_s
 
-    if @user.update(attributes)
-      if changing_password
-        # A fresh session after the change, as on sign-in
-        reset_session
-        session[:user_id] = @user.id
-      end
-      redirect_to user_url(@user.another_id), notice: changing_password ? t("flash.account_and_password_updated") : t("flash.account_updated")
+    # has_secure_password skips a blank password on update, so ask for one here
+    if attributes[:password].blank?
+      @user.errors.add(:password, :blank)
+      render :edit, status: :unprocessable_entity
+    elsif @user.update(attributes)
+      # A fresh session after the change, as on sign-in
+      reset_session
+      session[:user_id] = @user.id
+      redirect_to user_url(@user.another_id), notice: t("flash.password_changed")
     else
       render :edit, status: :unprocessable_entity
     end
