@@ -6,7 +6,7 @@ class OwnerAgendaItemsTest < ActionDispatch::IntegrationTest
 
   setup do
     @round = rounds(:meeting)
-    post session_path, params: { username: "jimmy", password: "1111" }
+    post session_path, params: { username: "jimmy", password: "tV7qLm2xRz9pWk4d" }
   end
 
   test "owner sees agenda items and the add form" do

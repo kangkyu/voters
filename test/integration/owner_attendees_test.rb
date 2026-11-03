@@ -3,7 +3,7 @@ require "test_helper"
 class OwnerAttendeesTest < ActionDispatch::IntegrationTest
   setup do
     @round = rounds(:meeting)
-    post session_path, params: { username: "jimmy", password: "1111" }
+    post session_path, params: { username: "jimmy", password: "tV7qLm2xRz9pWk4d" }
   end
 
   test "owner sees attendees with their usernames" do
@@ -38,7 +38,7 @@ class OwnerAttendeesTest < ActionDispatch::IntegrationTest
 
   test "attendees can't remove each other" do
     delete session_path
-    post session_path, params: { username: "john", password: "1111" }
+    post session_path, params: { username: "john", password: "tV7qLm2xRz9pWk4d" }
     assert_no_difference "Audience.count" do
       delete owner_round_audience_path(@round, audiences(:gapbun_at_meeting))
     end

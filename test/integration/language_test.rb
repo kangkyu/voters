@@ -7,7 +7,7 @@ class LanguageTest < ActionDispatch::IntegrationTest
   end
 
   def sign_in(username, headers: {})
-    post session_path, params: { username: username, password: "1111" }, headers: headers
+    post session_path, params: { username: username, password: "tV7qLm2xRz9pWk4d" }, headers: headers
   end
 
   test "visitors get their browser's language, English when it isn't offered" do
@@ -69,7 +69,7 @@ class LanguageTest < ActionDispatch::IntegrationTest
   end
 
   test "signing up saves the chosen language, even if the page was in another" do
-    post users_path, params: { user: { username: "newbie", password: "1111", locale: "ko" } }, headers: { "Accept-Language" => "en" }
+    post users_path, params: { user: { username: "newbie", password: "tV7qLm2xRz9pWk4d", locale: "ko" } }, headers: { "Accept-Language" => "en" }
     assert_equal "ko", User.find_by(username: "newbie").locale
     follow_redirect!
     assert_select "html[lang=ko]"
@@ -77,13 +77,13 @@ class LanguageTest < ActionDispatch::IntegrationTest
 
   test "signing up with an unknown language shows an error" do
     assert_no_difference "User.count" do
-      post users_path, params: { user: { username: "newbie", password: "1111", locale: "xx" } }
+      post users_path, params: { user: { username: "newbie", password: "tV7qLm2xRz9pWk4d", locale: "xx" } }
     end
     assert_response :unprocessable_entity
   end
 
   test "signing up without choosing keeps the language the page was shown in" do
-    post users_path, params: { user: { username: "새사용자", password: "1111" } }, headers: { "Accept-Language" => "ko" }
+    post users_path, params: { user: { username: "새사용자", password: "tV7qLm2xRz9pWk4d" } }, headers: { "Accept-Language" => "ko" }
     assert_equal "ko", User.find_by(username: "새사용자").locale
   end
 

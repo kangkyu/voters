@@ -11,7 +11,7 @@ class AgendaItemTest < ActiveSupport::TestCase
     agenda_item = @round.agenda_items.create!(name: "Motion", decision_rule: rule)
     choices = Array.new(favor, "favor") + Array.new(against, "against")
     choices.each_with_index do |choice, i|
-      user = User.create!(username: "voter#{agenda_item.id}-#{i}", password: "1111")
+      user = User.create!(username: "voter#{agenda_item.id}-#{i}", password: "tV7qLm2xRz9pWk4d")
       audience = @round.audiences.create!(user: user, name: "Voter #{i}")
       agenda_item.votes.create!(user: user, audience: audience, choice: choice)
     end
@@ -67,7 +67,7 @@ class AgendaItemTest < ActiveSupport::TestCase
 
   test "abstentions don't count toward pass / fail, nor as not voted" do
     agenda_item = agenda_item_with_votes("majority", favor: 1, against: 0)
-    user = User.create!(username: "abstainer#{agenda_item.id}", password: "1111")
+    user = User.create!(username: "abstainer#{agenda_item.id}", password: "tV7qLm2xRz9pWk4d")
     audience = @round.audiences.create!(user: user, name: "Abstainer")
     agenda_item.votes.create!(user: user, audience: audience, choice: "abstain")
 

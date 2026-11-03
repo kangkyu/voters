@@ -4,11 +4,7 @@ class VotesTest < ApplicationSystemTestCase
   setup do
     @round = rounds(:meeting)
     @agenda_item = agenda_items(:item)
-    visit signin_path
-    fill_in "username", with: "john"
-    fill_in "password", with: "1111"
-    click_button "Sign In"
-    assert_no_text "Not logged in"
+    sign_in "john"
     visit round_agenda_items_path(@round)
   end
 

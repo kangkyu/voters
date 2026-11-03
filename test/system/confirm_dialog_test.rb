@@ -2,11 +2,7 @@ require "application_system_test_case"
 
 class ConfirmDialogTest < ApplicationSystemTestCase
   setup do
-    visit signin_path
-    fill_in "username", with: "john"
-    fill_in "password", with: "1111"
-    click_button "Sign In"
-    assert_text "Hello \"john\"" # signed in before leaving the page
+    sign_in "john"
     visit user_path(users(:john).another_id)
   end
 

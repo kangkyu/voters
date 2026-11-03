@@ -2,11 +2,7 @@ require "application_system_test_case"
 
 class NewMeetingTest < ApplicationSystemTestCase
   setup do
-    visit signin_path
-    fill_in "username", with: "jimmy"
-    fill_in "password", with: "1111"
-    click_button "Sign In"
-    assert_no_text "Not logged in"
+    sign_in "jimmy"
     visit new_round_path
   end
 

@@ -1,14 +1,14 @@
 jimmy:
   username: jimmy
-  password_digest: <%= BCrypt::Password.create("1111", cost: 4) %>
+  password_digest: <%= BCrypt::Password.create("tV7qLm2xRz9pWk4d", cost: 4) %>
   user_role: member
 
 gapbun:
   username: gapbun
-  password_digest: <%= BCrypt::Password.create("1111", cost: 4) %>
+  password_digest: <%= BCrypt::Password.create("tV7qLm2xRz9pWk4d", cost: 4) %>
   user_role: admin
 
 john:
   username: john
-  password_digest: <%= BCrypt::Password.create("1111", cost: 4) %>
+  password_digest: <%= BCrypt::Password.create("tV7qLm2xRz9pWk4d", cost: 4) %>
   user_role: member

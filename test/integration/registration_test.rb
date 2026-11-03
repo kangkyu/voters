@@ -6,7 +6,7 @@ class RegistrationTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     assert_difference "User.count", 1 do
-      post users_path, params: { user: { username: "newbie", password: "1111" } }
+      post users_path, params: { user: { username: "newbie", password: "tV7qLm2xRz9pWk4d" } }
     end
     assert_redirected_to root_path
 

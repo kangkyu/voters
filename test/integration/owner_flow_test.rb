@@ -16,7 +16,7 @@ class OwnerFlowTest < ActionDispatch::IntegrationTest
 
   test "member can add round after login" do
     get signin_path
-    post session_path, params: { username: "jimmy", password: "1111" }
+    post session_path, params: { username: "jimmy", password: "tV7qLm2xRz9pWk4d" }
 
     assert_difference "Round.count", 1 do
       post rounds_path, params: { round: { title: "concert", organizer_name: "Chair" } }
@@ -29,7 +29,7 @@ class OwnerFlowTest < ActionDispatch::IntegrationTest
 
   test "if not owner, member cannot see results after login" do
     get signin_path
-    post session_path, params: { username: "jimmy", password: "1111" }
+    post session_path, params: { username: "jimmy", password: "tV7qLm2xRz9pWk4d" }
 
     assert_difference "Round.count", 1 do
       post rounds_path, params: { round: { title: "concert", organizer_name: "Chair" } }
@@ -42,7 +42,7 @@ class OwnerFlowTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     https!
-    post session_path, params: { username: "gapbun", password: "1111" }
+    post session_path, params: { username: "gapbun", password: "tV7qLm2xRz9pWk4d" }
 
     get owner_round_results_path(round.another_id)
     assert_response :redirect
@@ -50,7 +50,7 @@ class OwnerFlowTest < ActionDispatch::IntegrationTest
 
   test "owner can see results after login" do
     get signin_path
-    post session_path, params: { username: "jimmy", password: "1111" }
+    post session_path, params: { username: "jimmy", password: "tV7qLm2xRz9pWk4d" }
 
     assert_difference "Round.count", 1 do
       post rounds_path, params: { round: { title: "concert", organizer_name: "Chair" } }
@@ -64,7 +64,7 @@ class OwnerFlowTest < ActionDispatch::IntegrationTest
   end
 
   test "owner sees a copy link button on the meeting page" do
-    post session_path, params: { username: "jimmy", password: "1111" }
+    post session_path, params: { username: "jimmy", password: "tV7qLm2xRz9pWk4d" }
     round = rounds(:meeting)
 
     get round_path(round)
