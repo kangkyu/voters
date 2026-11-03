@@ -1,0 +1,7 @@
+<%= turbo_frame_tag audience, :name do %>
+  <div class="flex flex-wrap items-baseline gap-x-3">
+    <span class="font-medium">“<%= audience.name %>”</span>
+    <%= link_to t("owner.audiences.index.rename"), edit_owner_round_audience_path(audience.round, audience),
+          class: "text-sm font-medium text-stone-500 hover:text-blue-800 dark:text-stone-400 dark:hover:text-blue-400" %>
+  </div>
+<% end %>

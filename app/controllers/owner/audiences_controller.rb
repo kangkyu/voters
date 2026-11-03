@@ -7,6 +7,20 @@ class Owner::AudiencesController < ApplicationController
     @audiences = @round.audiences.includes(:user).order(:created_at)
   end
 
+  # Renames an attendee in place in the list, inside its frame. Fixes the roll, like a chair would
+  def edit
+    @audience = @round.audiences.find(params[:id])
+  end
+
+  def update
+    @audience = @round.audiences.find(params[:id])
+    if @audience.update(params.require(:audience).permit(:name))
+      redirect_to owner_round_audiences_url(@round) # the frame picks its row out of the list
+    else
+      render "edit", status: :unprocessable_entity
+    end
+  end
+
   # Takes someone out of this meeting, with their votes in it; their account stays
   def destroy
     audience = @round.audiences.find(params[:id])

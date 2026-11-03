@@ -8,7 +8,6 @@
         <table class="min-w-full divide-y divide-stone-200 text-sm dark:divide-stone-800">
           <thead>
             <tr>
-              <th scope="col" class="px-5 py-3 text-left font-semibold text-stone-600 dark:text-stone-300"><%= t(".id") %></th>
               <th scope="col" class="px-5 py-3 text-left font-semibold text-stone-600 dark:text-stone-300"><%= t(".name") %></th>
               <th scope="col" class="px-5 py-3 text-left font-semibold text-stone-600 dark:text-stone-300"><%= User.human_attribute_name(:username) %></th>
               <th scope="col" class="px-5 py-3"><span class="sr-only"><%= t(".remove") %></span></th>
@@ -17,8 +16,7 @@
           <tbody class="divide-y divide-stone-100 dark:divide-stone-800">
             <% @audiences.each do |audience| %>
               <tr>
-                <td class="px-5 py-3 tabular-nums text-stone-500 dark:text-stone-400"><%= audience.id %></td>
-                <td class="px-5 py-3 font-medium">“<%= audience.name %>”</td>
+                <td class="px-5 py-3"><%= render "name", audience: audience %></td>
                 <td class="px-5 py-3 text-stone-500 dark:text-stone-400"><%= audience.user.username %></td>
                 <td class="px-5 py-3 text-right">
                   <%# The organizer stays: they chose to vote when starting the meeting %>

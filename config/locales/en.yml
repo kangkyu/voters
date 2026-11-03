@@ -136,9 +136,9 @@ en:
     audiences:
       index:
         eyebrow: Attendees
-        id: ID
         name: Attendee Name
         remove: Remove
+        rename: Rename
         organizer: Organizer
         remove_confirm: Remove “%{name}” from this meeting?
         remove_detail: Their votes in it will be deleted.
@@ -229,6 +229,7 @@ en:
       new_password: New password
       password_hint: Leave blank to keep your current password.
       challenge_hint: Needed to save any change.
+      username_hint: For signing in only. Your name in meetings you've already joined stays the same; ask the organizer to change it there.
     index:
       title: Users
       user_id: User ID

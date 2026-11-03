@@ -135,9 +135,9 @@ ko:
     audiences:
       index:
         eyebrow: 참석자
-        id: 번호
         name: 참석자 이름
         remove: 내보내기
+        rename: 이름 바꾸기
         organizer: 주최자
         remove_confirm: "“%{name}” 님을 이 회의에서 내보내시겠습니까?"
         remove_detail: 이 회의에서의 투표도 삭제됩니다.
@@ -228,6 +228,7 @@ ko:
       new_password: 새 비밀번호
       password_hint: 비워 두면 지금 비밀번호를 그대로 씁니다.
       challenge_hint: 변경 사항을 저장하려면 필요합니다.
+      username_hint: 로그인에만 쓰입니다. 이미 참석한 회의의 참석자 이름은 바뀌지 않으니, 바꾸려면 주최자에게 요청하세요.
     index:
       title: 사용자
       user_id: 사용자 ID

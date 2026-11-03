@@ -17,6 +17,7 @@
       <div>
         <%= f.label :username, class: "form-label" %>
         <%= f.text_field :username, required: true, autocomplete: "username", class: "form-input" %>
+        <p class="mt-1 text-xs text-stone-500 dark:text-stone-400"><%= t(".username_hint") %></p>
       </div>
       <div>
         <%= f.label :password, t(".new_password"), class: "form-label" %>
