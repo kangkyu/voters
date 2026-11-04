@@ -47,7 +47,7 @@ class ElectionTest < ActiveSupport::TestCase
     assert_empty election.leading_candidates
   end
 
-  test "most votes wins" do
+  test "most votes leads" do
     assert_equal ["Bob"], vote_for(election, "Bob", "Ann", "Bob").leading_candidates.map(&:name)
   end
 

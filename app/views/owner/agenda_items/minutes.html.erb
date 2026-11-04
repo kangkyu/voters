@@ -44,10 +44,12 @@
         <% if agenda_item.election? %>
           <% leaders = agenda_item.leading_candidates %>
           <p class="outcome mt-2 text-sm font-semibold">
-            <% if leaders.empty? %>
+            <% if (elected = agenda_item.elected_candidate) %>
+              <%= t(".elected", name: elected.name) %>
+            <% elsif leaders.empty? %>
               <%= t(".no_votes_cast") %>
             <% elsif leaders.one? %>
-              <%= t(".elected", name: leaders.first.name) %>
+              <%= t(".most_votes", name: leaders.first.name) %>
             <% else %>
               <%= t(".tie", names: leaders.map(&:name).to_sentence) %>
             <% end %>
@@ -71,7 +73,10 @@
             </tbody>
           </table>
         <% else %>
-          <p class="outcome mt-2 text-sm font-semibold"><%= { passed: t("decisions.passed"), failed: t("decisions.failed"), pending: t(".no_votes_cast") }.fetch(agenda_item.decision) { t(".tally_only") } %></p>
+          <%# Still open with votes in: no outcome yet, and the note below says so %>
+          <% unless agenda_item.decision == :open %>
+            <p class="outcome mt-2 text-sm font-semibold"><%= { passed: t("decisions.passed"), failed: t("decisions.failed"), pending: t(".no_votes_cast") }.fetch(agenda_item.decision) { t(".tally_only") } %></p>
+          <% end %>
           <p class="tally mt-1 text-sm tabular-nums">
             <%= t("choices.favor") %> <%= agenda_item.favor_count %> · <%= t("choices.against") %> <%= agenda_item.against_count %> · <%= t("choices.abstain") %> <%= agenda_item.abstain_count %> · <%= t("choices.not_voted") %> <%= agenda_item.not_voted_count %>
           </p>

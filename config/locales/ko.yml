@@ -95,6 +95,7 @@ ko:
         candidates_fixed: 투표가 시작되면 후보를 바꿀 수 없습니다.
         one_per_line: 한 줄에 한 명씩 적어 주세요.
       election_count:
+        most_votes: "최다 득표: %{name}"
         wins: "%{name} 당선"
         tie: 동점 · %{names}
       form:
@@ -102,7 +103,7 @@ ko:
         motion_option: 의안 (찬성 / 반대)
         election_option: 선거 (후보 한 명 선택)
         candidates_placeholder: 한 줄에 한 명씩
-        candidates_hint: 한 줄에 한 명씩 적어 주세요. 가장 많이 득표한 후보가 당선됩니다.
+        candidates_hint: 한 줄에 한 명씩 적어 주세요. 의결이 완료되면 투표의 과반을 얻은 후보가 당선됩니다.
         submit: 추가
       list:
         empty: 아직 안건이 없습니다.
@@ -124,6 +125,7 @@ ko:
         no_agenda_items: 안건이 없습니다.
         rule: 투표수의 %{rule}
         no_votes_cast: 투표 없음
+        most_votes: '최다 득표: %{name}'
         elected: '당선: %{name}'
         tie: '동점: %{names}'
         tally_only: 집계만
