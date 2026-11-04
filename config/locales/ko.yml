@@ -33,9 +33,9 @@ ko:
       closed: 투표가 마감되었습니다.
       cast: 투표 완료
       final: 투표는 변경할 수 없습니다.
-      confirm: 투표 후에는 변경하거나 취소할 수 없습니다. 투표하시겠습니까?
+      confirm: 투표 후에는 변경하거나 취소할 수 없습니다. 제출하시겠습니까?
       confirm_detail: '선택: %{choice}'
-      confirm_button: 투표하기
+      confirm_button: 제출
   admin:
     dashboard:
       index:
@@ -208,9 +208,13 @@ ko:
       open: 링크가 있으면 누구나 참석할 수 있습니다.
       require_passcode: 참가 코드 요구
       delete: 회의 삭제
-      delete_hint: 아직 다른 참석자가 없어 이 회의를 삭제할 수 있습니다.
       delete_confirm: 이 회의를 삭제하시겠습니까?
       delete_detail: 안건과 투표도 함께 삭제됩니다.
+      delete_detail_attendees: "%{attendees}, %{votes}과 안건이 함께 삭제됩니다."
+      attendees_count:
+        other: "참석자 %{count}명"
+      votes_count:
+        other: "투표 %{count}건"
       started_by_html: "%{name}님이 시작한 회의"
       attending: 참석 중입니다
       attending_hint: 안건이 상정될 때마다 투표하세요.
@@ -317,7 +321,7 @@ ko:
               not_attendee: 투표하는 참석자 본인이어야 합니다
   flash:
     not_signed_in: 로그인이 필요합니다
-    sign_in_to_join: "“%{title}” 회의에 참석하려면 로그인하거나 계정을 만드세요."
+    register_to_join: "“%{title}” 회의에 참석하려면 계정을 만들거나 로그인하세요."
     already_signed_in: 이미 로그인되어 있습니다
     admin_only: 관리자만 이용할 수 있습니다
     owner_only: 회의 주최자만 이용할 수 있습니다
@@ -333,7 +337,6 @@ ko:
     meeting_create_failed: 회의를 만들지 못했습니다
     attendee_removed: "“%{name}” 님과 그 투표를 삭제했습니다."
     meeting_deleted: "“%{title}” 회의를 삭제했습니다."
-    meeting_has_attendees: 참석자가 있는 회의는 삭제할 수 없습니다.
     sign_in_failed: 아이디 또는 비밀번호가 올바르지 않습니다.
     passcode_created: '새 참가 코드: %{passcode}'
     passcode_off: 참가 코드를 껐습니다.

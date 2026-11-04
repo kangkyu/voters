@@ -17,7 +17,7 @@ class RoundsController < ApplicationController
     end
   end
 
-  # The meeting link. Anyone not signed in does that first (or signs up). The organizer gets the meeting
+  # The meeting link. Anyone not signed in signs up first (or signs in, linked from there). The organizer gets the meeting
   # page, attendees go straight to voting, and anyone else to the join page, to tap Attend (with the
   # passcode, if the meeting has one)
   def show
@@ -25,9 +25,9 @@ class RoundsController < ApplicationController
     return redirect_to(root_url, alert: t("flash.meeting_not_found")) unless @round
 
     unless signed_in?
-      # Signing in or up comes back here, through intended_url
+      # Signing up or in comes back here, through intended_url. Sign-up first: most new arrivals by link have no account
       session[:intended_url] = request.url
-      return redirect_to(signin_url, notice: t("flash.sign_in_to_join", title: @round.title))
+      return redirect_to(register_url, notice: t("flash.register_to_join", title: @round.title))
     end
     return if current_user.owner?(@round)
     return redirect_to(round_agenda_items_url(@round)) if current_user.audience?(@round)
@@ -35,15 +35,11 @@ class RoundsController < ApplicationController
     redirect_to new_round_audience_url(@round)
   end
 
-  # Only before anyone but the organizer has joined; takes its agenda items and votes with it
+  # Takes its attendees, agenda items and votes with it; the popup says how many
   def destroy
     @round = current_user.rounds.find_by!(another_id: params[:id])
-    if @round.deletable?
-      @round.destroy!
-      redirect_to user_url(current_user.another_id), notice: t("flash.meeting_deleted", title: @round.title)
-    else
-      redirect_to round_url(@round), alert: t("flash.meeting_has_attendees")
-    end
+    @round.destroy!
+    redirect_to user_url(current_user.another_id), notice: t("flash.meeting_deleted", title: @round.title)
   end
 
   private

@@ -209,9 +209,15 @@ en:
       open: Anyone with the link can join.
       require_passcode: Require a passcode
       delete: Delete meeting
-      delete_hint: Nobody else has joined yet, so this meeting can still be deleted.
       delete_confirm: Delete this meeting?
       delete_detail: Its agenda items and votes will be deleted too.
+      delete_detail_attendees: "This also deletes %{attendees}, %{votes} and its agenda items."
+      attendees_count:
+        one: 1 attendee
+        other: "%{count} attendees"
+      votes_count:
+        one: 1 vote
+        other: "%{count} votes"
       started_by_html: Started by %{name}
       attending: You're attending
       attending_hint: Vote on each agenda item as it comes up.
@@ -318,7 +324,7 @@ en:
               not_attendee: must be the attendee who votes
   flash:
     not_signed_in: Not logged in
-    sign_in_to_join: "Sign in or create an account to join “%{title}”."
+    register_to_join: "Create an account or sign in to join “%{title}”."
     already_signed_in: Already logged in
     admin_only: Admin only
     owner_only: Only the organizer can open this page.
@@ -334,7 +340,6 @@ en:
     meeting_create_failed: New meeting adding not successful
     attendee_removed: Removed “%{name}” and their votes.
     meeting_deleted: Deleted “%{title}”.
-    meeting_has_attendees: Attendees have joined this meeting, so it can't be deleted.
     sign_in_failed: Invalid username/password combination.
     passcode_created: 'New passcode: %{passcode}'
     passcode_off: Passcode turned off.

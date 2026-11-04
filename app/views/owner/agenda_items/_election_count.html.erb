@@ -13,7 +13,7 @@
 </div>
 <%# One row per candidate, then abstentions and attendees who haven't voted: name, count, and a bar for their share of attendees %>
 <ul class="mt-2 flex flex-col gap-2">
-  <% agenda_item.candidates.each do |candidate| %>
+  <% agenda_item.candidates_by_votes.each do |candidate| %>
     <% count = agenda_item.candidate_vote_count(candidate) %>
     <li class="candidate-count">
       <div class="flex justify-between text-sm">
