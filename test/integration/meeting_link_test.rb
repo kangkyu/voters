@@ -12,9 +12,10 @@ class MeetingLinkTest < ActionDispatch::IntegrationTest
 
   test "a new user follows the link, registers, attends under their username, and votes" do
     get round_path(@round)
-    assert_redirected_to signin_url
+    assert_redirected_to register_url
     follow_redirect!
-    assert_select "div", "Sign in or create an account to join “meeting”."
+    assert_select "div", "Create an account or sign in to join “meeting”."
+    assert_select "a[href='#{signin_path}']"
 
     post users_path, params: { user: { username: "newbie", password: "tV7qLm2xRz9pWk4d" } }
     follow_redirect! # back to the meeting link
@@ -32,9 +33,11 @@ class MeetingLinkTest < ActionDispatch::IntegrationTest
     assert_equal "newbie", @round.audiences.find_by!(user: User.find_by!(username: "newbie")).name
   end
 
-  test "a signed-out user follows the link, signs in, and goes to the join page" do
+  test "a signed-out user follows the link, goes from sign-up to sign-in, and gets to the join page" do
     @round.audiences.find_by!(user: users(:john)).destroy!
     get round_path(@round)
+    assert_redirected_to register_url
+    get signin_path
     sign_in "john"
     follow_redirect!
     assert_redirected_to new_round_audience_url(@round)

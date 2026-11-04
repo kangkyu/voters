@@ -324,7 +324,7 @@ en:
               not_attendee: must be the attendee who votes
   flash:
     not_signed_in: Not logged in
-    sign_in_to_join: "Sign in or create an account to join “%{title}”."
+    register_to_join: "Create an account or sign in to join “%{title}”."
     already_signed_in: Already logged in
     admin_only: Admin only
     owner_only: Only the organizer can open this page.
