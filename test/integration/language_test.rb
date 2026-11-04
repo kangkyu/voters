@@ -46,7 +46,7 @@ class LanguageTest < ActionDispatch::IntegrationTest
     get round_agenda_items_path(@round), headers: { "Accept-Language" => "en-US" }
     assert_select "html[lang=ko]"
     assert_select "button", "찬성"
-    assert_select "form[data-turbo-confirm='투표 후에는 변경하거나 취소할 수 없습니다. 투표하시겠습니까?']"
+    assert_select "form[data-turbo-confirm='투표 후에는 변경하거나 취소할 수 없습니다. 제출하시겠습니까?']"
   end
 
   test "an unknown language is refused" do

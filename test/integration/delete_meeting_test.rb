@@ -1,6 +1,6 @@
 require "test_helper"
 
-# A meeting can be deleted until anyone besides the organizer joins
+# The organizer can delete a meeting at any time; a popup says what goes with it
 class DeleteMeetingTest < ActionDispatch::IntegrationTest
   setup do
     @round = rounds(:meeting) # organized by jimmy; john and gapbun have joined
@@ -35,14 +35,26 @@ class DeleteMeetingTest < ActionDispatch::IntegrationTest
     assert_difference("Round.count", -1) { delete round_path(@round) }
   end
 
-  test "once someone else joins, there's no delete button and deleting is refused" do
+  test "with others attending, the popup counts what goes, and deleting takes it all" do
+    attendee = audiences(:john_at_meeting)
+    agenda_items(:item).votes.create!(audience: attendee, user: attendee.user, choice: "favor")
     sign_in "jimmy"
     get round_path(@round)
-    assert_select "button", { text: "Delete meeting", count: 0 }
+    assert_select "form[action='#{round_path(@round)}'][data-confirm-detail=?]",
+      "This also deletes 2 attendees, 1 vote and its agenda items."
 
-    assert_no_difference("Round.count") { delete round_path(@round) }
-    assert_redirected_to round_url(@round)
-    assert_equal "Attendees have joined this meeting, so it can't be deleted.", flash[:alert]
+    assert_difference -> { Round.count } => -1, -> { Audience.count } => -2, -> { Vote.count } => -1 do
+      delete round_path(@round)
+    end
+    assert_redirected_to user_url(users(:jimmy).another_id)
+    assert User.exists?(attendee.user_id), "accounts stay"
+  end
+
+  test "an attendee on the voting page of a deleted meeting is sent home" do
+    sign_in "john"
+    @round.destroy!
+    get round_agenda_items_path(@round)
+    assert_redirected_to root_url
   end
 
   test "only the organizer can delete it" do

@@ -4,6 +4,7 @@ class Round < ApplicationRecord
   has_many :audiences, dependent: :destroy
   has_many :users, through: :audiences
   has_many :agenda_items, dependent: :destroy
+  has_many :votes, through: :agenda_items
   belongs_to :owner, class_name: "User", foreign_key: "owner_id"
 
   validates :title, presence: true
@@ -32,9 +33,9 @@ class Round < ApplicationRecord
     passcode.blank? || ActiveSupport::SecurityUtils.secure_compare(passcode, code.to_s.gsub(/\s/, ""))
   end
 
-  # Nobody else has joined yet, so nobody else loses anything. The organizer's own attendance doesn't count
-  def deletable?
-    audiences.where.not(user_id: owner_id).none?
+  # Everyone attending except the organizer, who may be attending too
+  def other_attendees
+    audiences.where.not(user_id: owner_id)
   end
 
   def to_param

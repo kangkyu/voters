@@ -35,15 +35,11 @@ class RoundsController < ApplicationController
     redirect_to new_round_audience_url(@round)
   end
 
-  # Only before anyone but the organizer has joined; takes its agenda items and votes with it
+  # Takes its attendees, agenda items and votes with it; the popup says how many
   def destroy
     @round = current_user.rounds.find_by!(another_id: params[:id])
-    if @round.deletable?
-      @round.destroy!
-      redirect_to user_url(current_user.another_id), notice: t("flash.meeting_deleted", title: @round.title)
-    else
-      redirect_to round_url(@round), alert: t("flash.meeting_has_attendees")
-    end
+    @round.destroy!
+    redirect_to user_url(current_user.another_id), notice: t("flash.meeting_deleted", title: @round.title)
   end
 
   private
