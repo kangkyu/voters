@@ -96,6 +96,7 @@ en:
         candidates_fixed: Candidates can't change once voting has started.
         one_per_line: One name per line.
       election_count:
+        most_votes: "Most votes: %{name}"
         wins: "%{name} wins"
         tie: Tie · %{names}
       form:
@@ -103,7 +104,7 @@ en:
         motion_option: Motion (favor / against)
         election_option: Election (pick one candidate)
         candidates_placeholder: One name per line
-        candidates_hint: One name per line. Most votes wins.
+        candidates_hint: One name per line. Once decided, a candidate with more than half of the votes cast wins.
         submit: Add
       list:
         empty: No agenda items yet.
@@ -125,6 +126,7 @@ en:
         no_agenda_items: No agenda items.
         rule: "%{rule} of votes cast"
         no_votes_cast: No votes cast
+        most_votes: 'Most votes: %{name}'
         elected: 'Elected: %{name}'
         tie: 'Tie: %{names}'
         tally_only: Tally only

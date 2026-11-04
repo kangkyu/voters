@@ -1,6 +1,4 @@
 class Vote < ApplicationRecord
-  include ActionView::RecordIdentifier
-
   belongs_to :user
   belongs_to :audience
   belongs_to :agenda_item, counter_cache: true
@@ -61,15 +59,9 @@ class Vote < ApplicationRecord
     end
   end
 
+  # Broadcast via the agenda_item: Turbo serializes the broadcasting record into
+  # the job, and a destroyed vote can't be loaded back when the job runs.
   def broadcast_votes_count
-    # Broadcast via the agenda_item: Turbo serializes the broadcasting record into
-    # the job, and a destroyed vote can't be loaded back when the job runs.
-    # The job renders without a request, so each language gets its own render and stream
-    I18n.available_locales.each do |locale|
-      agenda_item.broadcast_replace_later_to [agenda_item.round, :results, locale],
-        target: "#{dom_id(agenda_item)}_votes_count",
-        partial: "owner/agenda_items/votes_count",
-        locals: { agenda_item: agenda_item, locale: locale.to_s }
-    end
+    agenda_item.broadcast_votes_count
   end
 end

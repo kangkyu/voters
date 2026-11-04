@@ -3,10 +3,12 @@
 <% abstain = agenda_item.abstain_count %>
 <% total = agenda_item.votes_cast + abstain + not_voted %>
 <div class="flex flex-wrap items-center gap-2">
-  <% if leaders.empty? %>
+  <% if (elected = agenda_item.elected_candidate) %>
+    <span class="decision-badge rounded-full bg-blue-800 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">★ <%= t(".wins", name: elected.name) %></span>
+  <% elsif leaders.empty? %>
     <span class="decision-badge rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-stone-600 dark:bg-stone-800 dark:text-stone-300"><%= t("decisions.no_votes_yet") %></span>
   <% elsif leaders.one? %>
-    <span class="decision-badge rounded-full bg-blue-800 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">★ <%= t(".wins", name: leaders.first.name) %></span>
+    <span class="decision-badge rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-blue-900 dark:bg-blue-950 dark:text-blue-300"><%= t(".most_votes", name: leaders.first.name) %></span>
   <% else %>
     <span class="decision-badge rounded-full bg-amber-500 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white"><%= t(".tie", names: leaders.map(&:name).to_sentence) %></span>
   <% end %>

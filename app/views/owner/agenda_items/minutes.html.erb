@@ -44,10 +44,12 @@
         <% if agenda_item.election? %>
           <% leaders = agenda_item.leading_candidates %>
           <p class="outcome mt-2 text-sm font-semibold">
-            <% if leaders.empty? %>
+            <% if (elected = agenda_item.elected_candidate) %>
+              <%= t(".elected", name: elected.name) %>
+            <% elsif leaders.empty? %>
               <%= t(".no_votes_cast") %>
             <% elsif leaders.one? %>
-              <%= t(".elected", name: leaders.first.name) %>
+              <%= t(".most_votes", name: leaders.first.name) %>
             <% else %>
               <%= t(".tie", names: leaders.map(&:name).to_sentence) %>
             <% end %>

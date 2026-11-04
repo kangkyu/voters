@@ -1,4 +1,6 @@
 class AgendaItem < ApplicationRecord
+  include ActionView::RecordIdentifier
+
   belongs_to :round
   has_many :votes, dependent: :destroy
   has_many :candidates, -> { order(:id) }, dependent: :destroy
@@ -87,7 +89,7 @@ class AgendaItem < ApplicationRecord
   end
 
   # Attendees of the meeting who haven't voted on this item, abstaining or otherwise.
-  # Shown only: pass / fail and the winner count votes cast, which leave out abstentions
+  # Shown only: pass / fail and the most-voted candidate count votes cast, which leave out abstentions
   def not_voted_count
     [attendee_count - votes_cast - abstain_count, 0].max
   end
@@ -101,12 +103,20 @@ class AgendaItem < ApplicationRecord
     candidate_tally.fetch(candidate.id, 0)
   end
 
+  # Once decided, more than half of votes cast, leaving out abstentions, like a motion's majority.
+  # Nil when nobody has that, and while voting is open, since later votes could change it
+  def elected_candidate
+    return unless decision_made?
+
+    candidates.find { |candidate| candidate_vote_count(candidate) * 2 > votes_cast }
+  end
+
   # Most votes first; candidates level on votes keep the order they were entered in
   def candidates_by_votes
     candidates.sort_by { |candidate| [-candidate_vote_count(candidate), candidate.id] }
   end
 
-  # Candidates with the most votes: one winner, several on a tie, none before any vote
+  # Candidates with the most votes: one, several on a tie, none before any vote
   def leading_candidates
     top = candidate_tally.values.max
     return [] unless top&.positive?
@@ -127,6 +137,9 @@ class AgendaItem < ApplicationRecord
     end
   }
 
+  # Results pages show who's elected only once decided
+  after_update_commit :broadcast_votes_count, if: -> { election? && saved_change_to_decision_made? }
+
   # Voting pages show each attendee's own vote, so they refresh themselves rather than take shared HTML
   after_update_commit -> {
     broadcast_refresh_later_to [round, :agenda] if saved_change_to_decision_made? || saved_change_to_hidden?
@@ -135,6 +148,16 @@ class AgendaItem < ApplicationRecord
   after_destroy_commit -> {
     broadcast_remove_to [round, :agenda]
   }
+
+  # The job renders without a request, so each language gets its own render and stream
+  def broadcast_votes_count
+    I18n.available_locales.each do |locale|
+      broadcast_replace_later_to [round, :results, locale],
+        target: "#{dom_id(self)}_votes_count",
+        partial: "owner/agenda_items/votes_count",
+        locals: { agenda_item: self, locale: locale.to_s }
+    end
+  end
 
   private
 
