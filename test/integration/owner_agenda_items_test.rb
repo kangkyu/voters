@@ -38,13 +38,18 @@ class OwnerAgendaItemsTest < ActionDispatch::IntegrationTest
     assert_select "turbo-stream[action=append][target=admin_agenda_items]", text: /2\/3 approve/
   end
 
-  test "result page shows the decision of a decision vote" do
+  test "result page shows the outcome of a decision vote only once decided" do
     agenda_item = agenda_items(:item)
     agenda_item.update!(decision_rule: "majority")
     agenda_item.votes.create!(user: users(:john), audience: audiences(:john_at_meeting), choice: "favor")
+    badge = "##{ActionView::RecordIdentifier.dom_id(agenda_item)} .decision-badge"
 
     get owner_round_results_path(@round)
-    assert_select "##{ActionView::RecordIdentifier.dom_id(agenda_item)} .decision-badge", /Passed/
+    assert_select badge, 0
+
+    agenda_item.update!(decision_made: true)
+    get owner_round_results_path(@round)
+    assert_select badge, /Passed/
   end
 
   test "owner opens an agenda item's edit form in place, and cancels" do

@@ -56,13 +56,15 @@ class AgendaItem < ApplicationRecord
     two_thirds? ? 200.0 / 3 : 50.0
   end
 
-  # :passed, :failed, or :pending (no votes yet); nil when not a decision vote
+  # :pending (no votes yet), :open (votes in, but later ones could change the outcome), then
+  # :passed or :failed once decided; nil when not a decision vote
   def decision
     return unless decision_rule
 
     favor = favor_count
     total = favor + against_count
     return :pending if total.zero?
+    return :open unless decision_made?
 
     passed = two_thirds? ? favor * 3 >= total * 2 : favor * 2 > total
     passed ? :passed : :failed
@@ -137,8 +139,8 @@ class AgendaItem < ApplicationRecord
     end
   }
 
-  # Results pages show who's elected only once decided
-  after_update_commit :broadcast_votes_count, if: -> { election? && saved_change_to_decision_made? }
+  # Results pages show the outcome only once decided
+  after_update_commit :broadcast_votes_count, if: :saved_change_to_decision_made?
 
   # Voting pages show each attendee's own vote, so they refresh themselves rather than take shared HTML
   after_update_commit -> {

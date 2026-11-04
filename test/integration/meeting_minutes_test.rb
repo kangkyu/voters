@@ -33,13 +33,18 @@ class MeetingMinutesTest < ActionDispatch::IntegrationTest
     assert_select ".attendees", "Johnny and Gap"
 
     motion = "#minutes_#{ActionView::RecordIdentifier.dom_id(@motion)}"
-    assert_select "#{motion} .outcome", "Passed"
+    assert_select "#{motion} .outcome", 0
     assert_select "#{motion} .tally", /Favor 1 · Against 0 · Abstain 1 · Not voted 0/
     assert_select motion, /Voting was still open/
 
     chair = "#minutes_#{ActionView::RecordIdentifier.dom_id(election)}"
     assert_select "#{chair} .outcome", /Elected: Bob/
     assert_select chair, { text: /Voting was still open/, count: 0 }
+
+    @motion.update!(decision_made: true)
+    get owner_round_minutes_path(@round)
+    assert_select "#{motion} .outcome", "Passed"
+    assert_select motion, { text: /Voting was still open/, count: 0 }
   end
 
   test "only the owner sees the minutes" do

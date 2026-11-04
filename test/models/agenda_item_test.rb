@@ -7,7 +7,7 @@ class AgendaItemTest < ActiveSupport::TestCase
     @round = rounds(:meeting)
   end
 
-  def agenda_item_with_votes(rule, favor:, against:)
+  def agenda_item_with_votes(rule, favor:, against:, decided: false)
     agenda_item = @round.agenda_items.create!(name: "Motion", decision_rule: rule)
     choices = Array.new(favor, "favor") + Array.new(against, "against")
     choices.each_with_index do |choice, i|
@@ -15,6 +15,7 @@ class AgendaItemTest < ActiveSupport::TestCase
       audience = @round.audiences.create!(user: user, name: "Voter #{i}")
       agenda_item.votes.create!(user: user, audience: audience, choice: choice)
     end
+    agenda_item.update!(decision_made: true) if decided
     agenda_item
   end
 
@@ -26,14 +27,19 @@ class AgendaItemTest < ActiveSupport::TestCase
     assert_equal :pending, agenda_item_with_votes("majority", favor: 0, against: 0).decision
   end
 
+  test "with votes in, there's no outcome until it's decided" do
+    assert_equal :open, agenda_item_with_votes("majority", favor: 2, against: 1).decision
+    assert_equal :open, agenda_item_with_votes("majority", favor: 1, against: 2).decision
+  end
+
   test "majority needs more than half" do
-    assert_equal :passed, agenda_item_with_votes("majority", favor: 2, against: 1).decision
-    assert_equal :failed, agenda_item_with_votes("majority", favor: 1, against: 1).decision
+    assert_equal :passed, agenda_item_with_votes("majority", favor: 2, against: 1, decided: true).decision
+    assert_equal :failed, agenda_item_with_votes("majority", favor: 1, against: 1, decided: true).decision
   end
 
   test "two-thirds needs at least 2/3" do
-    assert_equal :passed, agenda_item_with_votes("two_thirds", favor: 2, against: 1).decision
-    assert_equal :failed, agenda_item_with_votes("two_thirds", favor: 3, against: 2).decision
+    assert_equal :passed, agenda_item_with_votes("two_thirds", favor: 2, against: 1, decided: true).decision
+    assert_equal :failed, agenda_item_with_votes("two_thirds", favor: 3, against: 2, decided: true).decision
   end
 
   test "rejects an unknown decision rule" do
@@ -70,6 +76,7 @@ class AgendaItemTest < ActiveSupport::TestCase
     user = User.create!(username: "abstainer#{agenda_item.id}", password: "tV7qLm2xRz9pWk4d")
     audience = @round.audiences.create!(user: user, name: "Abstainer")
     agenda_item.votes.create!(user: user, audience: audience, choice: "abstain")
+    agenda_item.update!(decision_made: true)
 
     fresh = AgendaItem.find(agenda_item.id)
     assert_equal :passed, fresh.decision

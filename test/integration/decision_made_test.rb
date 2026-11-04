@@ -51,6 +51,15 @@ class DecisionMadeTest < ActionDispatch::IntegrationTest
     assert_turbo_stream_broadcasts [@round, :agenda], count: 1
   end
 
+  test "marking a decision made updates the badge on open results pages" do
+    @agenda_item.update!(decision_rule: "majority")
+    @agenda_item.votes.create!(user: users(:john), audience: audiences(:john_at_meeting), choice: "favor")
+    broadcasts = capture_turbo_stream_broadcasts([@round, :results, :en]) do
+      perform_enqueued_jobs(only: Turbo::Streams::ActionBroadcastJob) { @agenda_item.update!(decision_made: true) }
+    end
+    assert_match "Passed", broadcasts.sole.css(".decision-badge").text
+  end
+
   test "attendee cannot vote once the decision is made" do
     vote = @agenda_item.votes.create!(user: users(:john), audience: audiences(:john_at_meeting), choice: "favor")
     @agenda_item.update!(decision_made: true)
