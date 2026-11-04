@@ -115,6 +115,34 @@ class ElectionFlowTest < ActionDispatch::IntegrationTest
     assert_select "#{frame} .not-voted-count", text: /Not voted\s+1/
   end
 
+  test "results list candidates by most votes, level ones in the order entered" do
+    frame = "turbo-frame##{ActionView::RecordIdentifier.dom_id(@election)}_votes_count"
+    names = -> { css_select("#{frame} .candidate-count span:first-child").map { |name| name.text.strip } }
+    sign_in "jimmy"
+
+    get owner_round_results_path(@round)
+    assert_equal %w[Ann Bob], names.call
+
+    @election.votes.create!(user: users(:john), audience: audiences(:john_at_meeting), candidate: @bob)
+    get owner_round_results_path(@round)
+    assert_equal %w[Bob Ann], names.call
+
+    @election.votes.create!(user: users(:gapbun), audience: audiences(:gapbun_at_meeting), candidate: @ann)
+    get owner_round_results_path(@round)
+    assert_equal %w[Ann Bob], names.call
+  end
+
+  test "a new vote reorders the candidates on an open results page" do
+    broadcasts = capture_turbo_stream_broadcasts([@round, :results, :en]) do
+      perform_enqueued_jobs only: Turbo::Streams::ActionBroadcastJob do
+        @election.votes.create!(user: users(:john), audience: audiences(:john_at_meeting), candidate: @bob)
+      end
+    end
+    assert_equal 1, broadcasts.size
+    rows = broadcasts.sole.css(".candidate-count").map { |row| row.text.split }
+    assert_equal [%w[Bob 1], %w[Ann 0]], rows
+  end
+
   test "results show a tie" do
     @election.votes.create!(user: users(:john), audience: audiences(:john_at_meeting), candidate: @ann)
     @election.votes.create!(user: users(:gapbun), audience: audiences(:gapbun_at_meeting), candidate: @bob)

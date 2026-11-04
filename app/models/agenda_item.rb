@@ -101,6 +101,11 @@ class AgendaItem < ApplicationRecord
     candidate_tally.fetch(candidate.id, 0)
   end
 
+  # Most votes first; candidates level on votes keep the order they were entered in
+  def candidates_by_votes
+    candidates.sort_by { |candidate| [-candidate_vote_count(candidate), candidate.id] }
+  end
+
   # Candidates with the most votes: one winner, several on a tie, none before any vote
   def leading_candidates
     top = candidate_tally.values.max
