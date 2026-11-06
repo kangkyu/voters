@@ -135,6 +135,14 @@ ko:
         eyebrow: 결과
         minutes: 회의록
         intro: 투표 결과가 실시간으로 갱신됩니다. 안건의 투표를 마감하려면 “의결 완료”를 체크하세요.
+      result_item:
+        back: "← 결과"
+        needs: 투표수의 %{rule} 찬성 필요
+        wins: "%{name} 당선"
+        most_votes: "최다 득표: %{name}"
+        tie: 동점 · %{names}
+      decision_made:
+        details: 결과 보기 →
     audiences:
       index:
         eyebrow: 참석자

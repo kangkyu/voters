@@ -9,7 +9,8 @@
       <% elsif agenda_item.decision_rule %>
         <span class="rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-medium text-stone-700 dark:bg-stone-800 dark:text-stone-300"><%= t(".decision_badge", rule: agenda_item.decision_rule_label) %></span>
       <% end %>
-      <% if agenda_item.hidden? %>
+      <%# Hiding is about the voting page, so results don't mention it %>
+      <% if agenda_item.hidden? && !results_page %>
         <span class="hidden-from-attendees rounded-full border border-dashed border-stone-400 px-2.5 py-0.5 text-xs font-medium text-stone-600 dark:border-stone-500 dark:text-stone-300"><%= t(".hidden_badge") %></span>
       <% end %>
       <% if results_page %>

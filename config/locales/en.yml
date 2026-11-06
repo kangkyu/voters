@@ -136,6 +136,14 @@ en:
         eyebrow: Results
         minutes: Meeting minutes
         intro: Votes update live. Check “Decision made” to close voting on an item.
+      result_item:
+        back: "← Results"
+        needs: Needs %{rule} of votes cast in favor
+        wins: "%{name} wins"
+        most_votes: "Most votes: %{name}"
+        tie: Tie · %{names}
+      decision_made:
+        details: View result →
     audiences:
       index:
         eyebrow: Attendees

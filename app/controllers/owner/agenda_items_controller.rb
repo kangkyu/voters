@@ -11,6 +11,12 @@ class Owner::AgendaItemsController < ApplicationController
     @agenda_items = AgendaItem.load_vote_tallies(@round.agenda_items.includes(:candidates).order(:created_at).to_a)
   end
 
+  # One item's results, numbered as on the agenda
+  def result_item
+    @agenda_item = AgendaItem.load_vote_tallies([@round.agenda_items.includes(:candidates).find(params[:id])]).sole
+    @position = @round.agenda_items.where(created_at: ...@agenda_item.created_at).count + 1
+  end
+
   # Print-friendly record of the meeting: attendees and each item's outcome
   def minutes
     @agenda_items = AgendaItem.load_vote_tallies(@round.agenda_items.includes(:candidates).order(:created_at).to_a)
