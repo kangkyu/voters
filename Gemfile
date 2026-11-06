@@ -83,3 +83,8 @@ gem "tailwindcss-rails", "~> 3.3"
 gem "twilio-ruby", "~> 7.2"
 
 gem "rails-i18n", "~> 8.1"
+
+# i18n 1.15 lets new threads inherit the locale. Async job threads created during a request
+# then share one locale through ActionView's I18nProxy, so the per-language tally broadcasts
+# can render in each other's language. Lift once fixed upstream.
+gem "i18n", "< 1.15"

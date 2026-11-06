@@ -115,7 +115,7 @@ GEM
       net-http (~> 0.5)
     globalid (1.4.0)
       activesupport (>= 6.1)
-    i18n (1.15.2)
+    i18n (1.14.8)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.2.3)
       actionpack (>= 6.0.0)
@@ -340,6 +340,7 @@ DEPENDENCIES
   brakeman
   capybara
   debug
+  i18n (< 1.15)
   importmap-rails
   jbuilder
   minitest (~> 5.0, < 6.0)
