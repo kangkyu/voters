@@ -24,6 +24,8 @@ Rails.application.routes.draw do
         resource :hiding, only: [:create, :destroy]
       end
       get "results" => "agenda_items#result"
+      # One item's results on a page of its own, to screenshot and share with attendees
+      get "results/:id" => "agenda_items#result_item", as: :result_item
       get "minutes" => "agenda_items#minutes"
     end
   end

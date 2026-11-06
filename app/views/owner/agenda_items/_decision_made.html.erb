@@ -1,8 +1,13 @@
-<%= turbo_frame_tag agenda_item, :decision_made do %>
+<%= turbo_frame_tag agenda_item, :decision_made, class: "relative flex items-center" do %>
   <%= form_with model: agenda_item, url: owner_round_agenda_item_path(agenda_item.round, agenda_item), method: :patch, data: { controller: "auto-submit" } do |f| %>
     <label class="inline-flex cursor-pointer items-center gap-1.5 text-sm font-medium <%= agenda_item.decision_made? ? "text-stone-900 dark:text-white" : "text-stone-500 dark:text-stone-400" %>">
       <%= f.check_box :decision_made, data: { action: "auto-submit#submit" }, class: "h-4 w-4 rounded border-stone-300 text-blue-800 focus:ring-blue-700 dark:border-stone-700 dark:bg-stone-950" %>
       <%= t("decisions.decision_made") %>
     </label>
+  <% end %>
+  <%# Inside the frame, so checking the box shows the link at once; _top leaves the frame.
+      Placed under the checkbox without taking up space, so nothing on the card moves %>
+  <% if agenda_item.decision_made? %>
+    <%= link_to t(".details"), owner_round_result_item_path(agenda_item.round, agenda_item), data: { turbo_frame: "_top" }, class: "link absolute right-0 top-full mt-1 whitespace-nowrap text-sm" %>
   <% end %>
 <% end %>

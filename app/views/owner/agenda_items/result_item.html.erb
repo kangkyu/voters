@@ -1,0 +1,91 @@
+<%# A decided item's result, to screenshot and share with attendees. Rendered once: votes are closed %>
+<% item = @agenda_item %>
+<div class="mx-auto max-w-4xl">
+  <%= link_to t(".back"), owner_round_results_path(@round), class: "link text-sm" %>
+  <p class="eyebrow mt-6">“<%= @round.title %>”</p>
+
+  <div id="<%= dom_id(item) %>" class="card mt-3 flex items-start gap-5 p-6 text-lg">
+    <span aria-hidden="true" class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-800 text-base font-semibold text-white"><%= @position %></span>
+    <div class="min-w-0 flex-1">
+      <div class="flex flex-wrap items-center gap-2">
+        <h1 class="text-2xl font-medium"><%= item.name %></h1>
+        <% if item.election? %>
+          <span class="rounded-full bg-blue-50 px-2.5 py-0.5 text-sm font-medium text-blue-900 dark:bg-blue-950 dark:text-blue-300"><%= t("owner.agenda_items.agenda_item.election_badge", count: item.candidates.size) %></span>
+        <% elsif item.decision_rule %>
+          <span class="rounded-full bg-stone-100 px-2.5 py-0.5 text-sm font-medium text-stone-700 dark:bg-stone-800 dark:text-stone-300"><%= t("owner.agenda_items.agenda_item.decision_badge", rule: item.decision_rule_label) %></span>
+        <% end %>
+      </div>
+      <% if item.subtitle.present? %>
+        <p class="text-base text-stone-500 dark:text-stone-400"><%= item.subtitle %></p>
+      <% end %>
+
+      <div class="tally mt-3">
+        <% if item.election? %>
+          <% leaders = item.leading_candidates %>
+          <% abstain = item.abstain_count %>
+          <% not_voted = item.not_voted_count %>
+          <% total = item.votes_cast + abstain + not_voted %>
+          <div class="flex flex-wrap items-center gap-2">
+            <% if (elected = item.elected_candidate) %>
+              <span class="decision-badge rounded-full bg-blue-800 px-2.5 py-0.5 text-sm font-bold uppercase tracking-wide text-white">★ <%= t(".wins", name: elected.name) %></span>
+            <% elsif leaders.empty? %>
+              <span class="decision-badge rounded-full bg-stone-100 px-2.5 py-0.5 text-sm font-bold uppercase tracking-wide text-stone-600 dark:bg-stone-800 dark:text-stone-300"><%= t("decisions.no_votes_yet") %></span>
+            <% elsif leaders.one? %>
+              <span class="decision-badge rounded-full bg-blue-50 px-2.5 py-0.5 text-sm font-bold uppercase tracking-wide text-blue-900 dark:bg-blue-950 dark:text-blue-300"><%= t(".most_votes", name: leaders.first.name) %></span>
+            <% else %>
+              <span class="decision-badge rounded-full bg-amber-500 px-2.5 py-0.5 text-sm font-bold uppercase tracking-wide text-white"><%= t(".tie", names: leaders.map(&:name).to_sentence) %></span>
+            <% end %>
+          </div>
+          <%# One row per candidate, then abstentions and attendees who didn't vote, each with its share of attendees %>
+          <% rows = item.candidates_by_votes.map { |candidate| [candidate.name, item.candidate_vote_count(candidate), leaders.include?(candidate) ? "bg-blue-800" : "bg-blue-200 dark:bg-blue-900", leaders.include?(candidate) ? "font-semibold" : "text-stone-600 dark:text-stone-300"] } %>
+          <% rows << [t("choices.abstain"), abstain, "bg-stone-300 dark:bg-stone-600", "text-stone-500 dark:text-stone-400"] %>
+          <% rows << [t("choices.not_voted"), not_voted, "bg-stone-400 dark:bg-stone-500", "text-stone-500 dark:text-stone-400"] %>
+          <ul class="mt-2 flex flex-col gap-2">
+            <% rows.each do |label, count, bar, text| %>
+              <li>
+                <div class="flex justify-between text-base">
+                  <span class="<%= text %>"><%= label %></span>
+                  <span class="tabular-nums text-stone-600 dark:text-stone-300"><%= count %></span>
+                </div>
+                <div class="mt-1 h-2 w-full overflow-hidden rounded-full bg-stone-100 dark:bg-stone-800">
+                  <% if total > 0 %>
+                    <div class="h-full <%= bar %>" style="width: <%= (count * 100.0 / total).round(2) %>%"></div>
+                  <% end %>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <% favor = item.favor_count %>
+          <% against = item.against_count %>
+          <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <span class="text-base"><%= t("choices.favor") %> <span class="font-medium tabular-nums"><%= favor %></span></span>
+            <span class="text-base"><%= t("choices.against") %> <span class="font-medium tabular-nums"><%= against %></span></span>
+            <span class="text-base"><%= t("choices.abstain") %> <span class="font-medium tabular-nums"><%= item.abstain_count %></span></span>
+            <span class="text-base text-stone-500 dark:text-stone-400"><%= t("choices.not_voted") %> <span class="tabular-nums"><%= item.not_voted_count %></span></span>
+            <% case item.decision %>
+            <% when :passed %>
+              <span class="decision-badge rounded-full bg-green-600 px-2.5 py-0.5 text-sm font-bold uppercase tracking-wide text-white">✓ <%= t("decisions.passed") %></span>
+            <% when :failed %>
+              <span class="decision-badge rounded-full bg-red-600 px-2.5 py-0.5 text-sm font-bold uppercase tracking-wide text-white">✗ <%= t("decisions.failed") %></span>
+            <% when :pending %>
+              <span class="decision-badge rounded-full bg-stone-100 px-2.5 py-0.5 text-sm font-bold uppercase tracking-wide text-stone-600 dark:bg-stone-800 dark:text-stone-300"><%= t("decisions.no_votes_yet") %></span>
+            <% end %>
+          </div>
+          <% if item.decision_rule %>
+            <% cast = favor + against %>
+            <%# Favor share of votes cast, with a marker at the pass threshold %>
+            <div class="relative mt-2 h-2 w-full overflow-hidden rounded-full bg-stone-100 dark:bg-stone-800">
+              <% if cast > 0 %>
+                <div class="absolute inset-y-0 left-0 bg-blue-800" style="width: <%= (favor * 100.0 / cast).round(2) %>%"></div>
+                <div class="absolute inset-y-0 right-0 bg-stone-400" style="width: <%= (against * 100.0 / cast).round(2) %>%"></div>
+              <% end %>
+              <div class="absolute inset-y-0 w-0.5 bg-stone-900 dark:bg-white" style="left: <%= item.decision_threshold_percent.round(2) %>%"></div>
+            </div>
+            <p class="mt-1 text-sm text-stone-500 dark:text-stone-400"><%= t(".needs", rule: item.decision_rule_label) %></p>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
