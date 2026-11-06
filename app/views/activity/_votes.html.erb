@@ -4,13 +4,13 @@
   <%# A cast vote is final, like a ballot in the box %>
   <% cast = vote.present? %>
   <% if closed %>
-    <p class="mb-3 flex items-center gap-2 text-sm text-stone-500 dark:text-stone-400">
-      <span class="rounded-full bg-stone-100 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-stone-600 dark:bg-stone-800 dark:text-stone-300"><%= t("decisions.decision_made") %></span>
+    <p class="mb-3 flex items-center gap-2 text-base text-stone-500 dark:text-stone-400">
+      <span class="rounded-full bg-stone-100 px-3 py-0.5 text-sm font-semibold uppercase tracking-wide text-stone-600 dark:bg-stone-800 dark:text-stone-300"><%= t("decisions.decision_made") %></span>
       <%= t(".closed") %>
     </p>
   <% elsif cast %>
-    <p class="mb-3 flex items-center gap-2 text-sm text-stone-500 dark:text-stone-400">
-      <span class="rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-blue-800 dark:bg-blue-950/40 dark:text-blue-300"><%= t(".cast") %></span>
+    <p class="mb-3 flex items-center gap-2 text-base text-stone-500 dark:text-stone-400">
+      <span class="rounded-full bg-blue-50 px-3 py-0.5 text-sm font-semibold uppercase tracking-wide text-blue-800 dark:bg-blue-950/40 dark:text-blue-300"><%= t(".cast") %></span>
       <%= t(".final") %>
     </p>
   <% end %>
@@ -26,12 +26,12 @@
       <% selected_look = "border-blue-800 #{agenda_item.election? ? "bg-blue-50 font-medium dark:bg-blue-950/40" : "bg-blue-800 text-white"}" %>
       <% unselected_look = "border-stone-300 dark:border-stone-700" %>
       <% option_class = if agenda_item.election?
-           "flex w-full items-center gap-3 rounded-md border px-4 py-2 text-left text-sm #{selected ? selected_look : unselected_look}"
+           "flex w-full items-center gap-3 rounded-md border px-4 py-3 text-left text-lg #{selected ? selected_look : unselected_look}"
          else
-           "rounded-md border px-5 py-2 text-sm font-medium #{selected ? selected_look : unselected_look}"
+           "rounded-md border px-6 py-3 text-lg font-medium #{selected ? selected_look : unselected_look}"
          end %>
       <%# Candidates stack like radio rows, with a dot showing the pick %>
-      <% dot = (tag.span(class: "h-3 w-3 shrink-0 rounded-full #{selected ? "bg-blue-800" : "border border-stone-400"}") if agenda_item.election?) %>
+      <% dot = (tag.span(class: "h-4 w-4 shrink-0 rounded-full #{selected ? "bg-blue-800" : "border border-stone-400"}") if agenda_item.election?) %>
       <% if closed %>
         <%# Closed: keep showing my choice, but nothing can be clicked %>
         <button type="button" disabled class="<%= option_class %> cursor-not-allowed opacity-60"><%= dot %><%= label %></button>

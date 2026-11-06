@@ -16,7 +16,7 @@
         <% end %>
       </div>
       <% if item.subtitle.present? %>
-        <p class="text-base text-stone-500 dark:text-stone-400"><%= item.subtitle %></p>
+        <p class="mt-1 text-base text-stone-500 dark:text-stone-400"><%= item.subtitle %></p>
       <% end %>
 
       <div class="tally mt-3">
@@ -43,7 +43,7 @@
           <ul class="mt-2 flex flex-col gap-2">
             <% rows.each do |label, count, bar, text| %>
               <li>
-                <div class="flex justify-between text-base">
+                <div class="flex justify-between text-lg">
                   <span class="<%= text %>"><%= label %></span>
                   <span class="tabular-nums text-stone-600 dark:text-stone-300"><%= count %></span>
                 </div>
@@ -59,10 +59,10 @@
           <% favor = item.favor_count %>
           <% against = item.against_count %>
           <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
-            <span class="text-base"><%= t("choices.favor") %> <span class="font-medium tabular-nums"><%= favor %></span></span>
-            <span class="text-base"><%= t("choices.against") %> <span class="font-medium tabular-nums"><%= against %></span></span>
-            <span class="text-base"><%= t("choices.abstain") %> <span class="font-medium tabular-nums"><%= item.abstain_count %></span></span>
-            <span class="text-base text-stone-500 dark:text-stone-400"><%= t("choices.not_voted") %> <span class="tabular-nums"><%= item.not_voted_count %></span></span>
+            <span class="text-lg"><%= t("choices.favor") %> <span class="font-medium tabular-nums"><%= favor %></span></span>
+            <span class="text-lg"><%= t("choices.against") %> <span class="font-medium tabular-nums"><%= against %></span></span>
+            <span class="text-lg"><%= t("choices.abstain") %> <span class="font-medium tabular-nums"><%= item.abstain_count %></span></span>
+            <span class="text-lg text-stone-500 dark:text-stone-400"><%= t("choices.not_voted") %> <span class="tabular-nums"><%= item.not_voted_count %></span></span>
             <% case item.decision %>
             <% when :passed %>
               <span class="decision-badge rounded-full bg-green-600 px-2.5 py-0.5 text-sm font-bold uppercase tracking-wide text-white">✓ <%= t("decisions.passed") %></span>
@@ -82,7 +82,7 @@
               <% end %>
               <div class="absolute inset-y-0 w-0.5 bg-stone-900 dark:bg-white" style="left: <%= item.decision_threshold_percent.round(2) %>%"></div>
             </div>
-            <p class="mt-1 text-sm text-stone-500 dark:text-stone-400"><%= t(".needs", rule: item.decision_rule_label) %></p>
+            <p class="mt-1 text-base text-stone-500 dark:text-stone-400"><%= t(".needs", rule: item.decision_rule_label) %></p>
           <% end %>
         <% end %>
       </div>

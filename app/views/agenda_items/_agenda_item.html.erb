@@ -1,8 +1,8 @@
-<li id="<%= dom_id(agenda_item) %>" class="card p-5">
-  <p class="eyebrow"><%= t(agenda_item.election? ? "kinds.election" : "kinds.motion") %></p>
-  <h2 class="mt-1 font-medium"><%= agenda_item.name %></h2>
+<li id="<%= dom_id(agenda_item) %>" class="card p-6">
+  <p class="eyebrow text-sm"><%= t(agenda_item.election? ? "kinds.election" : "kinds.motion") %></p>
+  <h2 class="mt-1 text-2xl font-medium"><%= agenda_item.name %></h2>
   <% if agenda_item.subtitle.present? %>
-    <p class="text-sm text-stone-500 dark:text-stone-400"><%= agenda_item.subtitle %></p>
+    <p class="mt-1 text-base text-stone-500 dark:text-stone-400"><%= agenda_item.subtitle %></p>
   <% end %>
   <div class="mt-4">
     <%= render "activity/votes", agenda_item: agenda_item %>
