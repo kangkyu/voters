@@ -1,26 +1,26 @@
-<div class="mx-auto max-w-sm py-6">
+<div class="mx-auto max-w-md py-6">
   <h1 class="page-title"><%= t(".title") %></h1>
-  <p class="mt-2 text-sm text-stone-600 dark:text-stone-400">
+  <p class="mt-2 text-base text-stone-600 dark:text-stone-400">
     <%= t(".have_one") %> <%= link_to t(".sign_in"), signin_path, class: "link" %>
   </p>
 
   <div class="card mt-8 p-6">
     <%= form_with model: @user, class: "space-y-5" do |f| %>
       <div>
-        <%= f.label :username, class: "form-label" %>
-        <%= f.text_field :username, autofocus: true, required: true, autocomplete: "username", class: "form-input" %>
+        <%= f.label :username, class: "form-label text-base" %>
+        <%= f.text_field :username, autofocus: true, required: true, autocomplete: "username", class: "form-input py-2.5 text-lg sm:text-lg" %>
       </div>
       <div>
-        <%= f.label :password, class: "form-label" %>
-        <%= f.password_field :password, required: true, autocomplete: "new-password", class: "form-input" %>
+        <%= f.label :password, class: "form-label text-base" %>
+        <%= f.password_field :password, required: true, autocomplete: "new-password", class: "form-input py-2.5 text-lg sm:text-lg" %>
       </div>
       <div>
-        <%= f.label :locale, class: "form-label" %>
+        <%= f.label :locale, class: "form-label text-base" %>
         <%# Each language is named in itself, so it can be found whatever this page is shown in %>
-        <%= f.select :locale, I18n.available_locales.map { |locale| [t("language_name", locale: locale), locale] }, {}, class: "form-input" %>
-        <p class="mt-1 text-xs text-stone-500 dark:text-stone-400"><%= t(".locale_hint") %></p>
+        <%= f.select :locale, I18n.available_locales.map { |locale| [t("language_name", locale: locale), locale] }, {}, class: "form-input py-2.5 text-lg sm:text-lg" %>
+        <p class="mt-1 text-sm text-stone-500 dark:text-stone-400"><%= t(".locale_hint") %></p>
       </div>
-      <%= f.submit t(".submit"), class: "btn-primary w-full" %>
+      <%= f.submit t(".submit"), class: "btn-primary w-full py-3 text-lg" %>
     <% end %>
   </div>
 </div>
