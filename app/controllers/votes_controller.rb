@@ -6,7 +6,7 @@ class VotesController < ApplicationController
   before_action :require_voting_open
   before_action :require_not_voted
 
-  # Casts my vote: favor / against on a motion, a candidate in an election, or abstain on either.
+  # Casts my vote: favor / against on a motion, a candidate in an election.
   # Like a paper ballot, it's final: there is no changing or withdrawing it afterwards.
   def create
     attributes = vote_attributes
@@ -24,9 +24,7 @@ class VotesController < ApplicationController
 
   # nil when the request doesn't name a valid choice for this agenda item
   def vote_attributes
-    if @agenda_item.election? && params[:choice] == "abstain"
-      { choice: "abstain", candidate: nil }
-    elsif @agenda_item.election?
+    if @agenda_item.election?
       candidate = @agenda_item.candidates.find_by(id: params[:candidate_id])
       { candidate: candidate, choice: nil } if candidate
     elsif Vote.choices.key?(params[:choice])

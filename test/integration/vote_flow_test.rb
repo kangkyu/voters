@@ -12,35 +12,28 @@ class VoteFlowTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "button", "Favor"
     assert_select "button", "Against"
-    assert_select "button", "Abstain"
+    assert_select "button", text: "Abstain", count: 0
   end
 
-  test "abstains, and the vote is final" do
-    votes_frame = "turbo-frame##{ActionView::RecordIdentifier.dom_id(@agenda_item)}_votes"
-    assert_difference "Vote.count", 1 do
+  test "abstain is not a choice" do
+    assert_no_difference "Vote.count" do
       post round_agenda_item_votes_path(@round, @agenda_item), params: { choice: "abstain" }
     end
-    assert Vote.last.abstain?
-    assert_select "#{votes_frame} button[aria-pressed=true]", "Abstain"
-
-    post round_agenda_item_votes_path(@round, @agenda_item), params: { choice: "favor" }
     assert_response :unprocessable_entity
-    assert Vote.last.abstain?
-    assert_select "#{votes_frame} button[aria-pressed=true]", "Abstain"
   end
 
   test "before voting every option can be cast; after, my vote stays and the rest are locked" do
     votes_frame = "turbo-frame##{ActionView::RecordIdentifier.dom_id(@agenda_item)}_votes"
     get round_agenda_items_path(@round)
-    assert_select "#{votes_frame} form", 3
-    assert_select "#{votes_frame} form[data-turbo-confirm]", 3
+    assert_select "#{votes_frame} form", 2
+    assert_select "#{votes_frame} form[data-turbo-confirm]", 2
     assert_select "#{votes_frame} button", text: "No vote", count: 0
 
     post round_agenda_item_votes_path(@round, @agenda_item), params: { choice: "favor" }
     assert_select votes_frame do
       assert_select "span", "Vote cast"
       assert_select "button[aria-pressed=true]", "Favor"
-      assert_select "button[disabled]", 2
+      assert_select "button[disabled]", 1
       assert_select "form", 0
     end
 
@@ -105,6 +98,6 @@ class VoteFlowTest < ActionDispatch::IntegrationTest
     post session_path, params: { username: "jimmy", password: "tV7qLm2xRz9pWk4d" }
 
     get owner_round_results_path(@round)
-    assert_select "turbo-frame##{ActionView::RecordIdentifier.dom_id(@agenda_item)}_votes_count", /Favor 1\s+Against 1\s+Abstain 0\s+Not voted 1/
+    assert_select "turbo-frame##{ActionView::RecordIdentifier.dom_id(@agenda_item)}_votes_count", /Favor 1\s+Against 1\s+Not voted 1/
   end
 end

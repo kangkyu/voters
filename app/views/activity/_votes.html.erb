@@ -20,7 +20,6 @@
      else
        [[t("choices.favor"), vote&.favor?, { choice: "favor" }], [t("choices.against"), vote&.against?, { choice: "against" }]]
      end %>
-  <% options << [t("choices.abstain"), vote&.abstain?, { choice: "abstain" }] %>
   <div class="<%= agenda_item.election? ? "flex flex-col gap-2" : "flex flex-wrap gap-3" %>">
     <% options.each do |label, selected, vote_params| %>
       <% selected_look = "border-blue-800 #{agenda_item.election? ? "bg-blue-50 font-medium dark:bg-blue-950/40" : "bg-blue-800 text-white"}" %>

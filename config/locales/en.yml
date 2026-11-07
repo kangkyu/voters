@@ -8,7 +8,6 @@ en:
   choices:
     favor: Favor
     against: Against
-    abstain: Abstain
     not_voted: Not voted
   kinds:
     motion: Motion
@@ -327,11 +326,10 @@ en:
             agenda_item:
               closed: 'is closed: decision made'
             candidate:
-              blank_when_abstaining: must be blank when abstaining
               not_in_election: must be one of this election's candidates
               not_on_motion: must be blank on a motion
             choice:
-              not_in_election: must be blank or abstain in an election
+              not_in_election: must be blank in an election
             user:
               not_attendee: must be the attendee who votes
   flash:

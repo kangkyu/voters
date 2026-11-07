@@ -42,7 +42,7 @@ class AgendaItem < ApplicationRecord
     end
   end
 
-  # { "favor" => n, "against" => n, "abstain" => n }, counted once per instance
+  # { "favor" => n, "against" => n }, counted once per instance
   def vote_tally
     @vote_tally ||= Vote.choices.keys.index_with(0).merge(votes.group(:choice).count)
   end
@@ -78,10 +78,6 @@ class AgendaItem < ApplicationRecord
     vote_tally["against"]
   end
 
-  def abstain_count
-    vote_tally["abstain"]
-  end
-
   def attendee_count
     @attendee_count ||= round.audiences.count
   end
@@ -90,10 +86,10 @@ class AgendaItem < ApplicationRecord
     election? ? candidate_tally.values.sum : favor_count + against_count
   end
 
-  # Attendees of the meeting who haven't voted on this item, abstaining or otherwise.
-  # Shown only: pass / fail and the most-voted candidate count votes cast, which leave out abstentions
+  # Attendees of the meeting who haven't voted on this item. Shown only: pass / fail and
+  # the winning candidate go by votes cast
   def not_voted_count
-    [attendee_count - votes_cast - abstain_count, 0].max
+    [attendee_count - votes_cast, 0].max
   end
 
   # { candidate_id => n }, counted once per instance
@@ -105,7 +101,7 @@ class AgendaItem < ApplicationRecord
     candidate_tally.fetch(candidate.id, 0)
   end
 
-  # Once decided, more than half of votes cast, leaving out abstentions, like a motion's majority.
+  # Once decided, more than half of votes cast, like a motion's majority.
   # Nil when nobody has that, and while voting is open, since later votes could change it
   def elected_candidate
     return unless decision_made?

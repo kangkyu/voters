@@ -68,7 +68,7 @@ class DecisionMadeTest < ActionDispatch::IntegrationTest
     post round_agenda_item_votes_path(@round, @agenda_item), params: { choice: "against" }
     assert_response :unprocessable_entity
     assert vote.reload.favor?
-    assert_select "turbo-frame##{frame_id(:votes)} button[disabled]", 3
+    assert_select "turbo-frame##{frame_id(:votes)} button[disabled]", 2
   end
 
   test "attendee page shows closed items with their vote and no active buttons" do

@@ -62,10 +62,6 @@
                   <td class="py-1 text-right tabular-nums"><%= agenda_item.candidate_vote_count(candidate) %></td>
                 </tr>
               <% end %>
-              <tr class="border-b border-stone-200 text-stone-600">
-                <td class="py-1"><%= t("choices.abstain") %></td>
-                <td class="py-1 text-right tabular-nums"><%= agenda_item.abstain_count %></td>
-              </tr>
               <tr class="text-stone-600">
                 <td class="py-1"><%= t("choices.not_voted") %></td>
                 <td class="py-1 text-right tabular-nums"><%= agenda_item.not_voted_count %></td>
@@ -78,7 +74,7 @@
             <p class="outcome mt-2 text-sm font-semibold"><%= { passed: t("decisions.passed"), failed: t("decisions.failed"), pending: t(".no_votes_cast") }.fetch(agenda_item.decision) { t(".tally_only") } %></p>
           <% end %>
           <p class="tally mt-1 text-sm tabular-nums">
-            <%= t("choices.favor") %> <%= agenda_item.favor_count %> · <%= t("choices.against") %> <%= agenda_item.against_count %> · <%= t("choices.abstain") %> <%= agenda_item.abstain_count %> · <%= t("choices.not_voted") %> <%= agenda_item.not_voted_count %>
+            <%= t("choices.favor") %> <%= agenda_item.favor_count %> · <%= t("choices.against") %> <%= agenda_item.against_count %> · <%= t("choices.not_voted") %> <%= agenda_item.not_voted_count %>
           </p>
         <% end %>
 

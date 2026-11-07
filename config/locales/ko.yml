@@ -7,7 +7,6 @@ ko:
   choices:
     favor: 찬성
     against: 반대
-    abstain: 기권
     not_voted: 미투표
   kinds:
     motion: 의안
@@ -324,11 +323,10 @@ ko:
             agenda_item:
               closed: 투표가 마감되었습니다 (의결 완료)
             candidate:
-              blank_when_abstaining: 기권할 때는 비워 두어야 합니다
               not_in_election: 이 선거의 후보여야 합니다
               not_on_motion: 의안에서는 비워 두어야 합니다
             choice:
-              not_in_election: 선거에서는 비워 두거나 기권이어야 합니다
+              not_in_election: 선거에서는 비워 두어야 합니다
             user:
               not_attendee: 투표하는 참석자 본인이어야 합니다
   flash:

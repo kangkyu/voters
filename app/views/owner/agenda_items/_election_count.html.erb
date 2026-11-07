@@ -1,7 +1,6 @@
 <% leaders = agenda_item.leading_candidates %>
 <% not_voted = agenda_item.not_voted_count %>
-<% abstain = agenda_item.abstain_count %>
-<% total = agenda_item.votes_cast + abstain + not_voted %>
+<% total = agenda_item.votes_cast + not_voted %>
 <div class="flex flex-wrap items-center gap-2">
   <% if (elected = agenda_item.elected_candidate) %>
     <span class="decision-badge rounded-full bg-blue-800 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white">★ <%= t(".wins", name: elected.name) %></span>
@@ -13,7 +12,7 @@
     <span class="decision-badge rounded-full bg-amber-500 px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide text-white"><%= t(".tie", names: leaders.map(&:name).to_sentence) %></span>
   <% end %>
 </div>
-<%# One row per candidate, then abstentions and attendees who haven't voted: name, count, and a bar for their share of attendees %>
+<%# One row per candidate, then attendees who haven't voted: name, count, and a bar for their share of attendees %>
 <ul class="mt-2 flex flex-col gap-2">
   <% agenda_item.candidates_by_votes.each do |candidate| %>
     <% count = agenda_item.candidate_vote_count(candidate) %>
@@ -29,17 +28,6 @@
       </div>
     </li>
   <% end %>
-  <li class="abstain-count">
-    <div class="flex justify-between text-sm text-stone-500 dark:text-stone-400">
-      <span><%= t("choices.abstain") %></span>
-      <span class="tabular-nums"><%= abstain %></span>
-    </div>
-    <div class="mt-1 h-2 w-full overflow-hidden rounded-full bg-stone-100 dark:bg-stone-800">
-      <% if total > 0 %>
-        <div class="h-full bg-stone-300 dark:bg-stone-600" style="width: <%= (abstain * 100.0 / total).round(2) %>%"></div>
-      <% end %>
-    </div>
-  </li>
   <li class="not-voted-count">
     <div class="flex justify-between text-sm text-stone-500 dark:text-stone-400">
       <span><%= t("choices.not_voted") %></span>

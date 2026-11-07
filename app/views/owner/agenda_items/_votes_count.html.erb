@@ -9,7 +9,6 @@
     <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
       <span class="text-sm"><%= t("choices.favor") %> <span class="font-medium tabular-nums"><%= favor %></span></span>
       <span class="text-sm"><%= t("choices.against") %> <span class="font-medium tabular-nums"><%= against %></span></span>
-      <span class="text-sm"><%= t("choices.abstain") %> <span class="font-medium tabular-nums"><%= agenda_item.abstain_count %></span></span>
       <span class="text-sm text-stone-500 dark:text-stone-400"><%= t("choices.not_voted") %> <span class="tabular-nums"><%= agenda_item.not_voted_count %></span></span>
       <% case agenda_item.decision %>
       <% when :passed %>
