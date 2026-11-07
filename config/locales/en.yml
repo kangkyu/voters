@@ -253,11 +253,13 @@ en:
       title: Users
       user_id: User ID
     new:
-      title: Create a username
+      title: First time here? Choose a username
+      intro: Pick a username and password. You'll use them to join meetings and vote.
       locale_hint: You can change it later on your account page.
-      have_one: Have a username already?
-      sign_in: Sign In
-      submit: Register
+      returning_title: Been here before?
+      returning_body: Sign in with the username you already have.
+      sign_in: Sign in
+      submit: Create username
     show:
       edit: Change password
       sign_out: Sign Out

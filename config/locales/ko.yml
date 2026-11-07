@@ -250,11 +250,13 @@ ko:
       title: 사용자
       user_id: 사용자 ID
     new:
-      title: 아이디 만들기
+      title: 처음이신가요? 아이디를 만드세요
+      intro: 아이디와 비밀번호를 정해 주세요. 회의에 참석하고 투표할 때 씁니다.
       locale_hint: 나중에 계정 페이지에서 바꿀 수 있습니다.
-      have_one: 이미 아이디가 있으신가요?
+      returning_title: 전에 오신 적이 있나요?
+      returning_body: 이미 만든 아이디로 로그인하세요.
       sign_in: 로그인
-      submit: 가입하기
+      submit: 아이디 만들기
     show:
       edit: 비밀번호 변경
       sign_out: 로그아웃

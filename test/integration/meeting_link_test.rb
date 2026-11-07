@@ -15,7 +15,8 @@ class MeetingLinkTest < ActionDispatch::IntegrationTest
     assert_redirected_to register_url
     follow_redirect!
     assert_select "div", "Create an account or sign in to join “meeting”."
-    assert_select "a[href='#{signin_path}']"
+    assert_select "h2", "Been here before?"
+    assert_select "a[href='#{signin_path}']", "Sign in"
 
     post users_path, params: { user: { username: "newbie", password: "tV7qLm2xRz9pWk4d" } }
     follow_redirect! # back to the meeting link
