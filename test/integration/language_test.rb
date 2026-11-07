@@ -103,7 +103,7 @@ class LanguageTest < ActionDispatch::IntegrationTest
     get root_path, headers: { "Accept-Language" => "ko" }
     assert_select "h1", /모든 목소리를/
     get register_path, headers: { "Accept-Language" => "ko" }
-    assert_select "h1", "아이디 만들기"
+    assert_select "h1", "처음이신가요? 아이디를 만드세요"
 
     sign_in "jimmy"
     @agenda_item.update!(decision_rule: "majority")
