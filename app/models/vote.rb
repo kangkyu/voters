@@ -4,8 +4,8 @@ class Vote < ApplicationRecord
   belongs_to :agenda_item, counter_cache: true
   belongs_to :candidate, optional: true
 
-  # Abstain is a recorded vote that counts as attending, but not for or against
-  enum :choice, { favor: 0, against: 1, abstain: 2 }
+  # Motions only; an election vote names a candidate instead. Not voting is the way to sit one out
+  enum :choice, { favor: 0, against: 1 }
 
   validates :agenda_item_id, uniqueness: { scope: :audience_id }
   validate :audience_in_agenda_item_round
@@ -38,13 +38,11 @@ class Vote < ApplicationRecord
     end
   end
 
-  # A motion vote is favor / against / abstain; an election vote names one of that election's candidates, or abstains
+  # A motion vote is favor / against; an election vote names one of that election's candidates
   def matches_agenda_item_kind
     return unless agenda_item
 
-    if agenda_item.election? && abstain?
-      errors.add(:candidate, :blank_when_abstaining) if candidate_id
-    elsif agenda_item.election?
+    if agenda_item.election?
       errors.add(:candidate, :not_in_election) unless candidate&.agenda_item_id == agenda_item_id
       errors.add(:choice, :not_in_election) if choice
     else

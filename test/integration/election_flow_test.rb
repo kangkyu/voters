@@ -59,21 +59,14 @@ class ElectionFlowTest < ActionDispatch::IntegrationTest
     assert_equal @ann, vote.reload.candidate
   end
 
-  test "abstains in an election and cannot pick a candidate afterwards" do
+  test "there is no abstain option in an election" do
     sign_in "john"
-    post round_agenda_item_votes_path(@round, @election), params: { choice: "abstain" }
-    vote = Vote.last
-    assert vote.abstain?
-    assert_nil vote.candidate
-    assert_select "#{votes_frame} button[aria-pressed=true]", "Abstain"
-
+    get round_agenda_items_path(@round)
+    assert_select "#{votes_frame} button", text: "Abstain", count: 0
     assert_no_difference "Vote.count" do
-      post round_agenda_item_votes_path(@round, @election), params: { candidate_id: @ann.id }
+      post round_agenda_item_votes_path(@round, @election), params: { choice: "abstain" }
     end
     assert_response :unprocessable_entity
-    vote.reload
-    assert vote.abstain?
-    assert_nil vote.candidate
   end
 
   test "rejects a candidate from another election" do
@@ -111,7 +104,7 @@ class ElectionFlowTest < ActionDispatch::IntegrationTest
     assert_select "#{frame} .decision-badge", /Most votes: Bob/
     assert_select "#{frame} .candidate-count", text: /Ann\s+0/
     assert_select "#{frame} .candidate-count", text: /Bob\s+1/
-    assert_select "#{frame} .abstain-count", text: /Abstain\s+0/
+    assert_select "#{frame} .abstain-count", 0
     assert_select "#{frame} .not-voted-count", text: /Not voted\s+1/
   end
 
@@ -150,9 +143,8 @@ class ElectionFlowTest < ActionDispatch::IntegrationTest
     assert_select outcome, /Elected: Cy/
   end
 
-  test "abstentions don't count toward the votes a candidate needs to win" do
+  test "attendees who don't vote don't count toward the votes a candidate needs to win" do
     @election.votes.create!(user: users(:john), audience: audiences(:john_at_meeting), candidate: @bob)
-    @election.votes.create!(user: users(:gapbun), audience: audiences(:gapbun_at_meeting), choice: "abstain")
     @election.update!(decision_made: true)
     sign_in "jimmy"
     get owner_round_results_path(@round)

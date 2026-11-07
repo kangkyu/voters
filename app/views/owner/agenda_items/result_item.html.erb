@@ -22,9 +22,8 @@
       <div class="tally mt-3">
         <% if item.election? %>
           <% leaders = item.leading_candidates %>
-          <% abstain = item.abstain_count %>
           <% not_voted = item.not_voted_count %>
-          <% total = item.votes_cast + abstain + not_voted %>
+          <% total = item.votes_cast + not_voted %>
           <div class="flex flex-wrap items-center gap-2">
             <% if (elected = item.elected_candidate) %>
               <span class="decision-badge rounded-full bg-blue-800 px-2.5 py-0.5 text-sm font-bold uppercase tracking-wide text-white">★ <%= t(".wins", name: elected.name) %></span>
@@ -36,9 +35,8 @@
               <span class="decision-badge rounded-full bg-amber-500 px-2.5 py-0.5 text-sm font-bold uppercase tracking-wide text-white"><%= t(".tie", names: leaders.map(&:name).to_sentence) %></span>
             <% end %>
           </div>
-          <%# One row per candidate, then abstentions and attendees who didn't vote, each with its share of attendees %>
+          <%# One row per candidate, then attendees who didn't vote, each with its share of attendees %>
           <% rows = item.candidates_by_votes.map { |candidate| [candidate.name, item.candidate_vote_count(candidate), leaders.include?(candidate) ? "bg-blue-800" : "bg-blue-200 dark:bg-blue-900", leaders.include?(candidate) ? "font-semibold" : "text-stone-600 dark:text-stone-300"] } %>
-          <% rows << [t("choices.abstain"), abstain, "bg-stone-300 dark:bg-stone-600", "text-stone-500 dark:text-stone-400"] %>
           <% rows << [t("choices.not_voted"), not_voted, "bg-stone-400 dark:bg-stone-500", "text-stone-500 dark:text-stone-400"] %>
           <ul class="mt-2 flex flex-col gap-2">
             <% rows.each do |label, count, bar, text| %>
@@ -61,7 +59,6 @@
           <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
             <span class="text-lg"><%= t("choices.favor") %> <span class="font-medium tabular-nums"><%= favor %></span></span>
             <span class="text-lg"><%= t("choices.against") %> <span class="font-medium tabular-nums"><%= against %></span></span>
-            <span class="text-lg"><%= t("choices.abstain") %> <span class="font-medium tabular-nums"><%= item.abstain_count %></span></span>
             <span class="text-lg text-stone-500 dark:text-stone-400"><%= t("choices.not_voted") %> <span class="tabular-nums"><%= item.not_voted_count %></span></span>
             <% case item.decision %>
             <% when :passed %>

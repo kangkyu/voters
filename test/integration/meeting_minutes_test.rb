@@ -19,7 +19,6 @@ class MeetingMinutesTest < ActionDispatch::IntegrationTest
 
   test "minutes show attendees and each item's outcome, without the site header" do
     @motion.votes.create!(user: users(:john), audience: audiences(:john_at_meeting), choice: "favor")
-    @motion.votes.create!(user: users(:gapbun), audience: audiences(:gapbun_at_meeting), choice: "abstain")
     election = @round.agenda_items.create!(name: "Chair", kind: "election", candidate_names: "Ann\nBob")
     election.votes.create!(user: users(:john), audience: audiences(:john_at_meeting), candidate: election.candidates.last)
     election.update!(decision_made: true)
@@ -34,7 +33,7 @@ class MeetingMinutesTest < ActionDispatch::IntegrationTest
 
     motion = "#minutes_#{ActionView::RecordIdentifier.dom_id(@motion)}"
     assert_select "#{motion} .outcome", 0
-    assert_select "#{motion} .tally", /Favor 1 · Against 0 · Abstain 1 · Not voted 0/
+    assert_select "#{motion} .tally", /Favor 1 · Against 0 · Not voted 1/
     assert_select motion, /Voting was still open/
 
     chair = "#minutes_#{ActionView::RecordIdentifier.dom_id(election)}"
